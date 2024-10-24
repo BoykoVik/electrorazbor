@@ -1,0 +1,28 @@
+{% load thumbnail %}
+<div class="col-lg-4 col-xl-3 col-md-6 col-sm-6 col-xs-6 mb-30px">
+    <div class="product">
+        <div class="thumb">
+            <a href="{{ product.get_absolute_url }}" class="image">
+                <img src="{{ product.productimages.all.0.image|thumbnail_url:'card' }}" alt="Product" />
+                {% if not product.productimages.all.1.image %}
+                <img class="hover-image" src="{{ product.productimages.all.0.image|thumbnail_url:'card' }}" alt="Product" />
+                {% else %}
+                <img class="hover-image" src="{{ product.productimages.all.1.image|thumbnail_url:'card' }}" alt="Product" />
+                {% endif %}
+            </a>
+        </div>
+        <div class="content">
+            <h5 class="title">
+                <a href="{{ product.get_absolute_url }}">{{ product.name }}</a>
+            </h5>
+            <span class="price">
+                <span class="new">{{ product.cost }} ₽</span>
+            </span>
+        </div>
+        <div class="actions">
+            <a href="{{ product.get_absolute_url }}" class="nav-link active">
+            <button class="action" style="width: auto; font-size: 16px;">ОТКРЫТЬ</button>
+            </a>
+        </div>
+    </div>
+</div>

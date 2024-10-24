@@ -2456,6 +2456,7 @@ body.offcanvas-open {
   font-size: 16px;
   margin: 10px 0 15px;
   font-family: "Poppins", sans-serif;
+  text-align: center;
 }
 .product .content .title a {
   text-decoration: none;

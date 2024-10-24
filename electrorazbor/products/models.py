@@ -29,7 +29,7 @@ class Products(models.Model):
     desctiption = models.TextField(blank=False, null=False, max_length=500, verbose_name='description (описание страницы)')
     keywords = models.TextField(blank=False, null=False, max_length=500, verbose_name='keywords', help_text='через запятую')
     slug = models.SlugField(blank=True, null=True, max_length=200, unique=True, verbose_name='slug для url')
-    category = models.ManyToManyField(Categories, blank=False, verbose_name='Вид товара', related_name='products')
+    category = models.ManyToManyField(Categories, blank=False, verbose_name='Вид товара', related_name='category')
 
     class Meta:
         verbose_name = 'Товар'

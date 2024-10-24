@@ -125,3 +125,13 @@ STATIC_URL = 'static/'
 # https://docs.djangoproject.com/en/5.0/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+THUMBNAIL_ALIASES = {
+    'products.ProductsImages.image': {
+        'card': {
+            'size': (270, 274),
+            'crop': 'smart',
+            'quality': 100,
+        },
+    },
+}
