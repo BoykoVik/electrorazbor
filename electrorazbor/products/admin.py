@@ -13,7 +13,7 @@ class CategoriesAdmin(admin.ModelAdmin):
 
 @admin.register(Products)
 class ProductsAdmin(admin.ModelAdmin):
-    list_display = ("id", "name",)
+    list_display = ("id", "name", "in_top",)
     list_filter = ("category",)
     filter_horizontal = ("category",) #для удобного добавления
     prepopulated_fields = {"slug": ("name", )}

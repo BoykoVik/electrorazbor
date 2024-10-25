@@ -4,7 +4,7 @@ from .models import Categories, Products
 
 def productdetail(request, slug):
     product = get_object_or_404(Products, slug=slug)
-    return render(request, 'products/product-details.html', {
+    return render(request, 'products/product-detail.html', {
         'title': 'Кухни на заказ от moskitchens.ru. ' + product.name,
         'description': product.desctiption,
         'keywords': product.keywords,

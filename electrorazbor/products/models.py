@@ -24,7 +24,7 @@ class Products(models.Model):
     name = models.CharField(blank=False, max_length=350, verbose_name='Наименование')
     about = models.TextField(blank=True, null=True, max_length=1500, verbose_name='Краткое описание')
     about_big = models.TextField(blank=True, null=True, max_length=2500, verbose_name='Большое описание')
-    cost = models.IntegerField(blank=False, null=False, default=100, verbose_name='Цена')
+    price = models.IntegerField(blank=False, null=False, default=100, verbose_name='Цена')
     in_top = models.BooleanField(default=False, verbose_name='В топе')
     desctiption = models.TextField(blank=False, null=False, max_length=500, verbose_name='description (описание страницы)')
     keywords = models.TextField(blank=False, null=False, max_length=500, verbose_name='keywords', help_text='через запятую')

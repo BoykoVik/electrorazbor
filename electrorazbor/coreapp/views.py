@@ -5,7 +5,7 @@ from products.models import Categories, Products
 def home(request):
     return render(request, 'coreapp/home.html', {
         'models': Categories.objects.all(),
-        'products': Products.objects.all(),
+        'products': Products.objects.filter(in_top=True),
         'title': '',
         'description': '',
         'keywords': '',
