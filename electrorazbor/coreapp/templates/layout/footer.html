@@ -11,10 +11,11 @@
                             </div>
                             <p class="about-text">Ваш надежный помощник в ремонте электросамоката.</p>
                             <ul class="link-follow">
-                                <li><a href="tel:0123456789"><i class="fa fa-phone"></i></a></li>
-                                <li><a href="mailto:demo@example.com"><i class="fa fa-telegram"></i></a></li>
-                                <li><a href="my-account.html"><i class="fa fa-whatsapp"></i></a></li>
-                                <li><a href="#"><i class="fa fa-instagram" aria-hidden="true"></i></a></li>
+                                {% for contact in contacts %}
+                                {% if contact.show_in_top %}
+                                <li><a href="{{ contact.link }}"><i class="fa {{ contact.code }}"></i></a></li>
+                                {% endif %}
+                                {% endfor %}
                             </ul>
                         </div>
                     </div>

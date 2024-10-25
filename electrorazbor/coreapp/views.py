@@ -1,6 +1,6 @@
 from django.shortcuts import render
 from products.models import Categories, Products
-
+from .models import Contacts
 # Create your views here.
 def home(request):
     return render(request, 'coreapp/home.html', {
@@ -9,4 +9,5 @@ def home(request):
         'title': '',
         'description': '',
         'keywords': '',
+        'contacts': Contacts.objects.all(),
     })

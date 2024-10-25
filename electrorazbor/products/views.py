@@ -1,5 +1,6 @@
 from django.shortcuts import render, get_object_or_404
 from .models import Categories, Products
+from coreapp.models import Contacts
 # Create your views here.
 
 def productdetail(request, slug):
@@ -10,6 +11,7 @@ def productdetail(request, slug):
         'keywords': product.keywords,
         'product': product,
         'categories': Categories.objects.all(),
+        'contacts': Contacts.objects.all(),
     })
 
 def products_category(request, slug):
@@ -20,4 +22,5 @@ def products_category(request, slug):
         'keywords': category.keywords,
         'products': Products.objects.filter(category=category),
         'categories': Categories.objects.all(),
+        'contacts': Contacts.objects.all(),
     })
