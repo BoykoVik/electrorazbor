@@ -9,7 +9,8 @@ urlpatterns = [
     #path('robots.txt', views.RobotsTxtView.as_view()),
     #path('sitemap.xml', views.SitemapXmlView.as_view()),
     path('', views.home, name='home'),
+    path('contacts/', views.contacts, name='contacts'),
     #path('about-us', views.about_us, name='about-us'),
     path('favicon.ico', favicon_view),
-    #path('productrequest/', views.productrequest, name='productrequest'),
+    path('productrequest/', views.productrequest, name='productrequest'),
 ]

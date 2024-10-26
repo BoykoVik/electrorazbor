@@ -1,6 +1,8 @@
 from django.shortcuts import render
 from products.models import Categories, Products
-from .models import Contacts
+from .models import Contacts, Callrequest
+from django.http import JsonResponse
+from .utils import tgsandmsg
 # Create your views here.
 def home(request):
     return render(request, 'coreapp/home.html', {
@@ -11,3 +13,23 @@ def home(request):
         'keywords': '',
         'contacts': Contacts.objects.all(),
     })
+
+def contacts(request):
+    return render(request, 'coreapp/contacts.html', {
+        'models': Categories.objects.all(),
+        'title': '',
+        'description': '',
+        'keywords': '',
+        'contacts': Contacts.objects.all(),
+    })
+
+def productrequest(request):
+    if request.method == "POST":
+        phone = request.POST.get('phone')
+        product = request.POST.get('product')
+        req = Callrequest()
+        req.number = phone
+        req.product = product
+        req.save()
+        tgsandmsg(f'Заявка! \nТелефон {phone}\nТовар: {product}')
+    return JsonResponse({"OK":'200'})

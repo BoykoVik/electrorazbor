@@ -52,7 +52,7 @@
                     </div>
                     <div class="col-lg-6 col-sm-12 col-xs-12" data-aos="fade-up" data-aos-delay="200">
                         <div class="product-details-content quickview-content ml-25px">
-                            <h2>Modern Smart Phone</h2>
+                            <h2>{{ product.name }}</h2>
                             <div class="pricing-meta">
                                 <ul class="d-flex">
                                     <li class="new-price">{{ product.price }} ₽</li>
@@ -90,14 +90,7 @@
                                 </ul>
                             </div>
                             <div class="pro-details-quality">
-                                <div class="pro-details-cart"><a class="add-cart m-0" href="#">Buy on Themeforest</a>
-                                </div>
-                                <div class="pro-details-compare-wishlist pro-details-wishlist ">
-                                    <a href="wishlist.html"><i class="pe-7s-like"></i></a>
-                                </div>
-                                <div class="pro-details-compare-wishlist pro-details-wishlist ">
-                                    <a href="compare.html"><i class="pe-7s-refresh-2"></i></a>
-                                </div>
+                                <div class="pro-details-cart"><button id="btnmodal" class="add-cart m-0">Заказать</button></div>
                             </div>
                         </div>
 
@@ -128,9 +121,10 @@
                 </div>
             </div>
         </div>
-
         {% include "layout/footer.html" %}
+        
     </div>
     {% include "layout/scripts.html" %}
+    {% include "layout/popup.html" %}
 </body>
 </html>

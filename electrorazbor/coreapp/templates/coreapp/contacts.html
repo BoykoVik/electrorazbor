@@ -1,0 +1,51 @@
+{% load static %}
+{% include "layout/head.html" %}
+<body>
+    <div class="main-wrapper">
+        {% include "layout/header.html" %}
+        <div class="offcanvas-overlay"></div>
+        <div id="offcanvas-mobile-menu" class="offcanvas offcanvas-mobile-menu">
+            <button class="offcanvas-close"></button>
+            <div class="user-panel">
+                <ul>
+                    {% include "layout/contactsblock.html" %}
+                </ul>
+            </div>
+            <div class="inner customScroll">
+                <div class="offcanvas-menu mb-4">
+                    <ul>
+                        {% include "layout/menu.html" %}
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <div class="product-area pt-100px">
+            <div class="container">
+                {% include "layout/tabs_models.html" %}
+            </div>
+        </div>
+        <div class="container mb-30px">
+            <div class="blog-post-content-inner mt-30px">
+                <h2 class="blog-title">Контакты</h2>
+            </div>
+            <div class="row">
+                <div class="col-md-6">
+                    <script type="text/javascript" charset="utf-8" async src="https://api-maps.yandex.ru/services/constructor/1.0/js/?um=constructor%3A2d147697b077f1a6b28f9a3e5a9159b1ac7e78c7b38f33b9a99c6f41693a409a&amp;width=100%&amp;height=400&amp;lang=ru_RU&amp;scroll=true"></script>
+                </div>
+                <div class="col-md-6" style="display: flex; flex-direction: column; justify-content: space-evenly;">
+                    {% for contact in contacts %}
+                    <a href="{{ contact.link }}" style="color: black; padding-top: 20px;"><i class="fa {{ contact.code }}" style="color: #0d6efd; font-size: 24px; padding-right: 10px;"></i>{{ contact.text }}</a>
+                    {% endfor %}
+                    <a href="#" style="color: black; padding-top: 20px;"><i class="fa fa-clock-o" style="color: #0d6efd; font-size: 24px; padding-right: 10px;"></i><strong>Время работы:</strong> с 10:00 До 20:00</a>
+                    <a href="#" style="color: black; padding-top: 20px;"><i class="fa fa-info-circle" style="color: #0d6efd; font-size: 24px; padding-right: 10px;"></i><strong>ИНН</strong> 570401185967</a>
+                    <a href="#" style="color: black; padding-top: 20px;"><i class="fa fa-user-circle-o" style="color: #0d6efd; font-size: 24px; padding-right: 10px;"></i><strong>ИП</strong> Романов Дмитрий Юрьевич</a>
+                </div>
+            </div>
+        </div>
+        {% include "layout/footer.html" %}
+        
+    </div>
+    {% include "layout/scripts.html" %}
+</body>
+</html>
