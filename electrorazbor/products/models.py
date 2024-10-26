@@ -6,7 +6,6 @@ class Categories(models.Model):
     name = models.CharField(blank=False, max_length=350, verbose_name='Наименование категории товара')
     slug = models.SlugField(blank=False, null=False, max_length=200, unique=True, verbose_name='slug для url')
     desctiption = models.TextField(blank=True, null=True, max_length=500, verbose_name='description (описание страницы)')
-    keywords = models.TextField(blank=True, null=True, max_length=500, verbose_name='keywords', help_text='через запятую')
 
 
     class Meta:
@@ -27,7 +26,6 @@ class Products(models.Model):
     price = models.IntegerField(blank=False, null=False, default=100, verbose_name='Цена')
     in_top = models.BooleanField(default=False, verbose_name='В топе')
     desctiption = models.TextField(blank=False, null=False, max_length=500, verbose_name='description (описание страницы)')
-    keywords = models.TextField(blank=False, null=False, max_length=500, verbose_name='keywords', help_text='через запятую')
     slug = models.SlugField(blank=True, null=True, max_length=200, unique=True, verbose_name='slug для url')
     category = models.ManyToManyField(Categories, blank=False, verbose_name='Вид товара', related_name='category')
 

@@ -7,9 +7,8 @@ from coreapp.models import Contacts
 def productdetail(request, slug):
     product = get_object_or_404(Products, slug=slug)
     return render(request, 'products/product-detail.html', {
-        'title': 'Кухни на заказ от moskitchens.ru. ' + product.name,
+        'title': product.name + ' купить. Запчасти для электросамокатов',
         'description': product.desctiption,
-        'keywords': product.keywords,
         'product': product,
         'models': Categories.objects.all(),
         'contacts': Contacts.objects.all(),
@@ -25,9 +24,8 @@ def products_category(request, slug):
     paginator = Paginator(products, 12)
     page = paginator.get_page(page_num)
     return render(request, 'products/shop-list.html', {
-        'title': 'Кухни на заказ от moskitchens.ru. ' + category.name,
+        'title': category.name + '. Купить. Запчасти для электросамокатов',
         'description': category.desctiption,
-        'keywords': category.keywords,
         'products': page.object_list,
         'models': Categories.objects.all(),
         'contacts': Contacts.objects.all(),

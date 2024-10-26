@@ -1,5 +1,3 @@
-{% for contact in contacts %}
-{% if contact.show_in_top %}
+{% for contact in contacts %}{% if contact.show_in_top %}
 <li><a href="{{ contact.link }}"><i class="fa {{ contact.code }}"></i>{{ contact.text }}</a></li>
-{% endif %}
-{% endfor %}
+{% endif %}{% endfor %}

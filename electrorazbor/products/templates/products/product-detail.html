@@ -76,28 +76,6 @@
                                     {% endfor %}
                                 </ul>
                             </div>
-                            <div class="pro-details-categories-info pro-details-same-style d-flex m-0">
-                                <span>Categories: </span>
-                                <ul class="d-flex">
-                                    <li>
-                                        <a href="#">Smart Device, </a>
-                                    </li>
-                                    <li>
-                                        <a href="#">ETC</a>
-                                    </li>
-                                </ul>
-                            </div>
-                            <div class="pro-details-categories-info pro-details-same-style d-flex m-0">
-                                <span>Tags: </span>
-                                <ul class="d-flex">
-                                    <li>
-                                        <a href="#">Smart Device, </a>
-                                    </li>
-                                    <li>
-                                        <a href="#">Phone</a>
-                                    </li>
-                                </ul>
-                            </div>
                             <div class="pro-details-quality">
                                 <div class="pro-details-cart"><button id="btnmodal" class="add-cart m-0">Заказать</button></div>
                             </div>
@@ -113,7 +91,7 @@
                                     <div class="product-anotherinfo-wrapper text-start">
                                         <ul>
                                             {% for charact in product.product.all %}
-                                            <li><span>{{ charact.characteristic.name }}:</span> {{ charact.count }}</li>
+                                            <li><span><strong>{{ charact.characteristic.name }}:</strong></span> {{ charact.count }}</li>
                                             {% endfor %}
                                         </ul>
                                     </div>
