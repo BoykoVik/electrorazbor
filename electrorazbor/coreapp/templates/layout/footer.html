@@ -12,7 +12,7 @@
                             <p class="about-text">Ваш надежный помощник в ремонте электросамоката.</p>
                             <ul class="link-follow">
                                 {% for contact in contacts %}
-                                {% if contact.show_in_top %}
+                                {% if contact.show_in_bottom %}
                                 <li><a href="{{ contact.link }}"><i class="fa {{ contact.code }}"></i></a></li>
                                 {% endif %}
                                 {% endfor %}
@@ -21,15 +21,13 @@
                     </div>
                     <div class="col-md-6 col-lg-3 col-sm-6 mb-lm-30px pl-lg-60px">
                         <div class="single-wedge">
-                            <h4 class="footer-herading">Services</h4>
+                            <h4 class="footer-herading">Разделы</h4>
                             <div class="footer-links">
                                 <div class="footer-row">
                                     <ul class="align-items-center">
-                                        <li class="li"><a class="single-link" href="my-account.html">My Account</a></li>
-                                        <li class="li"><a class="single-link" href="contact.html">Contact</a></li>
-                                        <li class="li"><a class="single-link" href="cart.html">Shopping cart</a></li>
-                                        <li class="li"><a class="single-link" href="shop-left-sidebar.html">Shop</a></li>
-                                        <li class="li"><a class="single-link" href="login.html">Services Login</a></li>
+                                        {% for model in models %}
+                                        <li class="li"><a class="single-link" href="{{ model.get_absolute_url }}">{{ model.name }}</a></li>
+                                        {% endfor %}
                                     </ul>
                                 </div>
                             </div>
@@ -37,15 +35,13 @@
                     </div>
                     <div class="col-md-6 col-lg-3 col-sm-6 mb-lm-30px pl-lg-40px">
                         <div class="single-wedge">
-                            <h4 class="footer-herading">My Account</h4>
+                            <h4 class="footer-herading">Меню</h4>
                             <div class="footer-links">
                                 <div class="footer-row">
                                     <ul class="align-items-center">
-                                        <li class="li"><a class="single-link" href="my-account.html">My Account</a></li>
-                                        <li class="li"><a class="single-link" href="contact.html">Contact</a></li>
-                                        <li class="li"><a class="single-link" href="cart.html">Shopping cart</a></li>
-                                        <li class="li"><a class="single-link" href="shop-left-sidebar.html">Shop</a></li>
-                                        <li class="li"><a class="single-link" href="login.html">Services Login</a></li>
+                                        <li class="li"><a class="single-link" href="my-account.html">Главная</a></li>
+                                        <li class="li"><a class="single-link" href="contact.html">Контакты</a></li>
+                                        <li class="li"><a class="single-link" href="cart.html">Партнерам</a></li>
                                     </ul>
                                 </div>
                             </div>
@@ -53,12 +49,11 @@
                     </div>
                     <div class="col-md-6 col-lg-3 col-sm-12">
                         <div class="single-wedge">
-                            <h4 class="footer-herading">Contact Info</h4>
+                            <h4 class="footer-herading">Контакты</h4>
                             <div class="footer-links">
-                                <p class="address">Address: Your Address Goes Here.</p>
-                                <p class="phone">Phone/Fax:<a href="tel:0123456789"> 0123456789</a></p>
-                                <p class="mail">Email:<a href="mailto:demo@example.com"> demo@example.com</a></p>
-                                <p class="mail"><a href="https://demo@example.com"> demo@example.com</a></p>
+                                {% for contact in contacts %}
+                                <p class="phone">{{ contact.title }}:<a href="{{ contact.link }}"> {{ contact.text }}</a></p>
+                                {% endfor %}
                             </div>
                         </div>
                     </div>
