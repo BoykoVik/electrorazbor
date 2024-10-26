@@ -60,11 +60,20 @@
                             </div>
                             <p class="mt-30px">{{ product.about }}</p>
                             <div class="pro-details-categories-info pro-details-same-style d-flex m-0">
-                                <span>SKU:</span>
+                                <span>Подойдет для моделей: </span>
                                 <ul class="d-flex">
+                                    {% for model in product.category.all %}
+                                    {% if forloop.last %}
                                     <li>
-                                        <a href="#">Ch-256xl</a>
+                                        <a href="{{ model.get_absolute_url }}"> {{ model.name }}.</a>
                                     </li>
+                                    {% else %}
+                                    <li>
+                                        <a href="{{ model.get_absolute_url }}"> {{ model.name }},</a>
+                                    </li>
+                                    {% endif %}
+                                    
+                                    {% endfor %}
                                 </ul>
                             </div>
                             <div class="pro-details-categories-info pro-details-same-style d-flex m-0">
@@ -103,10 +112,9 @@
                                 <div id="des-details2" class="tab-pane active">
                                     <div class="product-anotherinfo-wrapper text-start">
                                         <ul>
-                                            <li><span>Weight</span> 400 g</li>
-                                            <li><span>Dimensions</span>10 x 10 x 15 cm</li>
-                                            <li><span>Materials</span> 60% cotton, 40% polyester</li>
-                                            <li><span>Other Info</span> American heirloom jean shorts pug seitan letterpress</li>
+                                            {% for charact in product.product.all %}
+                                            <li><span>{{ charact.characteristic.name }}:</span> {{ charact.count }}</li>
+                                            {% endfor %}
                                         </ul>
                                     </div>
                                 </div>

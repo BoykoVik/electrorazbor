@@ -18,14 +18,12 @@ def productdetail(request, slug):
 def products_category(request, slug):
     category = get_object_or_404(Categories, slug=slug)
     products = Products.objects.filter(category=category)
-
     if 'page' in request.GET:
         page_num = request.GET['page']
     else:
         page_num = 1
     paginator = Paginator(products, 12)
     page = paginator.get_page(page_num)
-
     return render(request, 'products/shop-list.html', {
         'title': 'Кухни на заказ от moskitchens.ru. ' + category.name,
         'description': category.desctiption,

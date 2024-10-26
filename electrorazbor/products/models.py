@@ -54,3 +54,28 @@ class ProductsImages(models.Model):
         verbose_name = 'Изображение товара'
         verbose_name_plural = 'Изображения товара'
         ordering = ['id']
+
+
+class Characteristics(models.Model):# ХАРАКТЕРИСТИКИ
+    name = models.CharField(blank=False, max_length=350, unique=True, verbose_name='Наименование характеристики')
+
+    class Meta:
+        verbose_name = 'Характеристика'
+        verbose_name_plural = 'Характеристики'
+        ordering = ['id']
+    
+    def __str__(self):
+        return self.name
+    
+class CharacteristicsMiddleModel(models.Model):# ПРОМЕЖУТОЧНАЯ МОДЕЛЬ
+    product = models.ForeignKey(Products, null=True, on_delete=models.SET_NULL, related_name='product', verbose_name='Товар')
+    characteristic = models.ForeignKey(Characteristics, null=True, on_delete=models.SET_NULL, verbose_name='Характеристика')
+    count = models.CharField(blank=True, null=True, max_length=1500, verbose_name='Показатель')
+
+    def __str__(self):
+        return str(self.product)
+
+    class Meta:
+        verbose_name = 'Показатель'
+        verbose_name_plural = 'Показатели'
+        ordering = ['id']
