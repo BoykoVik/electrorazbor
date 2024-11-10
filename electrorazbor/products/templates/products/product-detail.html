@@ -59,23 +59,6 @@
                                 </ul>
                             </div>
                             <p class="mt-30px">{{ product.about }}</p>
-                            <div class="pro-details-categories-info pro-details-same-style d-flex m-0">
-                                <span>Подойдет для моделей: </span>
-                                <ul class="d-flex">
-                                    {% for model in product.category.all %}
-                                    {% if forloop.last %}
-                                    <li>
-                                        <a href="{{ model.get_absolute_url }}"> {{ model.name }}.</a>
-                                    </li>
-                                    {% else %}
-                                    <li>
-                                        <a href="{{ model.get_absolute_url }}"> {{ model.name }},</a>
-                                    </li>
-                                    {% endif %}
-                                    
-                                    {% endfor %}
-                                </ul>
-                            </div>
                             <div class="pro-details-quality">
                                 <div class="pro-details-cart"><button id="btnmodal" class="add-cart m-0">Заказать</button></div>
                             </div>
@@ -83,10 +66,15 @@
 
                         <div class="description-review-wrapper">
                             <div class="description-review-topbar nav">
+                                {% if product.product.all %}
                                 <button class="active" data-bs-toggle="tab" data-bs-target="#des-details2">Характеристики</button>
                                 <button data-bs-toggle="tab" data-bs-target="#des-details1">Описание</button>
+                                {% else %}
+                                <button class="active" data-bs-toggle="tab" data-bs-target="#des-details1">Описание</button>
+                                {% endif %}
                             </div>
                             <div class="tab-content description-review-bottom">
+                                {% if product.product.all %}
                                 <div id="des-details2" class="tab-pane active">
                                     <div class="product-anotherinfo-wrapper text-start">
                                         <ul>
@@ -101,6 +89,13 @@
                                         <p>{{ product.about_big }}</p>
                                     </div>
                                 </div>
+                                {% else %}
+                                <div id="des-details1" class="tab-pane active">
+                                    <div class="product-description-wrapper">
+                                        <p>{{ product.about_big }}</p>
+                                    </div>
+                                </div>
+                                {% endif %}
                             </div>
                         </div>
                     </div>

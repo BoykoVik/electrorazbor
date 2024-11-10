@@ -16,7 +16,7 @@ def productdetail(request, slug):
 
 def products_category(request, slug):
     category = get_object_or_404(Categories, slug=slug)
-    products = Products.objects.filter(category=category)
+    products = Products.objects.filter(category=category, show=True)
     if 'page' in request.GET:
         page_num = request.GET['page']
     else:
