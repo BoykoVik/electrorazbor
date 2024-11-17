@@ -29,6 +29,7 @@ class Products(models.Model):
     slug = models.SlugField(blank=True, null=True, max_length=200, unique=True, verbose_name='slug для url')
     category = models.ManyToManyField(Categories, blank=False, verbose_name='Вид товара', related_name='category')
     show = models.BooleanField(default=True, verbose_name='В наличии?')
+    rang = models.IntegerField(blank=False, null=False, default=1, verbose_name='Порядок вывода')
 
     class Meta:
         verbose_name = 'Товар'
@@ -45,6 +46,7 @@ class Products(models.Model):
 class ProductsImages(models.Model):
     product = models.ForeignKey(Products, on_delete=models.CASCADE, verbose_name='Товар', related_name="productimages")
     image = models.ImageField(blank=True, upload_to='productsimages', verbose_name='Изображение')
+    about = models.TextField(blank=True, null=True, max_length=1500, verbose_name='Краткое описание')
     
     def __str__(self):
         return self.product.name

@@ -2141,7 +2141,6 @@ body.offcanvas-open {
   }
 }
 .product-tab-nav .nav-item .nav-link {
-  width: 174px;
   height: 54px;
   position: relative;
   display: -webkit-box;
@@ -2264,11 +2263,7 @@ body.offcanvas-open {
     width: 50%;
   }
 }
-@media only screen and (max-width: 479px) {
-  .col-xs-6 {
-    width: 100%;
-  }
-}
+
 .tab-content.mt-60px {
   padding-top: 60px;
 }
@@ -2471,8 +2466,11 @@ body.offcanvas-open {
 }
 @media only screen and (max-width: 479px) {
   .product .content .title a {
-    font-size: 16px;
+    font-size: 14px;
   }
+  .product .content {
+    padding: 0;
+}
 }
 .product .content .price {
   font-size: 18px;
@@ -6953,7 +6951,6 @@ body.offcanvas-open {
 .product-details-content h2 {
   color: #000000;
   font-size: 36px;
-  text-transform: capitalize;
   line-height: 1;
   font-weight: 400;
   margin: 0 0 18px 0;
