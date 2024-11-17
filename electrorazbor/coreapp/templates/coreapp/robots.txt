@@ -1,0 +1,7 @@
+User-agent: * 
+Allow: /
+Allow: /*.js
+Allow: /*.css
+Disallow: *?*
+Disallow: /*.xls$
+Sitemap: https://{{ request.get_host }}/sitemap.xml

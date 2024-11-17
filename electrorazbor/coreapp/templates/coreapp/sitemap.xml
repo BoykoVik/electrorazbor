@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"> 
+
+<url>
+    <loc>https://{{ request.get_host }}/</loc>
+    <changefreq>weekly</changefreq>
+    <priority>1.0</priority>
+</url>
+{% for product in products %}
+<url>
+    <loc>https://{{ request.get_host }}/products/{{ product.slug }}/</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+</url>
+{% endfor %}
+{% for category in categories %}
+<url>
+    <loc>https://{{ request.get_host }}/products/categories/{{ category.slug }}/</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+</url>
+{% endfor %}
+</urlset>

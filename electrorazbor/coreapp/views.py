@@ -2,6 +2,7 @@ from django.shortcuts import render
 from products.models import Categories, Products
 from .models import Contacts, Callrequest
 from django.http import JsonResponse
+from django.views.generic import TemplateView
 from .utils import tgsandmsg
 # Create your views here.
 def home(request):
@@ -31,3 +32,19 @@ def productrequest(request):
         req.save()
         tgsandmsg(f'Заявка! \nТелефон {phone}\nТовар: {product}')
     return JsonResponse({"OK":'200'})
+
+class RobotsTxtView(TemplateView):
+    template_name = 'coreapp/robots.txt'
+    content_type = 'text/plain'
+
+class SitemapXmlView(TemplateView):
+    template_name = 'coreapp/sitemap.xml'
+    content_type = 'application/xml'
+
+    def get_context_data(self, **kwargs):
+        products = Products.objects.all()
+        categories = Categories.objects.all()
+        return {
+            'products': products,
+            'categories': categories,
+        }
