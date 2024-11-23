@@ -60,7 +60,11 @@
                             </div>
                             <p class="mt-30px">{{ product.about }}</p>
                             <div class="pro-details-quality">
-                                <div class="pro-details-cart"><button id="btnmodal" class="add-cart m-0">Заказать</button></div>
+                                {% if product.show %}
+                                <div class="pro-details-cart"><button id="btnmodal" class="add-cart m-0">Купить сейчас</button></div>
+                                {% else %}
+                                <div class="pro-details-cart"><button id="btnmodal" class="add-cart m-0">Временно нет в наличии</button></div>
+                                {% endif %}
                             </div>
                         </div>
 
