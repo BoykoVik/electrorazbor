@@ -1,5 +1,5 @@
 from django.shortcuts import render
-from products.models import Categories, Products
+from products.models import Categories, Products, Firms
 from .models import Contacts, Callrequest
 from django.http import JsonResponse
 from django.views.generic import TemplateView
@@ -7,7 +7,7 @@ from .utils import tgsandmsg
 # Create your views here.
 def home(request):
     return render(request, 'coreapp/home.html', {
-        'models': Categories.objects.all(),
+        'firms': Firms.objects.all(),
         'products': Products.objects.filter(in_top=True),
         'title': 'Запчасти для электросамокатов. Недорого.',
         'description': 'Продажа запчастей для электросамокатов. Помощь в подборе. Доставка.',

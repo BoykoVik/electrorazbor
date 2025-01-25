@@ -1,18 +1,15 @@
-{% if models %}
+{% if firms %}
 {% load thumbnail %}
 <div class="row">
     <div style="width: 100%; display: flex; justify-content: center;">
         <div class="tab-slider d-md-flex justify-content-md-between align-items-md-center">
             <ul class="product-tab-nav justify-content-center align-items-center"
                 style="display: flex; flex-wrap: wrap;">
-                {% for model in models %}
-                
-                <li class="nav-item mb-30px">
-                    <a href="{{ model.get_absolute_url }}" class="nav-link" style="height: auto;">
-                        {% if model.image %}
-                        <img src="{{ model.image|thumbnail_url:'card' }}" style="width: 100px; height: auto;" alt="{{ model.name }}">
-                        {% endif %}
-                        {{ model.name }}
+                {% for firm in firms %}
+                <li class="nav-item mb-30px" >
+                    <a href="{{ firm.get_absolute_url }}" class="nav-link" style="height: auto;">
+                        <img src="{{ firm.image|thumbnail_url:'card' }}" style="width: 100px; height: auto;" alt="{{ firm.name }}">
+                        {{ firm.name }}
                     </a>
                 </li>
                 {% endfor %}

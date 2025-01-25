@@ -146,4 +146,18 @@ THUMBNAIL_ALIASES = {
             'quality': 100,
         },
     },
+    'products.Categories.image': {
+        'card': {
+            'size': (100, 0),
+            'crop': 'smart',
+            'quality': 100,
+        },
+    },
+    'products.Firms.image': {
+        'card': {
+            'size': (100, 0),
+            'crop': 'smart',
+            'quality': 100,
+        },
+    },
 }

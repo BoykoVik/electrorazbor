@@ -1,6 +1,6 @@
 from django.shortcuts import render, get_object_or_404
 from django.core.paginator import Paginator
-from .models import Categories, Products
+from .models import Categories, Products, Firms
 from coreapp.models import Contacts
 # Create your views here.
 
@@ -27,7 +27,19 @@ def products_category(request, slug):
         'title': category.name + '. Купить. Запчасти для электросамокатов',
         'description': category.desctiption,
         'products': page.object_list,
-        'models': Categories.objects.all(),
+        #'models': Categories.objects.all(),
         'contacts': Contacts.objects.all(),
         'page': page,
+    })
+
+def firms_category(request, slug):
+    firm = get_object_or_404(Firms, slug=slug)
+    categories = firm.category.all()
+    products = Products.objects.filter(category__in=categories).distinct()[:20]
+    return render(request, 'products/shop-list.html', {
+        'title': firm.name + '. Купить. Запчасти для электросамокатов',
+        'description': firm.desctiption,
+        'products': products,
+        'models': categories,
+        'contacts': Contacts.objects.all(),
     })
