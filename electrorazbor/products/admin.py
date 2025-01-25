@@ -12,11 +12,12 @@ class ProductsImagesInline(admin.StackedInline):
 class FirmsAdmin(admin.ModelAdmin):
     list_display = ("name",)
     prepopulated_fields = {"slug": ("name", )}
-    filter_horizontal = ("category",) #для удобного добавления
+    #filter_horizontal = ("category",) #для удобного добавления
 
 @admin.register(Categories)
 class CategoriesAdmin(admin.ModelAdmin):
-    list_display = ("name",)
+    list_display = ("name", "firm",)
+    list_editable = ("firm",)
     prepopulated_fields = {"slug": ("name", )}
 
 

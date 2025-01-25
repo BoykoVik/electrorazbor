@@ -3,28 +3,9 @@ from django.urls import reverse
 
 # Create your models here.
 
-
-class Categories(models.Model):
-    name = models.CharField(blank=False, max_length=350, verbose_name='Наименование категории товара')
-    image = models.ImageField(blank=True, upload_to='categoryimages', verbose_name='Изображение')
-    slug = models.SlugField(blank=False, null=False, max_length=200, unique=True, verbose_name='slug для url')
-    desctiption = models.TextField(blank=True, null=True, max_length=500, verbose_name='description (описание страницы)')
-
-
-    class Meta:
-        verbose_name = 'Категория товара'
-        verbose_name_plural = 'Категории товаров'
-    
-    def __str__(self):
-        return self.name
-    
-    def get_absolute_url(self):
-        return reverse("products:products_category", kwargs={"slug": self.slug})
-    
 class Firms(models.Model):
     name = models.CharField(blank=False, max_length=350, verbose_name='Наименование производителя')
     image = models.ImageField(blank=True, upload_to='firmsimages', verbose_name='Изображение')
-    category = models.ManyToManyField(Categories, verbose_name='Модели', related_name='firm')
     slug = models.SlugField(blank=False, null=False, max_length=200, unique=True, verbose_name='slug для url')
     desctiption = models.TextField(blank=True, null=True, max_length=500, verbose_name='description (описание страницы)')
     
@@ -37,6 +18,23 @@ class Firms(models.Model):
     
     def get_absolute_url(self):
         return reverse("products:firms_category", kwargs={"slug": self.slug})
+    
+class Categories(models.Model):
+    name = models.CharField(blank=False, max_length=350, verbose_name='Наименование категории товара')
+    firm = models.ForeignKey(Firms, null=True, verbose_name='Фирма', on_delete=models.SET_NULL, related_name='firm')
+    image = models.ImageField(blank=True, upload_to='categoryimages', verbose_name='Изображение')
+    slug = models.SlugField(blank=False, null=False, max_length=200, unique=True, verbose_name='slug для url')
+    desctiption = models.TextField(blank=True, null=True, max_length=500, verbose_name='description (описание страницы)')
+
+    class Meta:
+        verbose_name = 'Категория товара'
+        verbose_name_plural = 'Категории товаров'
+    
+    def __str__(self):
+        return self.name
+    
+    def get_absolute_url(self):
+        return reverse("products:products_category", kwargs={"slug": self.slug, "firm":self.firm.slug})
     
 class Products(models.Model):
     name = models.CharField(blank=False, max_length=350, verbose_name='Наименование')

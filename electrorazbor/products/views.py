@@ -14,8 +14,9 @@ def productdetail(request, slug):
         'contacts': Contacts.objects.all(),
     })
 
-def products_category(request, slug):
+def products_category(request, firm, slug):
     category = get_object_or_404(Categories, slug=slug)
+    current_firm = get_object_or_404(Firms, slug=firm)
     products = Products.objects.filter(category=category)
     if 'page' in request.GET:
         page_num = request.GET['page']
@@ -27,14 +28,14 @@ def products_category(request, slug):
         'title': category.name + '. Купить. Запчасти для электросамокатов',
         'description': category.desctiption,
         'products': page.object_list,
-        #'models': Categories.objects.all(),
+        'models': Categories.objects.filter(firm=current_firm),
         'contacts': Contacts.objects.all(),
         'page': page,
     })
 
 def firms_category(request, slug):
     firm = get_object_or_404(Firms, slug=slug)
-    categories = firm.category.all()
+    categories = Categories.objects.filter(firm=firm)
     products = Products.objects.filter(category__in=categories).distinct()[:20]
     return render(request, 'products/shop-list.html', {
         'title': firm.name + '. Купить. Запчасти для электросамокатов',
