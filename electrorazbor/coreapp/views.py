@@ -44,7 +44,9 @@ class SitemapXmlView(TemplateView):
     def get_context_data(self, **kwargs):
         products = Products.objects.all()
         categories = Categories.objects.all()
+        firms = Firms.objects.all()
         return {
             'products': products,
             'categories': categories,
+            'firms': firms,
         }

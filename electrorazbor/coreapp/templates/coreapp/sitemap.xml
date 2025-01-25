@@ -7,6 +7,20 @@
     <changefreq>weekly</changefreq>
     <priority>1.0</priority>
 </url>
+{% for firm in firms %}
+<url>
+    <loc>https://{{ request.get_host }}{{ firm.get_absolute_url }}</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+</url>
+{% endfor %}
+{% for category in categories %}
+<url>
+    <loc>https://{{ request.get_host }}{{ category.get_absolute_url }}</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+</url>
+{% endfor %}
 {% for product in products %}
 <url>
     <loc>https://{{ request.get_host }}/products/{{ product.slug }}/</loc>
@@ -14,11 +28,5 @@
     <priority>0.8</priority>
 </url>
 {% endfor %}
-{% for category in categories %}
-<url>
-    <loc>https://{{ request.get_host }}/products/categories/{{ category.slug }}/</loc>
-    <changefreq>weekly</changefreq>
-    <priority>0.8</priority>
-</url>
-{% endfor %}
+
 </urlset>

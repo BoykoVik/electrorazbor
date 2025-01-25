@@ -2141,27 +2141,29 @@ body.offcanvas-open {
   }
 }
 .product-tab-nav .nav-item .nav-link {
-  height: 54px;
+  height: 180px;
   position: relative;
   display: -webkit-box;
   display: -ms-flexbox;
   display: flex;
   -webkit-box-orient: vertical;
   -webkit-box-direction: normal;
-      -ms-flex-direction: column;
-          flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
   -webkit-box-pack: center;
-      -ms-flex-pack: center;
-          justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: space-around;
   -webkit-box-align: center;
-      -ms-flex-align: center;
-          align-items: center;
+  -ms-flex-align: center;
   border: 1px solid #eaeaeb;
   border-radius: 18px;
   font-size: 18px;
   font-weight: 600;
   color: #666;
   background-color: #fff;
+  align-items: center;
+  width: 200px;
+  text-align: center;
 }
 @media only screen and (min-width: 768px) and (max-width: 991px), only screen and (max-width: 767px) {
   .product-tab-nav .nav-item .nav-link {
