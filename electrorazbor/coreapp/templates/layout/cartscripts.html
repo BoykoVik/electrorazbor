@@ -35,6 +35,32 @@ $(document).ready(function() {
 
         // Вставляем сформированный HTML в контейнер корзины
         $('.minicart-product-list').html(cartHtml);
+
+        // Обновляем количество товаров в корзине
+        updateCartCount();
+    }
+
+    // Функция для обновления количества товаров в корзине
+    function updateCartCount() {
+        // Получаем корзину из localStorage или создаем пустой массив, если данных нет
+        let cart;
+        try {
+            cart = JSON.parse(localStorage.getItem('cart')) || [];
+        } catch (e) {
+            // Если данные в localStorage повреждены, создаем пустой массив
+            cart = [];
+        }
+
+        // Проверяем, что cart является массивом
+        if (!Array.isArray(cart)) {
+            cart = [];
+        }
+
+        // Считаем общее количество товаров в корзине
+        let totalCount = cart.reduce((sum, item) => sum + item.quantity, 0);
+
+        // Обновляем значение элемента <span class="header-action-num">
+        $('.header-action-num').text(String(totalCount).padStart(2, '0'));
     }
 
     // Добавление товара в корзину
