@@ -9,6 +9,17 @@
                         <a href="{% url 'coreapp:home' %}"><img src="{% static 'ELR1.png' %}" alt="Site Logo" style="width: 300px; height: auto;" /></a>
                     </div>
                 </div>
+                <div class="col-lg-3 col">
+                    <div class="header-actions">
+                        <a href="#offcanvas-cart" class="header-action-btn header-action-btn-cart offcanvas-toggle pr-0">
+                            <i class="pe-7s-shopbag"></i>
+                            <span class="header-action-num">01</span>
+                        </a>
+                        <a href="#offcanvas-mobile-menu" class="header-action-btn header-action-btn-menu offcanvas-toggle d-lg-none">
+                            <i class="pe-7s-menu"></i>
+                        </a>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
@@ -42,3 +53,4 @@
         </div>
     </div>
 </header>
+{% include "layout/cart.html" %}
