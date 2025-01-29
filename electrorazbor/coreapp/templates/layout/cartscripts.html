@@ -130,6 +130,13 @@ $(document).ready(function() {
         updateCartDisplay();
     });
 
+    $('#clear-cart').on('click', function() {
+        // Удаляем корзину из localStorage
+        localStorage.removeItem('cart');
+        // Обновляем отображение корзины
+        updateCartDisplay();
+    });
+
     // Инициализация корзины при загрузке страницы
     updateCartDisplay();
 });

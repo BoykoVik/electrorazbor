@@ -1211,7 +1211,7 @@ body.offcanvas-open {
     font-size: 15px;
   }
 }
-.offcanvas .inner .foot .buttons a {
+.offcanvas .inner .foot .buttons a, .offcanvas .inner .foot .buttons button {
   display: block;
   text-transform: capitalize;
   font-weight: 500;
