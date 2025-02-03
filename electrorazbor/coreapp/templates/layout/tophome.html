@@ -15,7 +15,7 @@
                     <div class="swiper-wrapper">
                         {% for product in products %}
                         <div class="swiper-slide">
-                            <div class="product">
+                            <div class="product" data-id="{{ product.id }}">
                                 <div class="thumb">
                                     <a href="{{ product.get_absolute_url }}" class="image">
                                         <img src="{{ product.productimages.all.0.image|thumbnail_url:'card' }}" alt="Product" />
@@ -33,6 +33,9 @@
                                     </span>
                                 </div>
                                 <div class="actions">
+                                    <button title="Add To Cart" class="action add-to-cart">
+                                        <i class="pe-7s-shopbag"></i>
+                                    </button>
                                     <a href="{{ product.get_absolute_url }}" class="nav-link active">
                                     <button class="action" style="width: auto; font-size: 16px;">ОТКРЫТЬ</button>
                                     </a>

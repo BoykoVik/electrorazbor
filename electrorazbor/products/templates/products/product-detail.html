@@ -61,9 +61,19 @@
                             <p class="mt-30px">{{ product.about }}</p>
                             <div class="pro-details-quality">
                                 {% if product.show %}
-                                <div class="pro-details-cart"><button id="btnmodal" class="add-cart m-0">Купить сейчас</button></div>
+                                <div class="cart-plus-minus">
+                                    <input class="cart-plus-minus-box" type="text" name="qtybutton" value="1" />
+                                </div>
+                                <div class="pro-details-cart">
+                                    <button class="add-cart">В Корзину</button>
+                                </div>
+                                <div class="pro-details-cart">
+                                    <button id="btnmodal" class="buy-btn">Купить сейчас</button>
+                                </div>
                                 {% else %}
-                                <div class="pro-details-cart"><button id="btnmodal" class="add-cart m-0">Временно нет в наличии</button></div>
+                                <div class="pro-details-cart">
+                                    <button id="btnmodal" class="buy-btn">Временно нет в наличии</button>
+                                </div>
                                 {% endif %}
                             </div>
                         </div>
@@ -111,5 +121,6 @@
     </div>
     {% include "layout/scripts.html" %}
     {% include "layout/popup.html" %}
+    <script src="{% static 'js/cartdetail.js'%}"></script>
 </body>
 </html>

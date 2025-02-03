@@ -1,5 +1,3 @@
-<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-<script>
 $(document).ready(function() {
     // Функция для обновления отображения корзины
     function updateCartDisplay() {
@@ -140,4 +138,3 @@ $(document).ready(function() {
     // Инициализация корзины при загрузке страницы
     updateCartDisplay();
 });
-</script>
