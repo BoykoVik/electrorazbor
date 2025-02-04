@@ -51,7 +51,12 @@
                         </div>
                     </div>
                     <div class="col-lg-6 col-sm-12 col-xs-12" data-aos="fade-up" data-aos-delay="200">
-                        <div class="product-details-content quickview-content ml-25px">
+                        <div class="product-details-content quickview-content ml-25px"
+                        data-id="{{ product.id }}"
+                        data-name="{{ product.name }}"
+                        data-price="{{ product.price }} ₽"
+                        data-image="{{ product.productimages.first.image|thumbnail_url:'swipermin' }}"
+                        data-url="{{ product.get_absolute_url }}">
                             <h2>{{ product.name }}</h2>
                             <div class="pricing-meta">
                                 <ul class="d-flex">
@@ -65,7 +70,7 @@
                                     <input class="cart-plus-minus-box" type="text" name="qtybutton" value="1" />
                                 </div>
                                 <div class="pro-details-cart">
-                                    <button class="add-cart">В Корзину</button>
+                                    <button class="add-cart add-prod-to-cart">В Корзину</button>
                                 </div>
                                 <div class="pro-details-cart">
                                     <button id="btnmodal" class="buy-btn">Купить сейчас</button>

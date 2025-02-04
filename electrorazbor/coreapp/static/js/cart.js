@@ -58,7 +58,12 @@ $(document).ready(function() {
         let totalCount = cart.reduce((sum, item) => sum + item.quantity, 0);
 
         // Обновляем значение элемента <span class="header-action-num">
-        $('.header-action-num').text(String(totalCount).padStart(2, '0'));
+        let cartCountElement = $('.header-action-num');
+        if (totalCount > 0) {
+            cartCountElement.text(String(totalCount).padStart(2, '0')).show();
+        } else {
+            cartCountElement.hide();
+        }
     }
 
     // Добавление товара в корзину
