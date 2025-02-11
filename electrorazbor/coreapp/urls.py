@@ -10,7 +10,7 @@ urlpatterns = [
     path('sitemap.xml', views.SitemapXmlView.as_view()),
     path('', views.home, name='home'),
     path('contacts/', views.contacts, name='contacts'),
-    #path('about-us', views.about_us, name='about-us'),
+    path('cart/', views.cart, name='cart'),
     path('favicon.ico', favicon_view),
     path('productrequest/', views.productrequest, name='productrequest'),
 ]

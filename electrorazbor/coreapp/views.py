@@ -33,6 +33,15 @@ def productrequest(request):
         tgsandmsg(f'Заявка! \nТелефон {phone}\nТовар: {product}')
     return JsonResponse({"OK":'200'})
 
+def cart(request):
+    return render(request, 'coreapp/cart.html', {
+        'firms': Firms.objects.all(),
+        'products': Products.objects.filter(in_top=True),
+        'title': 'Корзина | Запчасти для электросамокатов. Недорого.',
+        'description': 'Корзина | Продажа запчастей для электросамокатов. Помощь в подборе. Доставка.',
+        #'contacts': Contacts.objects.all(),
+    })
+
 class RobotsTxtView(TemplateView):
     template_name = 'coreapp/robots.txt'
     content_type = 'text/plain'
