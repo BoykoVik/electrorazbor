@@ -22,7 +22,20 @@
 
         <div class="product-area pt-100px">
             <div class="container">
-                {% include "layout/tabs_models.html" %}
+                <div class="product-area related-product">
+                    <div class="container">
+                        <div class="row">
+                            <div class="col-12">
+                                <div class="section-title text-center m-0">
+                                    <h2 class="title">Результаты поиска</h2>
+                                    {% if not products %}
+                                    <p>По Вашему запросу товары не найдены</p>
+                                    {% endif %}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
 
