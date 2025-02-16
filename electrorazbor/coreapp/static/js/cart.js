@@ -60,7 +60,7 @@ $(document).ready(function() {
             tableHtml += `
                 <tr>
                     <td class="product-thumbnail">
-                        <a href="${item.url}"><img class="img-responsive ml-15px" src="${item.image}" alt="" /></a>
+                        <a href="${item.url}"><img class="img-responsive" src="${item.image}" alt="" /></a>
                     </td>
                     <td class="product-name"><a href="${item.url}">${item.name}</a></td>
                     <td class="product-price-cart"><span class="amount">${item.price} ₽</span></td>
