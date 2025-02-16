@@ -8045,7 +8045,8 @@ body.offcanvas-open {
 .grand-totall .grand-totall-title span {
   float: right;
 }
-.grand-totall a {
+.grand-totall a, .grand-totall button {
+  width: 100%;
   background-color: #266bf9;
   border-radius: 0px;
   color: #fff;
@@ -8055,7 +8056,6 @@ body.offcanvas-open {
   line-height: 1;
   padding: 18px 10px 17px;
   text-align: center;
-  text-transform: uppercase;
   text-transform: uppercase;
   -webkit-transition: all 0.3s ease 0s;
   transition: all 0.3s ease 0s;
@@ -9735,4 +9735,14 @@ Pages - My Account
     width: 190px;
     height: 54px;
   }
+}
+.phone {
+  background: #fff;
+  border: 1px solid #ebebeb;
+  height: 45px;
+  margin-bottom: 30px;
+  padding-left: 10px;
+  outline: none;
+  width: 100%;
+  border-radius: 0px;
 }

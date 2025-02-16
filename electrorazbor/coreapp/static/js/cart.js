@@ -1,23 +1,41 @@
 $(document).ready(function() {
     // Функция для обновления отображения корзины
     function updateCartDisplay() {
-        // Получаем корзину из localStorage или создаем пустой массив, если данных нет
+        let cart = getCart();
+
+        // Обновляем мини-корзину
+        updateMiniCart(cart);
+
+        // Обновляем таблицу на странице корзины
+        updateCartTable(cart);
+
+        // Обновляем количество товаров в корзине
+        updateCartCount(cart);
+
+        // Обновляем итоговую стоимость
+        updateGrandTotal(cart);
+    }
+
+    // Функция для получения корзины из localStorage
+    function getCart() {
         let cart;
         try {
             cart = JSON.parse(localStorage.getItem('cart')) || [];
         } catch (e) {
-            // Если данные в localStorage повреждены, создаем пустой массив
             cart = [];
         }
 
-        // Проверяем, что cart является массивом
         if (!Array.isArray(cart)) {
             cart = [];
         }
 
+        return cart;
+    }
+
+    // Функция для обновления мини-корзины
+    function updateMiniCart(cart) {
         let cartHtml = '';
 
-        // Перебираем товары в корзине и формируем HTML
         cart.forEach(function(item, index) {
             cartHtml += `
                 <li>
@@ -31,34 +49,44 @@ $(document).ready(function() {
             `;
         });
 
-        // Вставляем сформированный HTML в контейнер корзины
         $('.minicart-product-list').html(cartHtml);
+    }
 
-        // Обновляем количество товаров в корзине
-        updateCartCount();
+    // Функция для обновления таблицы на странице корзины
+    function updateCartTable(cart) {
+        let tableHtml = '';
+
+        cart.forEach(function(item, index) {
+            tableHtml += `
+                <tr>
+                    <td class="product-thumbnail">
+                        <a href="${item.url}"><img class="img-responsive ml-15px" src="${item.image}" alt="" /></a>
+                    </td>
+                    <td class="product-name"><a href="${item.url}">${item.name}</a></td>
+                    <td class="product-price-cart"><span class="amount">${item.price} ₽</span></td>
+                    <td class="product-quantity">
+                        <div class="cart-plus-minus">
+                            <div class="dec qtybutton" data-index="${index}">-</div>
+                            <input class="cart-plus-minus-box" type="text" name="qtybutton" value="${item.quantity}" />
+                            <div class="inc qtybutton" data-index="${index}">+</div>
+                        </div>
+                    </td>
+                    <td class="product-subtotal">${item.quantity * parseFloat(item.price.replace('₽', ''))} ₽</td>
+                    <td class="product-remove">
+                        <a href="#" class="remove-from-cart" data-index="${index}"><i class="fa fa-times"></i></a>
+                    </td>
+                </tr>
+            `;
+        });
+
+        $('.cart-table-content tbody').html(tableHtml);
     }
 
     // Функция для обновления количества товаров в корзине
-    function updateCartCount() {
-        // Получаем корзину из localStorage или создаем пустой массив, если данных нет
-        let cart;
-        try {
-            cart = JSON.parse(localStorage.getItem('cart')) || [];
-        } catch (e) {
-            // Если данные в localStorage повреждены, создаем пустой массив
-            cart = [];
-        }
-
-        // Проверяем, что cart является массивом
-        if (!Array.isArray(cart)) {
-            cart = [];
-        }
-
-        // Считаем общее количество товаров в корзине
+    function updateCartCount(cart) {
         let totalCount = cart.reduce((sum, item) => sum + item.quantity, 0);
-
-        // Обновляем значение элемента <span class="header-action-num">
         let cartCountElement = $('.header-action-num');
+
         if (totalCount > 0) {
             cartCountElement.text(String(totalCount).padStart(2, '0')).show();
         } else {
@@ -66,11 +94,22 @@ $(document).ready(function() {
         }
     }
 
+    // Функция для обновления итоговой стоимости
+    function updateGrandTotal(cart) {
+        let grandTotal = cart.reduce((sum, item) => {
+            let price = parseFloat(item.price.replace('₽', '').trim());
+            return sum + (item.quantity * price);
+        }, 0);
+
+        // Обновляем элемент с итоговой стоимостью
+        $('.grand-totall-title span').text(`${grandTotal} ₽`);
+    }
+
     // Добавление товара в корзину
     $('.add-to-cart').on('click', function() {
         let productElement = $(this).closest('.product');
         let product = {
-            id: productElement.data('id'), // Получаем ID товара
+            id: productElement.data('id'),
             name: productElement.find('.title a').text(),
             price: productElement.find('.new').text(),
             image: productElement.find('.image img').attr('src'),
@@ -78,66 +117,58 @@ $(document).ready(function() {
             url: productElement.find('.title a').attr('href')
         };
 
-        // Получаем корзину из localStorage или создаем пустой массив, если данных нет
-        let cart;
-        try {
-            cart = JSON.parse(localStorage.getItem('cart')) || [];
-        } catch (e) {
-            // Если данные в localStorage повреждены, создаем пустой массив
-            cart = [];
-        }
-
-        // Проверяем, что cart является массивом
-        if (!Array.isArray(cart)) {
-            cart = [];
-        }
-
-        // Проверяем, есть ли товар в корзине
+        let cart = getCart();
         let existingProduct = cart.find(item => item.id === product.id);
 
         if (existingProduct) {
-            existingProduct.quantity += 1; // Увеличиваем количество, если товар уже в корзине
+            existingProduct.quantity += 1;
         } else {
-            cart.push(product); // Добавляем новый товар в корзину
+            cart.push(product);
         }
 
-        // Сохраняем обновленную корзину в localStorage
         localStorage.setItem('cart', JSON.stringify(cart));
         updateCartDisplay();
     });
 
     // Удаление товара из корзины
-    $(document).on('click', '.remove', function(e) {
+    $(document).on('click', '.remove, .remove-from-cart', function(e) {
         e.preventDefault();
         let index = $(this).data('index');
+        let cart = getCart();
 
-        // Получаем корзину из localStorage или создаем пустой массив, если данных нет
-        let cart;
-        try {
-            cart = JSON.parse(localStorage.getItem('cart')) || [];
-        } catch (e) {
-            // Если данные в localStorage повреждены, создаем пустой массив
-            cart = [];
-        }
-
-        // Проверяем, что cart является массивом
-        if (!Array.isArray(cart)) {
-            cart = [];
-        }
-
-        // Удаляем товар по индексу
         cart.splice(index, 1);
-
-        // Сохраняем обновленную корзину в localStorage
         localStorage.setItem('cart', JSON.stringify(cart));
         updateCartDisplay();
     });
 
-    $('#clear-cart').on('click', function() {
-        // Удаляем корзину из localStorage
+    // Очистка корзины
+    $('#clear-cart, .cart-clear button').on('click', function() {
         localStorage.removeItem('cart');
-        // Обновляем отображение корзины
         updateCartDisplay();
+    });
+
+    // Увеличение количества товара
+    $(document).on('click', '.inc.qtybutton', function() {
+        let index = $(this).data('index');
+        let cart = getCart();
+
+        if (cart[index]) {
+            cart[index].quantity += 1;
+            localStorage.setItem('cart', JSON.stringify(cart));
+            updateCartDisplay();
+        }
+    });
+
+    // Уменьшение количества товара
+    $(document).on('click', '.dec.qtybutton', function() {
+        let index = $(this).data('index');
+        let cart = getCart();
+
+        if (cart[index] && cart[index].quantity > 1) {
+            cart[index].quantity -= 1;
+            localStorage.setItem('cart', JSON.stringify(cart));
+            updateCartDisplay();
+        }
     });
 
     // Инициализация корзины при загрузке страницы

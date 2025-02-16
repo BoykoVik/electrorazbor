@@ -97,3 +97,29 @@ class CharacteristicsMiddleModel(models.Model):# ПРОМЕЖУТОЧНАЯ МО
         verbose_name = 'Показатель'
         verbose_name_plural = 'Показатели'
         ordering = ['id']
+
+
+class Orders(models.Model):
+    phone = models.CharField(blank=False, max_length=20, verbose_name='Номер телефона')
+    date = models.DateField(auto_now_add=True, verbose_name='Дата заказа')
+
+    def __str__(self):
+        return str(self.id)
+
+    class Meta:
+        verbose_name = 'Заказ'
+        verbose_name_plural = 'Заказы'
+        ordering = ['-id']
+
+class Obtains(models.Model):#КУПЛЕННЫЕ ТОВАРЫ
+    order = models.ForeignKey(Orders, null=True, on_delete=models.CASCADE, related_name='order', verbose_name='Заказ')
+    product = models.ForeignKey(Products, null=True, on_delete=models.SET_NULL, verbose_name='Товар')
+    count = models.IntegerField(blank=False, null=False, default=100, verbose_name='Количество')
+
+    def __str__(self):
+        return str(self.product)
+
+    class Meta:
+        verbose_name = 'Покупка'
+        verbose_name_plural = 'Покупки'
+        ordering = ['order']

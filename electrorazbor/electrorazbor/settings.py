@@ -39,8 +39,11 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'coreapp.apps.CoreappConfig',
     'products.apps.ProductsConfig',
+    'apiapp.apps.ApiappConfig',
     'django_cleanup', #для автоматичечкой чистки медиа
     'easy_thumbnails', #для миниатюр
+    'rest_framework',
+    'corsheaders',
 ]
 
 MIDDLEWARE = [

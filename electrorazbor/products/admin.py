@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import Categories, Products, ProductsImages, CharacteristicsMiddleModel, Characteristics, Firms
+from .models import Categories, Products, ProductsImages, CharacteristicsMiddleModel, Characteristics, Firms, Obtains, Orders
 # Register your models here.
 
 class CharacteristicsMiddleModelInline(admin.StackedInline):
@@ -34,3 +34,20 @@ class ProductsAdmin(admin.ModelAdmin):
 @admin.register(Characteristics)
 class IngredientsAdmin(admin.ModelAdmin):
     list_display = ("name",)
+
+class ObtainsInline(admin.StackedInline):
+    model = Obtains
+
+@admin.register(Obtains)
+class ObtainsAdmin(admin.ModelAdmin):
+    list_display = ("order", "count",)
+    list_filter = ("order",)
+    search_fields = ("order",)
+
+
+@admin.register(Orders)
+class OrdersAdmin(admin.ModelAdmin):
+    list_display = ("id", "date", "phone",)
+    list_filter = ("phone",)
+    search_fields = ("phone", "date",)
+    inlines =(ObtainsInline,)

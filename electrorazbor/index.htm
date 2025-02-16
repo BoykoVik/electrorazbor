@@ -1,82 +1,18 @@
-Есть карточка товара (шаблон джанго на бэке)
-<div class="col-lg-4 col-xl-3 col-md-6 col-sm-6 col-xs-6 mb-30px">
-    <div class="product">
-        <div class="thumb">
-            <a href="{{ product.get_absolute_url }}" class="image">
-                <img src="{{ product.productimages.all.0.image|thumbnail_url:'card' }}" alt="Product" />
-                {% if not product.productimages.all.1.image %}
-                <img class="hover-image" src="{{ product.productimages.all.0.image|thumbnail_url:'card' }}" alt="Product" />
-                {% else %}
-                <img class="hover-image" src="{{ product.productimages.all.1.image|thumbnail_url:'card' }}" alt="Product" />
-                {% endif %}
-            </a>
-        </div>
-        <div class="content">
-            <h5 class="title">
-                <a href="{{ product.get_absolute_url }}">{{ product.name }}</a>
-            </h5>
-            <span class="price">
-                <span class="new">{{ product.price }} ₽</span>
-            </span>
-        </div>
-        <div class="actions">
-            <button title="Add To Cart" class="action add-to-cart" data-bs-toggle="modal" data-bs-target="#exampleModal-Cart">
-                <i class="pe-7s-shopbag"></i>
-            </button>
-            <a href="{{ product.get_absolute_url }}" class="nav-link active">
-            <button class="action" style="width: auto; font-size: 16px;">ОТКРЫТЬ</button>
-            </a>
-        </div>
-    </div>
-</div>
-
-Есть корзина на странице
-<div id="offcanvas-cart" class="offcanvas offcanvas-cart">
-    <div class="inner">
-        <div class="head">
-            <span class="title">Корзина</span>
-            <button class="offcanvas-close">×</button>
-        </div>
-        <div class="body customScroll">
-            <ul class="minicart-product-list">
-                <li>
-                    <a href="single-product.html" class="image"><img src="assets/images/product-image/1.webp" alt="Cart product Image"></a>
-                    <div class="content">
-                        <a href="single-product.html" class="title">Modern Smart Phone</a>
-                        <span class="quantity-price">1 x <span class="amount">$18.86</span></span>
-                        <a href="#" class="remove">×</a>
-                    </div>
-                </li>
-                <li>
-                    <a href="single-product.html" class="image"><img src="assets/images/product-image/2.webp" alt="Cart product Image"></a>
-                    <div class="content">
-                        <a href="single-product.html" class="title">Bluetooth Headphone</a>
-                        <span class="quantity-price">1 x <span class="amount">$43.28</span></span>
-                        <a href="#" class="remove">×</a>
-                    </div>
-                </li>
-                <li>
-                    <a href="single-product.html" class="image"><img src="assets/images/product-image/3.webp" alt="Cart product Image"></a>
-                    <div class="content">
-                        <a href="single-product.html" class="title">Smart Music Box</a>
-                        <span class="quantity-price">1 x <span class="amount">$37.34</span></span>
-                        <a href="#" class="remove">×</a>
-                    </div>
-                </li>
-            </ul>
-        </div>
-        <div class="foot">
-            <div class="buttons mt-30px">
-                <a href="cart.html" class="btn btn-dark btn-hover-primary mb-30px">В корзину</a>
-            </div>
-        </div>
-    </div>
-</div>
-(тут три товара для примера)
-
-Сайт на джанго. Необходимо хранить в сессии состояние корзины, а также добавлять товар в корзину по клику на <button title="Add To Cart" class="action add-to-cart" data-bs-toggle="modal" data-bs-target="#exampleModal-Cart">
-    <i class="pe-7s-shopbag"></i>
-</button>
-Еще нужно удалять из корзины товары по нажатию на <a href="#" class="remove">×</a>
-
-Обработкой корзины со стороны сервера займемся позже, а пока напиши оптимальный способ реализации поставленных задач на клиентской части
+[
+    {
+        "id": 48,
+        "name": "Камера 8 1/2х2 (прямой ниппель)",
+        "price": "400 ₽",
+        "image": "/media/productsimages/IMG_0190.jpeg.270x274_q100_crop-smart.jpg",
+        "quantity": 2,
+        "url": "/products/kamera-8-12h2-pryamoj-nippel/"
+    },
+    {
+        "id": 87,
+        "name": "Грипсы  Ninebot F20/F25/F30/F40",
+        "price": "790 ₽",
+        "image": "/media/productsimages/Gf1.png.127x127_q100_crop-smart.png",
+        "quantity": 4,
+        "url": "/products/gripsy-ninebot-f20f25f30f40/"
+    }
+]
