@@ -114,7 +114,7 @@ class Orders(models.Model):
 class Obtains(models.Model):#КУПЛЕННЫЕ ТОВАРЫ
     order = models.ForeignKey(Orders, null=True, on_delete=models.CASCADE, related_name='order', verbose_name='Заказ')
     product = models.ForeignKey(Products, null=True, on_delete=models.SET_NULL, verbose_name='Товар')
-    count = models.IntegerField(blank=False, null=False, default=100, verbose_name='Количество')
+    count = models.IntegerField(blank=False, null=False, default=1, verbose_name='Количество')
 
     def __str__(self):
         return str(self.product)
