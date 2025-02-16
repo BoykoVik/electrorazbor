@@ -40,7 +40,7 @@ class ObtainsInline(admin.StackedInline):
 
 @admin.register(Obtains)
 class ObtainsAdmin(admin.ModelAdmin):
-    list_display = ("order", "count",)
+    list_display = ("order", "product", "count",)
     list_filter = ("order",)
     search_fields = ("order",)
 

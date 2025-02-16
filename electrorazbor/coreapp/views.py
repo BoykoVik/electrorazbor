@@ -3,6 +3,7 @@ from products.models import Categories, Products, Firms
 from .models import Contacts, Callrequest
 from django.http import JsonResponse
 from django.views.generic import TemplateView
+from django.db.models import Q
 from .utils import tgsandmsg
 # Create your views here.
 def home(request):
@@ -69,3 +70,18 @@ def page_not_found_view(request, exception):
         'contacts': Contacts.objects.all(),
         },
          status=404,)
+
+def search(request):
+    search_query = request.GET.get('query')
+    print(search_query)
+    if search_query:
+        products = Products.objects.filter(Q(name__iregex=search_query))
+    else:
+        products = []
+    return render(request, 'coreapp/search.html', {
+        'firms': Firms.objects.all(),
+        'products': products,
+        'title': f'Поиск по сайту | {search_query} | Запчасти для электросамокатов. Недорого.',
+        'description': 'Поиск по сайту | {search_query} | Продажа запчастей для электросамокатов. Помощь в подборе. Доставка.',
+        'contacts': Contacts.objects.all(),
+        })

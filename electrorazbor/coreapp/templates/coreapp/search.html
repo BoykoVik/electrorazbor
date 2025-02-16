@@ -1,0 +1,58 @@
+{% load static %}
+{% include "layout/head.html" %}
+<body>
+    <div class="main-wrapper">
+        {% include "layout/header.html" %}
+        <div class="offcanvas-overlay"></div>
+        <div id="offcanvas-mobile-menu" class="offcanvas offcanvas-mobile-menu">
+            <button class="offcanvas-close"></button>
+            <div class="user-panel">
+                <ul>
+                    {% include "layout/contactsblock.html" %}
+                </ul>
+            </div>
+            <div class="inner customScroll">
+                <div class="offcanvas-menu mb-4">
+                    <ul>
+                        {% include "layout/menu.html" %}
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <div class="product-area pt-100px">
+            <div class="container">
+                {% include "layout/tabs_models.html" %}
+            </div>
+        </div>
+
+        <div class="shop-category-area pt-100px pb-100px">
+            <div class="container">
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="shop-bottom-area">
+                            <div class="row">
+                                <div class="col">
+                                    <div class="tab-content">
+                                        <div class="tab-pane fade show active" id="shop-grid">
+                                            <div class="row mb-n-30px">
+                                                {% for product in products %}
+                                                {% include "layout/productcard.html" %}
+                                                {% endfor %}
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            {% include "layout/pagination.html" %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        {% include "layout/footer.html" %}
+    </div>
+    {% include "layout/scripts.html" %}
+</body>
+
+</html>

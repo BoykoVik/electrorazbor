@@ -62,6 +62,9 @@
                                 <ul class="d-flex">
                                     <li class="new-price">{{ product.price }} ₽</li>
                                 </ul>
+                                {% if user.is_superuser %}
+                                <a href="{{ request.scheme }}://{{ request.get_host }}/admin/products/products/{{ product.id }}/change/">РЕДАКТИРОВАТЬ</a>
+                                {% endif %}
                             </div>
                             <p class="mt-30px">{{ product.about }}</p>
                             <div class="pro-details-quality">
