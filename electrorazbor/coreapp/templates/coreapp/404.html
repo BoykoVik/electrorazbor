@@ -1,0 +1,71 @@
+{% load static %}
+{% include "layout/head.html" %}
+<body>
+    <div class="main-wrapper">
+        {% include "layout/header.html" %}
+        <div class="offcanvas-overlay"></div>
+        <div id="offcanvas-mobile-menu" class="offcanvas offcanvas-mobile-menu">
+            <button class="offcanvas-close"></button>
+            <div class="user-panel">
+                <ul>
+                    {% include "layout/contactsblock.html" %}
+                </ul>
+            </div>
+            <div class="inner customScroll">
+                <div class="offcanvas-menu mb-4">
+                    <ul>
+                        {% include "layout/menu.html" %}
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <div class="product-area pt-100px">
+            <div class="container">
+                {% include "layout/firms.html" %}
+                <div class="product-area related-product">
+                    <div class="container">
+                        <div class="row">
+                            <div class="col-12">
+                                <div class="section-title text-center m-0">
+                                    <h2 class="title">Извините, такой страницы не существует</h2>
+                                    <p>Вы можете перейти в каталог и продолжить покупки</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        {% include "layout/contacts_block.html" %}
+
+        <div id="partners" class="blog-grid main-blog-page single-blog-page">
+            <div class="container">
+                <div class="row">
+                    <div class="col-lg-12 col-md-12 ">
+                        <div class="blog-posts">
+                            <div class="single-blog-post blog-grid-post">
+                                <div class="blog-post-content-inner mt-30px">
+                                    <h2 class="blog-title">У Вас сервис или мастерская?</h2>
+                                </div>
+                            </div>
+                            <div class="another-post">
+                                <div class="content-side">
+                                    <p class="mb-30px">Если Вы занимаетесь ремонтом и обслуживанием электросамокатов - мы можем стать партнерами.</p>
+                                    <p>Для наших партнеров мы готовы предоставлять гибкие скидки на запчасти и комплектующие.</p>
+                                    <p>Свяжитесь с нами и сделайте первый шаг к долгосрочному сотрудничеству.</p>
+                                </div>
+                                <div class="image-side" style="display: flex; align-items: center; justify-content: center;">
+                                    <img src="{% static 'rem.png' %}" style="height: 300px;" alt="">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        {% include "layout/footer.html" %}
+    </div>
+    {% include "layout/scripts.html" %}
+</body>
+</html>

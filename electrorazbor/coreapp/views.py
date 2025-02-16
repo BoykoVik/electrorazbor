@@ -59,3 +59,13 @@ class SitemapXmlView(TemplateView):
             'categories': categories,
             'firms': firms,
         }
+    
+def page_not_found_view(request, exception):
+    return render(request, 'coreapp/404.html', {
+        'firms': Firms.objects.all(),
+        'products': Products.objects.filter(in_top=True),
+        'title': '404 - страница не найдена',
+        'description': '404 - страница не найдена',
+        'contacts': Contacts.objects.all(),
+        },
+         status=404,)
