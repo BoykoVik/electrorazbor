@@ -42,7 +42,7 @@ $(document).ready(function() {
                     <a href="${item.url}" class="image"><img src="${item.image}" alt="Cart product Image"></a>
                     <div class="content">
                         <a href="${item.url}" class="title">${item.name}</a>
-                        <span class="quantity-price">${item.quantity} x <span class="amount">${item.price} ₽</span></span>
+                        <span class="quantity-price">${item.quantity} x <span class="amount">${item.price}</span></span>
                         <a href="#" class="remove" data-index="${index}">×</a>
                     </div>
                 </li>
@@ -63,7 +63,7 @@ $(document).ready(function() {
                         <a href="${item.url}"><img class="img-responsive" src="${item.image}" alt="" /></a>
                     </td>
                     <td class="product-name"><a href="${item.url}">${item.name}</a></td>
-                    <td class="product-price-cart"><span class="amount">${item.price} ₽</span></td>
+                    <td class="product-price-cart"><span class="amount">${item.price}</span></td>
                     <td class="product-quantity">
                         <div class="cart-plus-minus">
                             <div class="dec qtybutton" data-index="${index}">-</div>
@@ -71,7 +71,7 @@ $(document).ready(function() {
                             <div class="inc qtybutton" data-index="${index}">+</div>
                         </div>
                     </td>
-                    <td class="product-subtotal">${item.quantity * parseFloat(item.price.replace('₽', ''))} ₽</td>
+                    <td class="product-subtotal">${item.quantity * parseFloat(item.price.replace('₽', ''))}</td>
                     <td class="product-remove">
                         <a href="#" class="remove-from-cart" data-index="${index}"><i class="fa fa-times"></i></a>
                     </td>
