@@ -44,6 +44,11 @@
                                 <input id="phone" class="phone" placeholder="+7(000)000-00-00" type="text" required=""
                                     name="phone">
                             </div>
+                            <div class="discount-code">
+                                <p>Комментарий к заказу</p>
+                                <textarea id="textmessage" style="padding: 0 5px;" placeholder="Оставьте комментарий ..." type="text"
+                                    name="textmessage"></textarea>
+                            </div>
                             <h4 class="grand-totall-title">Итого:<span>0 ₽</span></h4>
                             <button id="orderButton">Заказать</button>
                             <script>
@@ -52,6 +57,7 @@
                                 // Обработчик нажатия на кнопку "Заказать"
                                 document.getElementById('orderButton').addEventListener('click', function () {
                                     const phone = document.getElementById('phone').value;
+                                    const textmessage = document.getElementById('textmessage').value;
                                     const cart = JSON.parse(localStorage.getItem('cart') || '[]');
 
                                     // Проверка, что телефон заполнен
@@ -73,7 +79,8 @@
                                         },
                                         body: JSON.stringify({
                                             phone: phone,
-                                            cart: cart
+                                            cart: cart,
+                                            textmessage: textmessage
                                         })
                                     })
                                         .then(response => response.json())

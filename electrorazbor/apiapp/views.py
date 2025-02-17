@@ -12,6 +12,7 @@ def createorder(request):
             data = json.loads(request.body)
             phone = data.get('phone')
             cart = data.get('cart')
+            textmessage = data.get('textmessage')
             
             # Проверяем, что телефон и корзина переданы
             if not phone or not cart:
@@ -19,7 +20,10 @@ def createorder(request):
 
             # Логика создания заказа
             order = create_order_in_db(phone, cart)
-            tgsandmsg(f'НОВЫЙ ЗАКАЗ номер {order.id}\n')
+            if textmessage:
+                tgsandmsg(f'НОВЫЙ ЗАКАЗ номер {order.id}\nКомментарий к заказу:\n{textmessage}')
+            else:
+                tgsandmsg(f'НОВЫЙ ЗАКАЗ номер {order.id}\n')
             # Возвращаем успешный ответ с номером заказа
             return JsonResponse({'order_id': order.id})
 
