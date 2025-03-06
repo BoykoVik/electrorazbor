@@ -11,15 +11,15 @@ def home(request):
     return render(request, 'coreapp/home.html', {
         'firms': Firms.objects.all(),
         'products': Products.objects.filter(in_top=True),
-        'title': 'Запчасти для электросамокатов. Недорого.',
-        'description': 'Продажа запчастей для электросамокатов. Помощь в подборе. Доставка.',
+        'title': 'Комплектующие и запчасти для электросамокатов Ninebot и Xiaomi. Недорого.',
+        'description': 'Купить запчасти и комплектующие для электросамокатов от компании Electrorazbor - тормозные диски и колодки, колеса, поворотники, фары, ручки, амортизаторы купить в Москве, цена и фото каждого товара. Заказ онлайн. Быстрая доставка.',
         'contacts': Contacts.objects.all(),
     })
 
 def contacts(request):
     return render(request, 'coreapp/contacts.html', {
         'models': Categories.objects.all(),
-        'title': 'Контакты. Запчасти для электросамокатов. Недорого.',
+        'title': 'Контакты. Запчасти для электросамокатов Ninebot и Xiaomi. Недорого.',
         'description': 'Контакты. Продажа запчастей для электросамокатов. Помощь в подборе. Доставка.',
         'contacts': Contacts.objects.all(),
     })
@@ -39,7 +39,7 @@ def cart(request):
     return render(request, 'coreapp/cart.html', {
         'firms': Firms.objects.all(),
         'products': Products.objects.filter(in_top=True),
-        'title': 'Корзина | Запчасти для электросамокатов. Недорого.',
+        'title': 'Корзина | Запчасти для электросамокатов Ninebot и Xiaomi. Недорого.',
         'description': 'Корзина | Продажа запчастей для электросамокатов. Помощь в подборе. Доставка.',
         #'contacts': Contacts.objects.all(),
     })

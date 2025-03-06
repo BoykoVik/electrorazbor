@@ -22,17 +22,26 @@
         </div>
         <div class="product-details-area pt-100px pb-100px">
             <div class="container">
-                <div class="row">
+                <div itemscope itemtype="https://electrorazbor.ru{{ product.get_absolute_url }}" class="row">
                     <div class="col-lg-6 col-sm-12 col-xs-12 mb-lm-30px mb-md-30px mb-sm-30px">
                         <div class="swiper-container zoom-top">
                             <div class="swiper-wrapper">
                                 {% for image in product.productimages.all %}
+                                {% if forloop.first %}
+                                <div class="swiper-slide">
+                                    <img itemprop="contentUrl" class="img-responsive m-auto" src="{{ image.image|thumbnail_url:'swiper' }}" alt="">
+                                    <a class="venobox full-preview" data-gall="myGallery" href="{{ image.image.url }}">
+                                        <i class="fa fa-arrows-alt" aria-hidden="true"></i>
+                                    </a>
+                                </div>
+                                {% else %}
                                 <div class="swiper-slide">
                                     <img class="img-responsive m-auto" src="{{ image.image|thumbnail_url:'swiper' }}" alt="">
                                     <a class="venobox full-preview" data-gall="myGallery" href="{{ image.image.url }}">
                                         <i class="fa fa-arrows-alt" aria-hidden="true"></i>
                                     </a>
                                 </div>
+                                {% endif %}
                                 {% endfor %}
                             </div>
                         </div>
@@ -57,7 +66,7 @@
                         data-price="{{ product.price }} ₽"
                         data-image="{{ product.productimages.first.image|thumbnail_url:'swipermin' }}"
                         data-url="{{ product.get_absolute_url }}">
-                            <h2>{{ product.name }}</h2>
+                            <h2 itemprop="name">{{ product.name }}</h2>
                             <div class="pricing-meta">
                                 <ul class="d-flex">
                                     <li class="new-price">{{ product.price }} ₽</li>
@@ -108,13 +117,13 @@
                                 </div>
                                 <div id="des-details1" class="tab-pane">
                                     <div class="product-description-wrapper">
-                                        <p>{{ product.about_big }}</p>
+                                        <p itemprop="description">{{ product.about_big }}</p>
                                     </div>
                                 </div>
                                 {% else %}
                                 <div id="des-details1" class="tab-pane active">
                                     <div class="product-description-wrapper">
-                                        <p>{{ product.about_big }}</p>
+                                        <p itemprop="description">{{ product.about_big }}</p>
                                     </div>
                                 </div>
                                 {% endif %}

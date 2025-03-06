@@ -3,11 +3,11 @@
     <div class="product" data-id="{{ product.id }}">
         <div class="thumb">
             <a href="{{ product.get_absolute_url }}" class="image">
-                <img src="{{ product.productimages.all.0.image|thumbnail_url:'card' }}" alt="Product" />
+                <img src="{{ product.productimages.all.0.image|thumbnail_url:'card' }}" alt="{{ product.name }}1" />
                 {% if not product.productimages.all.1.image %}
-                <img class="hover-image" src="{{ product.productimages.all.0.image|thumbnail_url:'card' }}" alt="Product" />
+                <img class="hover-image" src="{{ product.productimages.all.0.image|thumbnail_url:'card' }}" alt="{{ product.name }}3" />
                 {% else %}
-                <img class="hover-image" src="{{ product.productimages.all.1.image|thumbnail_url:'card' }}" alt="Product" />
+                <img class="hover-image" src="{{ product.productimages.all.1.image|thumbnail_url:'card' }}" alt="{{ product.name }}2" />
                 {% endif %}
             </a>
         </div>
