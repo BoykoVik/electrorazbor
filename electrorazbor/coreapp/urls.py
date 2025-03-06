@@ -6,6 +6,7 @@ app_name = 'coreapp'
 favicon_view = RedirectView.as_view(url='/static/favicon.ico', permanent=True)
 
 urlpatterns = [
+    path('feedyml', views.FeedymlView.as_view()),
     path('robots.txt', views.RobotsTxtView.as_view()),
     path('sitemap.xml', views.SitemapXmlView.as_view()),
     path('', views.home, name='home'),

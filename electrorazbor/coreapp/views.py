@@ -5,6 +5,7 @@ from django.http import JsonResponse
 from django.views.generic import TemplateView
 from django.db.models import Q
 from .utils import tgsandmsg
+import datetime
 # Create your views here.
 def home(request):
     return render(request, 'coreapp/home.html', {
@@ -85,3 +86,14 @@ def search(request):
         'description': 'Поиск по сайту | {search_query} | Продажа запчастей для электросамокатов. Помощь в подборе. Доставка.',
         'contacts': Contacts.objects.all(),
         })
+
+class FeedymlView(TemplateView):
+    template_name = 'feed.yml'
+    content_type = 'application/xml'
+
+    def get_context_data(self, **kwargs):
+        products = Products.objects.filter(use_in_feed=True)
+        return {
+            'products': products,
+            'currentdate': datetime.date.today().isoformat()
+        }

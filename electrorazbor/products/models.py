@@ -47,6 +47,7 @@ class Products(models.Model):
     category = models.ManyToManyField(Categories, blank=False, verbose_name='Вид товара', related_name='category')
     show = models.BooleanField(default=True, verbose_name='В наличии?')
     rang = models.IntegerField(blank=False, null=False, default=1, verbose_name='Порядок вывода')
+    use_in_feed = models.BooleanField(default=False, verbose_name="Использовать в Яндекс фиде")
 
     class Meta:
         verbose_name = 'Товар'

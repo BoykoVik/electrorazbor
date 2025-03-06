@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<yml_catalog date="{{ currentdate }}T00:00:38+03:00">
+    <shop>
+        <name>Electrorazbor</name>
+        <company>Electrorazbor</company>
+        <url>https://electrorazbor.ru/</url>
+        <currencies>
+            <currency id="RUR" rate="1"/>
+        </currencies>
+        <categories>
+            <category id="1">Спорт и отдых</category>
+            <category id="2" parentId="1">Самокаты</category>
+            <category id="3" parentId="2">Аксессуары и запчасти</category>
+        </categories>
+        <delivery-options>
+            <option cost="500" days="2" order-before="18"/>
+        </delivery-options>
+        <offers>
+            {% for product in products %}
+            <offer id="{{ product.id }}">
+                <name>{{ product.name }}</name>
+                <available>true</available>
+                <url>https://{{ request.get_host }}{{ product.get_absolute_url }}</url>
+                <price>{{ product.price }}</price>
+                <currencyId>RUR</currencyId>
+                <categoryId>3</categoryId>
+                <picture>https://{{ request.get_host }}{{ product.productimages.all.0.image.url }}</picture>
+                <description>
+                    <![CDATA[          
+                        <p>{{ product.about }}</p>
+                    ]]>
+                </description>                
+            </offer>
+            {% endfor %}
+        </offers>
+    </shop>
+</yml_catalog>
