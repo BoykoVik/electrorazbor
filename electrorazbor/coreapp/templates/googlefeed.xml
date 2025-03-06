@@ -1,0 +1,23 @@
+<?xml version="1.0"?>
+<rss xmlns:g="http://base.google.com/ns/1.0" version="2.0">
+<channel>
+
+<title>Electrorazbor</title>
+<link>https://{{ request.get_host }}/</link>
+<description>Комплектующие и запчасти для электросамокатов Ninebot и Xiaomi. Недорого.</description>
+{% for product in products %}
+<item>
+<g:id>{{ product.id }}</g:id>
+<g:title>{{ product.name }}</g:title>
+<g:description>{{ product.about }}</g:description>
+<g:link>https://{{ request.get_host }}{{ product.get_absolute_url }}</g:link>
+{% for image in product.productimages.all %}
+<g:image_link>https://{{ request.get_host }}{{ image.image.url }}</g:image_link>
+{% endfor %}
+<g:condition>new</g:condition>
+<g:availability>in stock</g:availability>
+<g:price>{{ product.price }}.00 RUB</g:price>
+</item>
+{% endfor %}
+</channel>
+</rss>

@@ -97,3 +97,13 @@ class FeedymlView(TemplateView):
             'products': products,
             'currentdate': datetime.date.today().isoformat()
         }
+
+class FeedxmlView(TemplateView):
+    template_name = 'googlefeed.xml'
+    content_type = 'application/xml'
+
+    def get_context_data(self, **kwargs):
+        products = Products.objects.filter(use_in_feed=True)
+        return {
+            'products': products,
+        }
