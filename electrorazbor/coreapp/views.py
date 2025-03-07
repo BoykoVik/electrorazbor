@@ -103,7 +103,7 @@ class FeedxmlView(TemplateView):
     content_type = 'application/xml'
 
     def get_context_data(self, **kwargs):
-        products = Products.objects.filter(use_in_feed=True)
+        products = Products.objects.filter(use_in_feed=True, show=True)
         return {
             'products': products,
         }

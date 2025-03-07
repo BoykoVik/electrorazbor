@@ -12,7 +12,11 @@
 <g:description>{{ product.about }}</g:description>
 <g:link>https://{{ request.get_host }}{{ product.get_absolute_url }}</g:link>
 {% for image in product.productimages.all %}
+{% if forloop.first %}
 <g:image_link>https://{{ request.get_host }}{{ image.image.url }}</g:image_link>
+{% else %}
+<g:additional_image_link>https://{{ request.get_host }}{{ image.image.url }}</g:additional_image_link>
+{% endif %}
 {% endfor %}
 <g:condition>new</g:condition>
 <g:availability>in stock</g:availability>
@@ -21,3 +25,4 @@
 {% endfor %}
 </channel>
 </rss>
+
