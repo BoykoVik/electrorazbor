@@ -19,7 +19,6 @@
             {% for product in products %}
             <offer id="{{ product.id }}">
                 <name>{{ product.name }}</name>
-                <available>true</available>
                 <url>https://{{ request.get_host }}{{ product.get_absolute_url }}</url>
                 <price>{{ product.price }}</price>
                 <currencyId>RUR</currencyId>
