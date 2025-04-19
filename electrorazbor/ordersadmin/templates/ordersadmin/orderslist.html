@@ -79,7 +79,7 @@
                                                 <td>{{ order.date }}</td>
                                                 <td>{{ order.phone }}</td>
                                                 <td>$25.00 for 1 item </td>
-                                                <td><a href="" class="view">Открыть</a></td>
+                                                <td><a href="{% url 'ordersadmin:orderdetail' order.id %}" class="view">Открыть</a></td>
                                             </tr>
                                             {% endfor %}
                                         </tbody>
@@ -101,7 +101,7 @@
                                         </thead>
                                         <tbody>
                                             {% for callrequest in callrequests %}
-                                            <tr id="callrequest-{{ callrequest.id }}">
+                                            <tr>
                                                 <td>{{ callrequest.id }}</td>
                                                 <td>{{ callrequest.number }}</td>
                                                 <td>{{ callrequest.dateandtame }}</td>

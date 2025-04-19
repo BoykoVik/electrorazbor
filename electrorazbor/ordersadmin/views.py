@@ -11,3 +11,11 @@ def orderslist(request):
         'callrequests': callreqs,
         'orders': orders,
     })
+
+def orderdetail(request, id):
+    order = get_object_or_404(Orders, id = id)
+    return render(request, 'ordersadmin/orderdetail.html', {
+    'order': order,
+    'title': f'Заказ #{order.id}',
+    'description': 'админка',
+    })

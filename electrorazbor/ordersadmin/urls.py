@@ -4,4 +4,5 @@ app_name = 'ordersadmin'
 
 urlpatterns = [
     path('', views.orderslist, name='orderslist'),
+    path('orderdetail/<int:id>', views.orderdetail, name='orderdetail'),
 ]
