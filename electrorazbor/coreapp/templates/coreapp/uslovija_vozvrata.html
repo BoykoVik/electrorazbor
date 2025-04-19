@@ -1,0 +1,75 @@
+{% load static %}
+{% include "layout/head.html" %}
+<body>
+    <div class="main-wrapper">
+        {% include "layout/header.html" %}
+        <div class="offcanvas-overlay"></div>
+        <div id="offcanvas-mobile-menu" class="offcanvas offcanvas-mobile-menu">
+            <button class="offcanvas-close"></button>
+            <div class="user-panel">
+                <ul>
+                    {% include "layout/contactsblock.html" %}
+                </ul>
+            </div>
+            <div class="inner customScroll">
+                <div class="offcanvas-menu mb-4">
+                    <ul>
+                        {% include "layout/menu.html" %}
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <div class="about-area pt-100px">
+            <div class="container">
+                <div class="row">
+                    <div class="col-12">
+                        <div class="about-wrapper text-center">
+                            <div class="about-contant">
+                                <h1 class="title">
+                                    <span>Комплектующие и аксессуары для электросамокатов</span>
+                                    Возврат и обмен
+                                </h1>
+                                <p>Мы всегда идем Вам навстречу. В случае возникновения каких-либо проблем с доставкой, качеством товара 
+                                    или если товар оказался неподходящим - связитесь с нашим менеджером, вместе мы найдем оптимальное решение, 
+                                    которое устроит обе стороны.
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="login-register-area pt-100px faq-area">
+            <div class="container">
+                <div class="row">
+                    <div class="ml-auto mr-auto col-lg-10">
+                        <div class="checkout-wrapper">
+                            <div class="inner-descripe" data-aos="fade-up" data-aos-delay="200">
+                                <h2 class="title">Условия возврата и обмена товаров
+                                </h2>
+                                <p>Наши правила возврата соответствуют статьям с 18 по 24 Федерального Закона РФ «О защите прав потребителей».
+                                     Возврат товара надлежащего качества возможен в течение 7 дней после покупки. При условии, что товар не эксплуатировался, 
+                                      отсутствовали следы повреждений, сохранены потребительские свойства товара.
+                                       Также необходимо наличие документа, подтверждающего факт приобретения товара в нашем магазине. Возврат средств покупателю осуществляется
+                                         в течение 10 рабочих дней.
+                                         <br>
+                                    Если обнаружен заводской брак, невозможно использовать товар по назначению,
+                                     товар имеет повреждения при покупке, препятствующие его эксплуатации, вещь отправляется на независимую
+                                      экспертизу. Сроки экспертизы зависят от особенностей конкретного товара. В случае подтверждения
+                                        брака, установки факта несоответствия параметрам клиенту в 10-дневный 
+                                        срок возмещается стоимость покупки. При обнаружении брака при покупке обмен бракованного 
+                                        товара проводится без промедления на месте.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        {% include "layout/contacts_block.html" %}
+        {% include "layout/footer.html" %}
+    </div>
+    {% include "layout/scripts.html" %}
+</body>
+</html>

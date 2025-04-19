@@ -24,6 +24,20 @@ def contacts(request):
         'contacts': Contacts.objects.all(),
     })
 
+def delivery(request):
+    return render(request, 'coreapp/delivery.html', {
+        'title': 'Доставка и самовывоз. Запчасти для электросамокатов Ninebot и Xiaomi. Недорого.',
+        'description': 'Доставка и самовывоз запчастей и комплектующих для электросамокатов Ninebot и Xiaomi',
+        'contacts': Contacts.objects.all(),
+    })
+
+def uslovija_vozvrata(request):
+    return render(request, 'coreapp/uslovija_vozvrata.html', {
+        'title': 'Условия возврата и обмена. Запчасти для электросамокатов Ninebot и Xiaomi. Недорого.',
+        'description': 'Условия возврата и обмена запчастей и комплектующих для электросамокатов Ninebot и Xiaomi',
+        'contacts': Contacts.objects.all(),
+    })
+
 def productrequest(request):
     if request.method == "POST":
         phone = request.POST.get('phone')
@@ -42,6 +56,15 @@ def cart(request):
         'title': 'Корзина | Запчасти для электросамокатов Ninebot и Xiaomi. Недорого.',
         'description': 'Корзина | Продажа запчастей для электросамокатов. Помощь в подборе. Доставка.',
         #'contacts': Contacts.objects.all(),
+    })
+
+def soglasie(request):
+    return render(request, 'coreapp/soglasie.html', {
+        'firms': Firms.objects.all(),
+        'products': Products.objects.filter(in_top=True),
+        'title': 'Согласие на обработку персональных данных | Запчасти для электросамокатов Ninebot и Xiaomi. Недорого.',
+        'description': 'Согласие на обработку персональных данных | Продажа запчастей для электросамокатов. Помощь в подборе. Доставка.',
+        'contacts': Contacts.objects.all(),
     })
 
 class RobotsTxtView(TemplateView):
@@ -97,7 +120,7 @@ class FeedymlView(TemplateView):
             'products': products,
             'currentdate': datetime.date.today().isoformat()
         }
-
+    
 class FeedxmlView(TemplateView):
     template_name = 'googlefeed.xml'
     content_type = 'application/xml'

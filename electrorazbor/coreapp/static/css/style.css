@@ -8047,7 +8047,7 @@ body.offcanvas-open {
 .grand-totall .grand-totall-title span {
   float: right;
 }
-.grand-totall a, .grand-totall button {
+.grand-totall button {
   width: 100%;
   background-color: #266bf9;
   border-radius: 0px;
@@ -8062,10 +8062,12 @@ body.offcanvas-open {
   -webkit-transition: all 0.3s ease 0s;
   transition: all 0.3s ease 0s;
 }
-.grand-totall a:hover {
+.grand-totall button:hover {
   background-color: #000000;
 }
-
+.grand-totall a {
+  color: #266bf9;
+}
 .billing-info-wrap h3 {
   font-weight: 600;
   color: #000000;
@@ -9209,7 +9211,6 @@ Pages - My Account
 }
 .faq-area .single-my-account h3.panel-title {
   border-bottom: 0;
-  text-transform: capitalize;
 }
 .faq-area .single-my-account h3.panel-title a {
   font-size: 16px;

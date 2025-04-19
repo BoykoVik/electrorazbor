@@ -12,8 +12,11 @@ urlpatterns = [
     path('sitemap.xml', views.SitemapXmlView.as_view()),
     path('', views.home, name='home'),
     path('search/', views.search, name='search'),
+    path('delivery/', views.delivery, name='delivery'),
+    path('uslovija_vozvrata/', views.uslovija_vozvrata, name='uslovija_vozvrata'),
     path('contacts/', views.contacts, name='contacts'),
     path('cart/', views.cart, name='cart'),
     path('favicon.ico', favicon_view),
     path('productrequest/', views.productrequest, name='productrequest'),
+    path('soglasie-na-obrabotku-personalnih-dannih/', views.soglasie, name='soglasie'),
 ]

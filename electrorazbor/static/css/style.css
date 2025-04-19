@@ -215,7 +215,7 @@ input {
 }
 
 .pt-100px {
-  padding-top: 100px;
+  padding-top: 50px;
 }
 @media only screen and (min-width: 992px) and (max-width: 1199px) {
   .pt-100px {
@@ -1211,7 +1211,7 @@ body.offcanvas-open {
     font-size: 15px;
   }
 }
-.offcanvas .inner .foot .buttons a {
+.offcanvas .inner .foot .buttons a, .offcanvas .inner .foot .buttons button {
   display: block;
   text-transform: capitalize;
   font-weight: 500;
@@ -2141,28 +2141,31 @@ body.offcanvas-open {
   }
 }
 .product-tab-nav .nav-item .nav-link {
-  height: 54px;
+  height: 180px;
   position: relative;
   display: -webkit-box;
   display: -ms-flexbox;
   display: flex;
   -webkit-box-orient: vertical;
   -webkit-box-direction: normal;
-      -ms-flex-direction: column;
-          flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
   -webkit-box-pack: center;
-      -ms-flex-pack: center;
-          justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: space-around;
   -webkit-box-align: center;
-      -ms-flex-align: center;
-          align-items: center;
+  -ms-flex-align: center;
   border: 1px solid #eaeaeb;
   border-radius: 18px;
   font-size: 18px;
   font-weight: 600;
   color: #666;
   background-color: #fff;
+  align-items: center;
+  width: 200px;
+  text-align: center;
 }
+/*
 @media only screen and (min-width: 768px) and (max-width: 991px), only screen and (max-width: 767px) {
   .product-tab-nav .nav-item .nav-link {
     width: 150px;
@@ -2184,6 +2187,7 @@ body.offcanvas-open {
     padding: 0 15px;
   }
 }
+*/
 .product-tab-nav .nav-item .nav-link:hover, .product-tab-nav .nav-item .nav-link.active {
   color: #fff;
   background-color: #266bf9;
@@ -7101,7 +7105,8 @@ body.offcanvas-open {
   padding-top: 14px;
   top: 0;
 }
-.product-details-content .pro-details-quality .pro-details-cart .add-cart {
+.product-details-content .pro-details-quality .pro-details-cart .add-cart,
+.product-details-content .pro-details-quality .pro-details-cart .buy-btn {
   position: relative;
   padding: 0 35px;
   height: 50px;
@@ -7131,22 +7136,26 @@ body.offcanvas-open {
           align-items: center;
   letter-spacing: 1px;
 }
-.product-details-content .pro-details-quality .pro-details-cart .add-cart:hover {
+.product-details-content .pro-details-quality .pro-details-cart .add-cart:hover,
+.product-details-content .pro-details-quality .pro-details-cart .buy-btn:hover {
   background-color: #000000;
 }
 @media only screen and (min-width: 992px) and (max-width: 1199px) {
-  .product-details-content .pro-details-quality .pro-details-cart .add-cart {
+  .product-details-content .pro-details-quality .pro-details-cart .add-cart,
+  .product-details-content .pro-details-quality .pro-details-cart .buy-btn   {
     padding: 0 15px;
   }
 }
 @media only screen and (max-width: 767px) {
-  .product-details-content .pro-details-quality .pro-details-cart .add-cart {
+  .product-details-content .pro-details-quality .pro-details-cart .add-cart,
+  .product-details-content .pro-details-quality .pro-details-cart .buy-btn {
     padding: 0 12px;
     letter-spacing: 0px;
   }
 }
 @media only screen and (max-width: 479px) {
-  .product-details-content .pro-details-quality .pro-details-cart .add-cart {
+  .product-details-content .pro-details-quality .pro-details-cart .add-cart,
+  .product-details-content .pro-details-quality .pro-details-cart .buy-btn {
     padding: 0 10px;
     font-size: 12px;
     margin-left: 5px;
@@ -7700,7 +7709,7 @@ body.offcanvas-open {
 .cart-main-area .table-content table tbody > tr td {
   color: #3a3a3a;
   font-size: 16px;
-  padding: 30px 0;
+  /*padding: 30px 0;*/
   text-align: center;
 }
 .cart-main-area .table-content table tbody > tr td.product-thumbnail {
@@ -8038,7 +8047,8 @@ body.offcanvas-open {
 .grand-totall .grand-totall-title span {
   float: right;
 }
-.grand-totall a {
+.grand-totall button {
+  width: 100%;
   background-color: #266bf9;
   border-radius: 0px;
   color: #fff;
@@ -8049,14 +8059,15 @@ body.offcanvas-open {
   padding: 18px 10px 17px;
   text-align: center;
   text-transform: uppercase;
-  text-transform: uppercase;
   -webkit-transition: all 0.3s ease 0s;
   transition: all 0.3s ease 0s;
 }
-.grand-totall a:hover {
+.grand-totall button:hover {
   background-color: #000000;
 }
-
+.grand-totall a {
+  color: #266bf9;
+}
 .billing-info-wrap h3 {
   font-weight: 600;
   color: #000000;
@@ -9200,7 +9211,6 @@ Pages - My Account
 }
 .faq-area .single-my-account h3.panel-title {
   border-bottom: 0;
-  text-transform: capitalize;
 }
 .faq-area .single-my-account h3.panel-title a {
   font-size: 16px;
@@ -9728,4 +9738,14 @@ Pages - My Account
     width: 190px;
     height: 54px;
   }
+}
+.phone {
+  background: #fff;
+  border: 1px solid #ebebeb;
+  height: 45px;
+  margin-bottom: 30px;
+  padding-left: 10px;
+  outline: none;
+  width: 100%;
+  border-radius: 0px;
 }

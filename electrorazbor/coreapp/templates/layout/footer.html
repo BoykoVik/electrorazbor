@@ -21,13 +21,12 @@
                     </div>
                     <div class="col-md-6 col-lg-3 col-sm-6 mb-lm-30px pl-lg-60px">
                         <div class="single-wedge">
-                            <h4 class="footer-herading">Разделы</h4>
                             <div class="footer-links">
                                 <div class="footer-row">
                                     <ul class="align-items-center">
-                                        {% for model in models %}
-                                        <li class="li"><a class="single-link" href="{{ model.get_absolute_url }}">{{ model.name }}</a></li>
-                                        {% endfor %}
+                                        <li class="li"><a class="single-link" href="{% url 'coreapp:delivery' %}">Доставка</a></li>
+                                        <li class="li"><a class="single-link" href="{% url 'coreapp:uslovija_vozvrata' %}">Условия возврата</a></li>
+                                        <li class="li"><a class="single-link" href="{% url 'coreapp:soglasie' %}">Персональные данные</a></li>
                                     </ul>
                                 </div>
                             </div>
@@ -54,6 +53,8 @@
                                 {% for contact in contacts %}
                                 <p>{{ contact.title }}:<a href="{{ contact.link }}"> {{ contact.text }}</a></p>
                                 {% endfor %}
+                                <p>Романов Дмитрий Юрьевич</p>
+                                <p>ИНН: 570401185967</p>
                             </div>
                         </div>
                     </div>
