@@ -40,6 +40,7 @@ INSTALLED_APPS = [
     'coreapp.apps.CoreappConfig',
     'products.apps.ProductsConfig',
     'apiapp.apps.ApiappConfig',
+    'ordersadmin.apps.OrdersadminConfig',
     'django_cleanup', #для автоматичечкой чистки медиа
     'easy_thumbnails', #для миниатюр
     'rest_framework',
