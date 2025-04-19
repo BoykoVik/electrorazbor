@@ -22,7 +22,7 @@ class Callrequest(models.Model):
     number = models.CharField(blank=False, null=False, max_length=80, verbose_name='Номер телефона')
     dateandtame = models.DateTimeField(blank=False, null=False, auto_now_add=True, verbose_name='Дата и время')
     product = models.CharField(blank=False, null=False, max_length=800, verbose_name='Товар')
-
+    is_called = models.BooleanField(default=False, verbose_name='Запрос обработан')
     class Meta:
         verbose_name = 'Заказ обратного звонка'
         verbose_name_plural = 'Заказы обратного звонка'

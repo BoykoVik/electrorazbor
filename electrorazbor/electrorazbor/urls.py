@@ -24,6 +24,7 @@ urlpatterns = [
     path('', include('coreapp.urls', namespace='coreapp')),
     path('products/', include('products.urls', namespace='products')),
     path('api/', include('apiapp.urls', namespace='apiapp')),
+    path('orders/', include('ordersadmin.urls', namespace='ordersadmin')),
 ]
 handler404 = "coreapp.views.page_not_found_view"
 if settings.DEBUG:

@@ -1,0 +1,128 @@
+{% load static %}
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ title }}</title>
+    <meta name="robots" content="index, follow" />
+    <meta name="description" content="{{ description }}">
+    <link rel="icon" type="image/png" href="{% static '/favicon-48x48.png' %}" sizes="48x48" />
+    <link rel="icon" type="image/svg+xml" href="{% static '/favicon.svg' %}" />
+    <link rel="shortcut icon" href="{% static '/favicon.ico' %}" />
+    <link rel="apple-touch-icon" sizes="180x180" href="{% static '/apple-touch-icon.png' %}" />
+    <link rel="manifest" href="{% static '/site.webmanifest' %}" />
+    <link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %}" />
+    <link rel="stylesheet" href="{% static 'css/font.awesome.css' %}" />
+    <link rel="stylesheet" href="{% static 'css/pe-icon-7-stroke.css' %}" />
+    <link rel="stylesheet" href="{% static 'css/animate.min.css' %}">
+    <link rel="stylesheet" href="{% static 'css/swiper-bundle.min.css' %}">
+    <link rel="stylesheet" href="{% static 'css/venobox.css' %}">
+    <link rel="stylesheet" href="{% static 'css/jquery-ui.min.css' %}">
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+    <link rel="canonical" href="https://{{ request.get_host }}{{ request.path }}"/>
+</head>
+<body>
+    <div class="main-wrapper">
+        {% include "layout/header.html" %}
+        <div class="offcanvas-overlay"></div>
+        <div id="offcanvas-mobile-menu" class="offcanvas offcanvas-mobile-menu">
+            <button class="offcanvas-close"></button>
+            <div class="user-panel">
+                <ul>
+                    {% include "layout/contactsblock.html" %}
+                </ul>
+            </div>
+            <div class="inner customScroll">
+                <div class="offcanvas-menu mb-4">
+                    <ul>
+                        {% include "layout/menu.html" %}
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <div class="account-dashboard pt-100px pb-100px">
+            <div class="container">
+                <div class="row">
+                    <div class="col-sm-12 col-md-3 col-lg-3">
+                        <!-- Nav tabs -->
+                        <div class="dashboard_tab_button" data-aos="fade-up" data-aos-delay="0">
+                            <ul role="tablist" class="nav flex-column dashboard-list">
+                                <li><a href="#orders" data-bs-toggle="tab" class="nav-link active" style="padding: .5rem 1rem;">Заказы</a></li>
+                                <li><a href="#callrequest" data-bs-toggle="tab" class="nav-link" style="padding: .5rem 1rem;">Обратный звонок</a></li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="col-sm-12 col-md-9 col-lg-9">
+                        <!-- Tab panes -->
+                        <div class="tab-content dashboard_content" data-aos="fade-up" data-aos-delay="200">
+
+                            <div class="tab-pane fade show active" id="orders">
+                                <h4>Заказы</h4>
+                                <div class="table_page table-responsive">
+                                    <table>
+                                        <thead>
+                                            <tr>
+                                                <th>Заказ №</th>
+                                                <th>Дата</th>
+                                                <th>Телефон</th>
+                                                <th>Сумма</th>
+                                                <th>Actions</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            {% for order in orders %}
+                                            <tr>
+                                                <td>{{ order.id }}</td>
+                                                <td>{{ order.date }}</td>
+                                                <td>{{ order.phone }}</td>
+                                                <td>$25.00 for 1 item </td>
+                                                <td><a href="cart.html" class="view">Открыть</a></td>
+                                            </tr>
+                                            {% endfor %}
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                            <div class="tab-pane fade" id="callrequest">
+                                <h4>Заказы обратного звонка</h4>
+                                <div class="table_page table-responsive">
+                                    <table>
+                                        <thead>
+                                            <tr>
+                                                <th>Порядковый №</th>
+                                                <th>Телефон</th>
+                                                <th>Дата/время</th>
+                                                <th>Товар</th>
+                                                <th>Отработано</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            {% for callrequest in callrequests %}
+                                            <tr>
+                                                <td>{{ callrequest.id }}</td>
+                                                <td>{{ callrequest.number }}</td>
+                                                <td>{{ callrequest.dateandtame }}</td>
+                                                <td>{{ callrequest.product }}</td>
+                                                {% if callrequest.is_called %}
+                                                <td style="background-color: chartreuse;">Отработано</td>
+                                                {% else %}
+                                                <td><a href="cart.html" class="view">Отметить</a></td>
+                                                {% endif %}
+                                            </tr>
+                                            {% endfor %}
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    {% include "layout/scripts.html" %}
+</body>
+</html>
