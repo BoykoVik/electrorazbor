@@ -10,7 +10,8 @@ class ProductsImagesInline(admin.StackedInline):
 
 @admin.register(Firms)
 class FirmsAdmin(admin.ModelAdmin):
-    list_display = ("name",)
+    list_display = ("name", "rang",)
+    list_editable = ("rang",)
     prepopulated_fields = {"slug": ("name", )}
     #filter_horizontal = ("category",) #для удобного добавления
 

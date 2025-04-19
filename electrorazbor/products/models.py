@@ -8,10 +8,12 @@ class Firms(models.Model):
     image = models.ImageField(blank=True, upload_to='firmsimages', verbose_name='Изображение')
     slug = models.SlugField(blank=False, null=False, max_length=200, unique=True, verbose_name='slug для url')
     desctiption = models.TextField(blank=True, null=True, max_length=500, verbose_name='description (описание страницы)')
+    rang = models.IntegerField(blank=False, null=False, default=1, verbose_name='Порядок вывода')
     
     class Meta:
         verbose_name = 'Фирма (производитель)'
         verbose_name_plural = 'Фирмы (производители)'
+        ordering = ['rang']
     
     def __str__(self):
         return self.name
