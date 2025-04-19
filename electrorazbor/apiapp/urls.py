@@ -4,4 +4,5 @@ app_name = 'apiapp'
 
 urlpatterns = [
     path('createorder', views.createorder, name='createorder'),
+    path('mark_called/<int:callrequest_id>/', views.mark_callrequest_called, name='mark_callrequest_called'),
 ]

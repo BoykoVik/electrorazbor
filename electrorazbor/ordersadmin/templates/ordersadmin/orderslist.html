@@ -69,7 +69,7 @@
                                                 <th>Дата</th>
                                                 <th>Телефон</th>
                                                 <th>Сумма</th>
-                                                <th>Actions</th>
+                                                <th></th>
                                             </tr>
                                         </thead>
                                         <tbody>
@@ -79,7 +79,7 @@
                                                 <td>{{ order.date }}</td>
                                                 <td>{{ order.phone }}</td>
                                                 <td>$25.00 for 1 item </td>
-                                                <td><a href="cart.html" class="view">Открыть</a></td>
+                                                <td><a href="" class="view">Открыть</a></td>
                                             </tr>
                                             {% endfor %}
                                         </tbody>
@@ -101,15 +101,15 @@
                                         </thead>
                                         <tbody>
                                             {% for callrequest in callrequests %}
-                                            <tr>
+                                            <tr id="callrequest-{{ callrequest.id }}">
                                                 <td>{{ callrequest.id }}</td>
                                                 <td>{{ callrequest.number }}</td>
                                                 <td>{{ callrequest.dateandtame }}</td>
                                                 <td>{{ callrequest.product }}</td>
                                                 {% if callrequest.is_called %}
-                                                <td style="background-color: chartreuse;">Отработано</td>
+                                                <td style="background-color: rgba(73, 128, 19, 0.533);">Отработано</td>
                                                 {% else %}
-                                                <td><a href="cart.html" class="view">Отметить</a></td>
+                                                <td><a href="#" class="view mark-called" data-url="{% url 'apiapp:mark_callrequest_called' callrequest.id %}">Отметить</a></td>
                                                 {% endif %}
                                             </tr>
                                             {% endfor %}
@@ -124,5 +124,39 @@
         </div>
     </div>
     {% include "layout/scripts.html" %}
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Обработчик клика по кнопке "Отметить"
+            document.querySelectorAll('.mark-called').forEach(button => {
+                button.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    const url = this.getAttribute('data-url');
+                    
+                    fetch(url, {
+                        method: 'POST',
+                        headers: {
+                            'X-CSRFToken': '{{ csrf_token }}',
+                            'Content-Type': 'application/json'
+                        },
+                        credentials: 'same-origin'
+                    })
+                    .then(response => {
+                        if (response.ok) {
+                            // Обновляем строку таблицы
+                            const row = this.closest('tr');
+                            const statusCell = row.querySelector('td:last-child');
+                            statusCell.innerHTML = '<span style="background-color: rgba(73, 128, 19, 0.533);">Отработано</span>';
+                        } else {
+                            alert('Ошибка при обновлении статуса');
+                        }
+                    })
+                    .catch(error => {
+                        console.error('Error:', error);
+                        alert('Произошла ошибка');
+                    });
+                });
+            });
+        });
+    </script>
 </body>
 </html>

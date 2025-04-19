@@ -4,6 +4,7 @@ from django.core.serializers.json import DjangoJSONEncoder
 import json
 from products.models import Orders, Obtains, Products
 from coreapp.utils import tgsandmsg
+from coreapp.models import Callrequest
 
 def createorder(request):
     if request.method == 'POST':
@@ -52,3 +53,14 @@ def create_order_in_db(phone, cart):
         obtain.count = item['quantity']
         obtain.save()
     return order
+
+def mark_callrequest_called(request, callrequest_id):
+    try:
+        callrequest = Callrequest.objects.get(id=callrequest_id)
+        callrequest.is_called = True
+        callrequest.save()
+        return JsonResponse({'status': 'success'}, status=200)
+    except Callrequest.DoesNotExist:
+        return JsonResponse({'status': 'error', 'message': 'Callrequest not found'}, status=404)
+    except Exception as e:
+        return JsonResponse({'status': 'error', 'message': str(e)}, status=500)
