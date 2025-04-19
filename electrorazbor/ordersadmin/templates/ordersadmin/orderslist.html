@@ -78,7 +78,11 @@
                                                 <td>{{ order.id }}</td>
                                                 <td>{{ order.date }}</td>
                                                 <td>{{ order.phone }}</td>
-                                                <td>$25.00 for 1 item </td>
+                                                {% if order.total_price %}
+                                                <td>{{ order.total_price }} ₽</td>
+                                                {% else %}
+                                                <td>0 ₽</td>
+                                                {% endif %}
                                                 <td><a href="{% url 'ordersadmin:orderdetail' order.id %}" class="view">Открыть</a></td>
                                             </tr>
                                             {% endfor %}
