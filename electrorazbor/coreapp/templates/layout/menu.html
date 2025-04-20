@@ -3,3 +3,6 @@
 <li><a href="{% url 'coreapp:home' %}#partners">Партнерам</a></li>
 <li><a href="{% url 'coreapp:delivery' %}">Доставка</a></li>
 <li><a href="{% url 'coreapp:uslovija_vozvrata' %}">Условия возврата</a></li>
+{% if user.is_superuser %}
+<li><a href="{% url 'ordersadmin:orderslist' %}">Админка</a></li>
+{% endif %}

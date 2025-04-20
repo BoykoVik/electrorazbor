@@ -105,6 +105,7 @@ class CharacteristicsMiddleModel(models.Model):# ПРОМЕЖУТОЧНАЯ МО
 class Orders(models.Model):
     phone = models.CharField(blank=False, max_length=20, verbose_name='Номер телефона')
     date = models.DateField(auto_now_add=True, verbose_name='Дата заказа')
+    is_called = models.BooleanField(default=False, verbose_name='Запрос обработан')
 
     def __str__(self):
         return str(self.id)
