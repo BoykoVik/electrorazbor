@@ -138,7 +138,11 @@
                                 <a href="{% url 'ordersadmin:orderslist' %}">◀ К заказам</a>
                             </div>
                             <div class="cart-clear">
-                                <button>❌ не отработано</button>
+                                <button class="toggle-order-status" 
+                                        data-order-id="{{ order.id }}"
+                                        data-status="{{ order.is_called|lower }}">
+                                    {% if order.is_called %}✅ отработано{% else %}❌ не отработано{% endif %}
+                                </button>
                             </div>
                         </div>
                     </div>
@@ -177,6 +181,77 @@
             </div>
         </div>
     </div>
+    <style>
+        .toggle-order-status {
+    border: 1px solid #ddd;
+    background: #f8f9fa;
+    padding: 5px 15px;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: all 0.3s;
+}
+
+.toggle-order-status:hover {
+    background: #e9ecef;
+}
+
+.toggle-order-status:disabled {
+    opacity: 0.7;
+    cursor: not-allowed;
+}
+    </style>
+    <script>
+document.addEventListener('DOMContentLoaded', function() {
+    document.querySelectorAll('.toggle-order-status').forEach(button => {
+        button.addEventListener('click', function() {
+            const orderId = this.dataset.orderId;
+            const currentStatus = this.dataset.status === 'true';
+            const newStatus = !currentStatus;
+            
+            // Блокируем кнопку на время запроса
+            const originalText = this.innerHTML;
+            this.innerHTML = '<i class="fas fa-spinner fa-spin"></i>';
+            this.disabled = true;
+            
+            fetch(`{% url 'apiapp:toggle_order_status' order.id %}`, {
+                method: 'POST',
+                headers: {
+                    'X-CSRFToken': '{{ csrf_token }}',
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    'is_called': newStatus
+                }),
+                credentials: 'same-origin'
+            })
+            .then(response => {
+                if (response.ok) {
+                    // Обновляем кнопку
+                    this.dataset.status = newStatus.toString();
+                    this.innerHTML = newStatus ? '✅ отработано' : '❌ не отработано';
+                    
+                    // Можно добавить уведомление об успехе
+                    const event = new CustomEvent('statusChanged', {
+                        detail: { orderId, newStatus }
+                    });
+                    document.dispatchEvent(event);
+                } else {
+                    alert('Ошибка при обновлении статуса');
+                    this.innerHTML = originalText;
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                alert('Произошла ошибка');
+                this.innerHTML = originalText;
+            })
+            .finally(() => {
+                this.disabled = false;
+            });
+        });
+    });
+});
+</script>
     {% include "layout/scripts.html" %}
 </body>
 </html>

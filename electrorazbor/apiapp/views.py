@@ -64,3 +64,20 @@ def mark_callrequest_called(request, callrequest_id):
         return JsonResponse({'status': 'error', 'message': 'Callrequest not found'}, status=404)
     except Exception as e:
         return JsonResponse({'status': 'error', 'message': str(e)}, status=500)
+    
+
+def toggle_order_status(request, order_id):
+    try:
+        order = Orders.objects.get(id=order_id)
+        data = json.loads(request.body)
+        order.is_called = data.get('is_called', False)
+        order.save()
+        return JsonResponse({
+            'status': 'success',
+            'is_called': order.is_called,
+            'new_text': '✅ отработано' if order.is_called else '❌ не отработано'
+        })
+    except Orders.DoesNotExist:
+        return JsonResponse({'status': 'error', 'message': 'Order not found'}, status=404)
+    except Exception as e:
+        return JsonResponse({'status': 'error', 'message': str(e)}, status=500)
