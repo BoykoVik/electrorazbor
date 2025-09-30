@@ -7,7 +7,7 @@ from django.http import HttpResponseForbidden
 def orderslist(request):
     if not request.user.is_superuser:
         return HttpResponseForbidden("Доступ запрещен")
-    callreqs = Callrequest.objects.all()
+    callreqs = Callrequest.objects.all().order_by('-id')
     orders = Orders.objects.annotate(total_price=Sum(F('order__product__price') * F('order__count'))).order_by('-id')
     return render(request, 'ordersadmin/orderslist.html', {
         'title': 'Список заказов',
