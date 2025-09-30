@@ -5903,6 +5903,7 @@ body.offcanvas-open {
   font-weight: 300;
   display: block;
   margin-bottom: 30px;
+  line-height: 1;
 }
 @media only screen and (min-width: 768px) and (max-width: 991px) {
   .about-contant .title span {
