@@ -110,7 +110,7 @@
                                     <div class="product-anotherinfo-wrapper text-start">
                                         <ul>
                                             {% for charact in product.product.all %}
-                                            <li><span><strong>{{ charact.characteristic.name }}:</strong></span> {{ charact.count }}</li>
+                                            <li><span>{{ charact.characteristic.name }}:</strong></span> {{ charact.count }}</li>
                                             {% endfor %}
                                         </ul>
                                     </div>

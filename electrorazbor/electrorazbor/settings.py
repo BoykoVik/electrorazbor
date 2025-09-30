@@ -145,7 +145,7 @@ THUMBNAIL_ALIASES = {
             'quality': 100,
         },
         'swiper': {
-            'size': (570, 675),
+            'size': (570, 0),
             'crop': 'smart',
             'quality': 100,
         },
