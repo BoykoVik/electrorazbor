@@ -89,7 +89,7 @@ class Characteristics(models.Model):# ХАРАКТЕРИСТИКИ
         return self.name
     
 class CharacteristicsMiddleModel(models.Model):# ПРОМЕЖУТОЧНАЯ МОДЕЛЬ
-    product = models.ForeignKey(Products, null=True, on_delete=models.SET_NULL, related_name='product', verbose_name='Товар')
+    product = models.ForeignKey(Products, null=True, on_delete=models.CASCADE, related_name='product', verbose_name='Товар')
     characteristic = models.ForeignKey(Characteristics, null=True, on_delete=models.SET_NULL, verbose_name='Характеристика')
     count = models.CharField(blank=True, null=True, max_length=1500, verbose_name='Показатель')
 
