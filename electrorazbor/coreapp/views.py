@@ -38,6 +38,13 @@ def uslovija_vozvrata(request):
         'contacts': Contacts.objects.all(),
     })
 
+def price_opt(request):
+    return render(request, 'coreapp/price_opt.html', {
+        'title': 'Оптовый прайс запчастей для электросамокатов. Запчасти для электросамокатов Ninebot и Xiaomi. Недорого.',
+        'description': 'Оптовый прайс запчастей и комплектующих для электросамокатов Ninebot и Xiaomi',
+        'contacts': Contacts.objects.all(),
+    })
+
 def productrequest(request):
     if request.method == "POST":
         phone = request.POST.get('phone')

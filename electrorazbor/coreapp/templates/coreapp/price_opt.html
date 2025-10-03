@@ -1,0 +1,142 @@
+{% load static %}
+{% include "layout/head.html" %}
+<body>
+    <div class="main-wrapper">
+        {% include "layout/header.html" %}
+        <div class="offcanvas-overlay"></div>
+        <div id="offcanvas-mobile-menu" class="offcanvas offcanvas-mobile-menu">
+            <button class="offcanvas-close"></button>
+            <div class="user-panel">
+                <ul>
+                    {% include "layout/contactsblock.html" %}
+                </ul>
+            </div>
+            <div class="inner customScroll">
+                <div class="offcanvas-menu mb-4">
+                    <ul>
+                        {% include "layout/menu.html" %}
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <div class="about-area pt-100px">
+            <div class="container">
+                <div class="row">
+                    <div class="col-12">
+                        <div class="about-wrapper text-center">
+                            <div class="about-contant">
+                                <h1 class="title">
+                                    Оптовый прайс
+                                </h1>
+                                <p>Мы отправляем оптовый прайс лично каждому, кто готов к сотрудничеству. Заполните форму и наш менеджер свяжется с Вами.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-12 col-md-12 col-sm-12 col-12">
+                    <script src="{% static 'js/inputmask.js'%}"></script>
+                    <div class="row" style="justify-content: center;">
+                        <div class="col-lg-6 col-md-12 mt-md-30px">
+                            <div class="grand-totall">
+                                <div class="discount-code">
+                                    <p>Оставьте свой телефон</p>
+                                    <input id="phone" class="phone" placeholder="+7(000)000-00-00" type="text" required="" name="phone">
+                                </div>
+                                <div class="discount-code">
+                                    <p>Опишите цель запроса оптового прайса</p>
+                                    <textarea id="textmessage" style="padding: 0 5px;" placeholder="Начните вводить ..." type="text"
+                                        name="textmessage"></textarea>
+                                </div>
+                                <button id="orderButton">Отправить</button>
+                                <script>
+                                    const csrfToken = "{{ csrf_token }}";
+                                    $(".phone").mask("+7(999)999-99-99");
+                                    // Обработчик нажатия на кнопку "Заказать"
+                                    document.getElementById('orderButton').addEventListener('click', function () {
+                                        const phone = document.getElementById('phone').value;
+                                        const textmessage = document.getElementById('textmessage').value;
+                                        const cart = JSON.parse(localStorage.getItem('cart') || '[]');
+    
+                                        // Проверка, что телефон заполнен
+                                        if (!phone || phone.length < 16) { // 16 символов, включая маску
+                                            alert('Пожалуйста, введите корректный номер телефона.');
+                                            return;
+                                        }
+                                        // Проверка, что корзина не пуста
+                                        if (cart.length === 0) {
+                                            alert('Ваша корзина пуста.');
+                                            return;
+                                        }
+                                        // Отправка данных на сервер
+                                        fetch("{% url 'apiapp:createorder' %}", {
+                                            method: 'POST',
+                                            headers: {
+                                                'Content-Type': 'application/json',
+                                                'X-CSRFToken': csrfToken
+                                            },
+                                            body: JSON.stringify({
+                                                phone: phone,
+                                                cart: cart,
+                                                textmessage: textmessage
+                                            })
+                                        })
+                                            .then(response => response.json())
+                                            .then(data => {
+                                                if (data.order_id) {
+                                                    // Обновление интерфейса
+                                                    document.querySelector('.grand-totall').innerHTML = `
+                            <div class="title-wrap">
+                                <h4 class="cart-bottom-title section-bg-gary-cart">Заказ № ${data.order_id} в работе</h4></div>`;
+                                localStorage.removeItem('cart');
+                                let tableHtml = '';
+                                $('.cart-table-content tbody').html(tableHtml);
+                                $('.minicart-product-list').html(tableHtml);
+                                let cartCountElement = $('.header-action-num');
+                                cartCountElement.hide();
+                                
+                                                } else {
+                                                    alert('Ошибка при оформлении заказа.');
+                                                }
+                                            })
+                                            .catch(error => {
+                                                console.error('Error:', error);
+                                                alert('Произошла ошибка при отправке данных.');
+                                            });
+                                    });
+    
+                                    // Функция для получения CSRF токена (если используется)
+                                    function getCookie(name) {
+                                        let cookieValue = null;
+                                        if (document.cookie && document.cookie !== '') {
+                                            const cookies = document.cookie.split(';');
+                                            for (let i = 0; i < cookies.length; i++) {
+                                                const cookie = cookies[i].trim();
+                                                if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                                                    cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                                                    break;
+                                                }
+                                            }
+                                        }
+                                        return cookieValue;
+                                    }
+                                </script>
+                                <p>Отправив форму, вы соглашаетесь на обработку персональных данных в соответствии с 
+                                    <a href='{% url 'coreapp:soglasie' %}'>условиями.</a></p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        {% include "layout/contacts_block.html" %}
+        {% include "layout/footer.html" %}
+    </div>
+    {% include "layout/scripts.html" %}
+</body>
+</html>
