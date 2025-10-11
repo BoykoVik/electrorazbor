@@ -37,103 +37,136 @@
             </div>
         </div>
 
-        <div class="container">
-            <div class="row">
-                <div class="col-lg-12 col-md-12 col-sm-12 col-12">
-                    <script src="{% static 'js/inputmask.js'%}"></script>
-                    <div class="row" style="justify-content: center;">
-                        <div class="col-lg-6 col-md-12 mt-md-30px">
-                            <div class="grand-totall">
-                                <div class="discount-code">
-                                    <p>Оставьте свой телефон</p>
-                                    <input id="phone" class="phone" placeholder="+7(000)000-00-00" type="text" required="" name="phone">
+        <div class="login-register-area pt-100px pb-100px">
+            <div class="container">
+                <div class="row">
+                    <div class="col-lg-7 col-md-12 ml-auto mr-auto">
+                        <div class="login-register-wrapper">
+                            <div class="tab-content">
+                                <div id="lg1" class="tab-pane active">
+                                    <div class="login-form-container">
+                                        <div class="login-register-form">
+                                            
+                                            <form id="priceform" method="post">
+                                                {% csrf_token %}
+                                                <input id="phone" type="text" name="phone" placeholder="Телефон" />
+                                                <div id="phoneError" style="color: red; display: none; font-size: 12px; margin-top: 5px;"></div>
+                                                <textarea id="textmessage" style="padding: 0 5px;" placeholder="Оставьте комментарий ..." type="text" name="textmessage"></textarea>
+                                                <div class="button-box">
+                                                    <p style="padding-bottom: 20px;">Отправляя данные, вы соглашаетесь на обработку персональных данных в соответствии с 
+                                                        <a href='{% url 'coreapp:soglasie' %}'>условиями.</a></p>
+                                                    <button type="submit"><span>Заказать прайс</span></button>
+                                                </div>
+                                            </form>
+                                            
+                                            <!-- Сообщение об успехе (изначально скрыто) -->
+                                            <div id="successMessage" style="display: none; color: green; padding: 20px; text-align: center; font-size: 18px;">
+                                                Ваш запрос принят, менеджер скоро свяжется с Вами
+                                            </div>
+                                            
+                                            <script>
+                                                document.addEventListener('DOMContentLoaded', function() {
+                                                    const phoneInput = document.getElementById('phone');
+                                                    const phoneError = document.getElementById('phoneError');
+                                                    const form = document.getElementById('priceform');
+                                                    const successMessage = document.getElementById('successMessage');
+                                                
+                                                    // Разрешаем ввод только цифр, пробела, +, -, (, )
+                                                    phoneInput.addEventListener('input', function(e) {
+                                                        let value = e.target.value.replace(/[^\d\s\+\-\(\)]/g, '');
+                                                        e.target.value = value;
+                                                        phoneError.style.display = 'none';
+                                                        phoneInput.style.borderColor = '';
+                                                    });
+                                                
+                                                    // Запрещаем ввод букв и других символов
+                                                    phoneInput.addEventListener('keypress', function(e) {
+                                                        const allowedChars = /[\d\s\+\-\(\)]/;
+                                                        if (!allowedChars.test(e.key)) {
+                                                            e.preventDefault();
+                                                        }
+                                                    });
+                                                
+                                                    // Валидация при отправке формы
+                                                    form.addEventListener('submit', function(event) {
+                                                        event.preventDefault();
+                                                        
+                                                        const phoneValue = phoneInput.value.replace(/\D/g, '');
+                                                        
+                                                        if (phoneValue.length !== 11) {
+                                                            phoneError.style.display = 'block';
+                                                            phoneInput.style.borderColor = 'red';
+                                                            phoneInput.focus();
+                                                            
+                                                            if (phoneValue.length === 0) {
+                                                                phoneError.textContent = 'Пожалуйста, введите номер телефона';
+                                                            } else {
+                                                                phoneError.textContent = `Введено ${phoneValue.length} цифр. Нужно 11 цифр.`;
+                                                            }
+                                                            return false;
+                                                        }
+                                                        
+                                                        // Если валидация прошла успешно - отправляем AJAX
+                                                        phoneError.style.display = 'none';
+                                                        phoneInput.style.borderColor = 'green';
+                                                        
+                                                        // Получаем CSRF токен
+                                                        const csrfToken = document.querySelector('[name=csrfmiddlewaretoken]').value;
+                                                        
+                                                        // Отправляем AJAX запрос
+                                                        fetch("{% url 'coreapp:order_price' %}", {
+                                                            method: 'POST',
+                                                            headers: {
+                                                                'X-CSRFToken': csrfToken,
+                                                                'Content-Type': 'application/x-www-form-urlencoded',
+                                                            },
+                                                            body: new URLSearchParams({
+                                                                'phone': phoneInput.value,
+                                                                'textmessage': document.getElementById('textmessage').value,
+                                                            })
+                                                        })
+                                                        .then(response => {
+                                                            if (!response.ok) {
+                                                                throw new Error('Network response was not ok');
+                                                            }
+                                                            return response.json();
+                                                        })
+                                                        .then(data => {
+                                                            if (data.success) {
+                                                                form.style.display = 'none';
+                                                                successMessage.style.display = 'block';
+                                                            } else {
+                                                                alert('Ошибка: ' + (data.error || 'Неизвестная ошибка'));
+                                                            }
+                                                        })
+                                                        .catch(error => {
+                                                            console.error('Ошибка:', error);
+                                                            alert('Произошла ошибка при отправке: ' + error.message);
+                                                        });
+                                                    });
+                                                
+                                                    // Дополнительная валидация при потере фокуса
+                                                    phoneInput.addEventListener('blur', function() {
+                                                        const phoneValue = this.value.replace(/\D/g, '');
+                                                        if (phoneValue.length > 0 && phoneValue.length !== 11) {
+                                                            phoneError.style.display = 'block';
+                                                            phoneInput.style.borderColor = 'red';
+                                                            phoneError.textContent = `Введено ${phoneValue.length} цифр. Нужно 11 цифр.`;
+                                                        }
+                                                    });
+                                                });
+                                                </script>
+
+                                        </div>
+                                    </div>
                                 </div>
-                                <div class="discount-code">
-                                    <p>Опишите цель запроса оптового прайса</p>
-                                    <textarea id="textmessage" style="padding: 0 5px;" placeholder="Начните вводить ..." type="text"
-                                        name="textmessage"></textarea>
-                                </div>
-                                <button id="orderButton">Отправить</button>
-                                <script>
-                                    const csrfToken = "{{ csrf_token }}";
-                                    $(".phone").mask("+7(999)999-99-99");
-                                    // Обработчик нажатия на кнопку "Заказать"
-                                    document.getElementById('orderButton').addEventListener('click', function () {
-                                        const phone = document.getElementById('phone').value;
-                                        const textmessage = document.getElementById('textmessage').value;
-                                        const cart = JSON.parse(localStorage.getItem('cart') || '[]');
-    
-                                        // Проверка, что телефон заполнен
-                                        if (!phone || phone.length < 16) { // 16 символов, включая маску
-                                            alert('Пожалуйста, введите корректный номер телефона.');
-                                            return;
-                                        }
-                                        // Проверка, что корзина не пуста
-                                        if (cart.length === 0) {
-                                            alert('Ваша корзина пуста.');
-                                            return;
-                                        }
-                                        // Отправка данных на сервер
-                                        fetch("{% url 'apiapp:createorder' %}", {
-                                            method: 'POST',
-                                            headers: {
-                                                'Content-Type': 'application/json',
-                                                'X-CSRFToken': csrfToken
-                                            },
-                                            body: JSON.stringify({
-                                                phone: phone,
-                                                cart: cart,
-                                                textmessage: textmessage
-                                            })
-                                        })
-                                            .then(response => response.json())
-                                            .then(data => {
-                                                if (data.order_id) {
-                                                    // Обновление интерфейса
-                                                    document.querySelector('.grand-totall').innerHTML = `
-                            <div class="title-wrap">
-                                <h4 class="cart-bottom-title section-bg-gary-cart">Заказ № ${data.order_id} в работе</h4></div>`;
-                                localStorage.removeItem('cart');
-                                let tableHtml = '';
-                                $('.cart-table-content tbody').html(tableHtml);
-                                $('.minicart-product-list').html(tableHtml);
-                                let cartCountElement = $('.header-action-num');
-                                cartCountElement.hide();
-                                
-                                                } else {
-                                                    alert('Ошибка при оформлении заказа.');
-                                                }
-                                            })
-                                            .catch(error => {
-                                                console.error('Error:', error);
-                                                alert('Произошла ошибка при отправке данных.');
-                                            });
-                                    });
-    
-                                    // Функция для получения CSRF токена (если используется)
-                                    function getCookie(name) {
-                                        let cookieValue = null;
-                                        if (document.cookie && document.cookie !== '') {
-                                            const cookies = document.cookie.split(';');
-                                            for (let i = 0; i < cookies.length; i++) {
-                                                const cookie = cookies[i].trim();
-                                                if (cookie.substring(0, name.length + 1) === (name + '=')) {
-                                                    cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
-                                                    break;
-                                                }
-                                            }
-                                        }
-                                        return cookieValue;
-                                    }
-                                </script>
-                                <p>Отправив форму, вы соглашаетесь на обработку персональных данных в соответствии с 
-                                    <a href='{% url 'coreapp:soglasie' %}'>условиями.</a></p>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
+        <script src="{% static 'js/inputmask.js'%}"></script>
         {% include "layout/contacts_block.html" %}
         {% include "layout/footer.html" %}
     </div>

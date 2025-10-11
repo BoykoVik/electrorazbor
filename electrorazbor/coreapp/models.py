@@ -29,3 +29,15 @@ class Callrequest(models.Model):
 
     def __str__(self):
         return str(self.number)
+    
+class Pricerequest(models.Model):
+    number = models.CharField(blank=False, null=False, max_length=80, verbose_name='Номер телефона')
+    qwestion = models.TextField(blank=False, null=False, max_length=800, verbose_name='Комментарий')
+    is_called = models.BooleanField(default=False, verbose_name='Запрос обработан')
+
+    class Meta:
+        verbose_name = 'Заказ оптового прайса'
+        verbose_name_plural = 'Заказы оптового прайса'
+
+    def __str__(self):
+        return str(self.number)

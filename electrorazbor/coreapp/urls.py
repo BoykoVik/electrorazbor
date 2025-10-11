@@ -19,5 +19,6 @@ urlpatterns = [
     path('favicon.ico', favicon_view),
     path('productrequest/', views.productrequest, name='productrequest'),
     path('soglasie-na-obrabotku-personalnih-dannih/', views.soglasie, name='soglasie'),
-    path('optivii-price/', views.price_opt, name='price_opt'),
+    path('optovii-price/', views.price_opt, name='price_opt'),
+    path('order-price/', views.order_price, name='order_price'),
 ]

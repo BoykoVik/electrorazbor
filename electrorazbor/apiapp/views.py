@@ -4,37 +4,27 @@ from django.core.serializers.json import DjangoJSONEncoder
 import json
 from products.models import Orders, Obtains, Products
 from coreapp.utils import tgsandmsg
-from coreapp.models import Callrequest
+from coreapp.models import Callrequest, Pricerequest
 
 def createorder(request):
     if request.method == 'POST':
-        try:
-            # Парсим JSON-тело запроса
-            data = json.loads(request.body)
-            phone = data.get('phone')
-            cart = data.get('cart')
-            textmessage = data.get('textmessage')
-            
-            # Проверяем, что телефон и корзина переданы
-            if not phone or not cart:
-                return JsonResponse({'error': 'Необходимо указать телефон и корзину'}, status=400)
-
-            # Логика создания заказа
-            order = create_order_in_db(phone, cart)
-            if textmessage:
-                tgsandmsg(f'НОВЫЙ ЗАКАЗ номер {order.id}\nКомментарий к заказу:\n{textmessage}')
-            else:
-                tgsandmsg(f'НОВЫЙ ЗАКАЗ номер {order.id}\n')
-            # Возвращаем успешный ответ с номером заказа
-            return JsonResponse({'order_id': order.id})
-
-        except json.JSONDecodeError:
-            return JsonResponse({'error': 'Неверный формат JSON'}, status=400)
-        except Exception as e:
-            return JsonResponse({'error': str(e)}, status=500)
-
-    # Если метод не POST, возвращаем ошибку
-    return JsonResponse({'error': 'Метод не поддерживается'}, status=405)
+            try:
+                phone = request.POST.get('phone', '')
+                textmessage = request.POST.get('textmessage', '')
+                
+                # Выводим данные в консоль сервера
+                print(f"Получена заявка на прайс:")
+                print(f"Телефон: {phone}")
+                print(f"Сообщение: {textmessage}")
+                
+                # Возвращаем успешный ответ
+                return JsonResponse({'success': True})
+                
+            except Exception as e:
+                print(f"Ошибка при обработке формы: {e}")
+                return JsonResponse({'success': False})
+        
+    return JsonResponse({'success': False})
 
 def create_order_in_db(phone, cart):
     """
@@ -54,9 +44,12 @@ def create_order_in_db(phone, cart):
         obtain.save()
     return order
 
-def mark_callrequest_called(request, callrequest_id):
+def mark_callrequest_called(request, callrequest_id, type):
     try:
-        callrequest = Callrequest.objects.get(id=callrequest_id)
+        if type == "call":
+            callrequest = Callrequest.objects.get(id=callrequest_id)
+        elif type== "price":
+            callrequest = Pricerequest.objects.get(id=callrequest_id)
         callrequest.is_called = True
         callrequest.save()
         return JsonResponse({'status': 'success'}, status=200)

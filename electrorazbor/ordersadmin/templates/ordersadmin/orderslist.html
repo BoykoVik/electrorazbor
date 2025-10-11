@@ -52,6 +52,7 @@
                             <ul role="tablist" class="nav flex-column dashboard-list">
                                 <li><a href="#orders" data-bs-toggle="tab" class="nav-link active" style="padding: .5rem 1rem;">Заказы</a></li>
                                 <li><a href="#callrequest" data-bs-toggle="tab" class="nav-link" style="padding: .5rem 1rem;">Обратный звонок</a></li>
+                                <li><a href="#pricerequest" data-bs-toggle="tab" class="nav-link" style="padding: .5rem 1rem;">Запросы прайсов</a></li>
                             </ul>
                         </div>
                     </div>
@@ -117,7 +118,7 @@
                                                 {% if callrequest.is_called %}
                                                 <td style="background-color: rgba(73, 128, 19, 0.533);">Отработано</td>
                                                 {% else %}
-                                                <td><a href="#" class="view mark-called" data-url="{% url 'apiapp:mark_callrequest_called' callrequest.id %}">Отметить</a></td>
+                                                <td><a href="#" class="view mark-called" data-url="{% url 'apiapp:mark_callrequest_called' callrequest.id 'call' %}">Отметить</a></td>
                                                 {% endif %}
                                             </tr>
                                             {% endfor %}
@@ -125,6 +126,37 @@
                                     </table>
                                 </div>
                             </div>
+
+                            <div class="tab-pane fade" id="pricerequest">
+                                <h4>Заказы оптовых прайсов</h4>
+                                <div class="table_page table-responsive">
+                                    <table>
+                                        <thead>
+                                            <tr>
+                                                <th>Порядковый №</th>
+                                                <th>Телефон</th>
+                                                <th>Комментарий</th>
+                                                <th>Отработано</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            {% for pricerequest in pricerequests %}
+                                            <tr>
+                                                <td>{{ pricerequest.id }}</td>
+                                                <td>{{ pricerequest.number }}</td>
+                                                <td>{{ pricerequest.qwestion }}</td>
+                                                {% if pricerequest.is_called %}
+                                                <td style="background-color: rgba(73, 128, 19, 0.533);">Отработано</td>
+                                                {% else %}
+                                                <td><a href="#" class="view mark-called" data-url="{% url 'apiapp:mark_callrequest_called' pricerequest.id 'price' %}">Отметить</a></td>
+                                                {% endif %}
+                                            </tr>
+                                            {% endfor %}
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+
                         </div>
                     </div>
                 </div>

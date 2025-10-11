@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import Contacts, Callrequest
+from .models import Contacts, Callrequest, Pricerequest
 # Register your models here.
 
 @admin.register(Contacts)
@@ -10,3 +10,7 @@ class ContactsAdmin(admin.ModelAdmin):
 @admin.register(Callrequest)
 class CallrequestAdmin(admin.ModelAdmin):
     list_display = ("number", "dateandtame",)
+
+@admin.register(Pricerequest)
+class PricerequestAdmin(admin.ModelAdmin):
+    list_display = ("number", "qwestion",)

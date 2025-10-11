@@ -1,11 +1,12 @@
 from django.shortcuts import render
 from products.models import Categories, Products, Firms
-from .models import Contacts, Callrequest
+from .models import Contacts, Callrequest, Pricerequest
 from django.http import JsonResponse
 from django.views.generic import TemplateView
 from django.db.models import Q
 from .utils import tgsandmsg
 import datetime
+from django.views.decorators.csrf import ensure_csrf_cookie
 # Create your views here.
 def home(request):
     return render(request, 'coreapp/home.html', {
@@ -44,6 +45,25 @@ def price_opt(request):
         'description': 'Оптовый прайс запчастей и комплектующих для электросамокатов Ninebot и Xiaomi',
         'contacts': Contacts.objects.all(),
     })
+
+@ensure_csrf_cookie
+def order_price(request):
+    if request.method == 'POST':
+        try:
+            phone = request.POST.get('phone', '')
+            textmessage = request.POST.get('textmessage', '')
+            req = Pricerequest()
+            req.number = phone
+            req.qwestion = textmessage
+            req.save()
+            tgsandmsg(f'Заявка на ОПТОВЫЙ ПРАЙС! \nТелефон {phone}\nКомментарий: {textmessage}')
+            return JsonResponse({'success': True})
+            
+        except Exception as e:
+            print(f"Ошибка при обработке формы: {e}")
+            return JsonResponse({'success': False, 'error': str(e)})
+    
+    return JsonResponse({'success': False, 'error': 'Method not allowed'})
 
 def productrequest(request):
     if request.method == "POST":

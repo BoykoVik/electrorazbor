@@ -28,5 +28,9 @@
     <priority>0.8</priority>
 </url>
 {% endfor %}
-
+<url>
+    <loc>https://{{ request.get_host }}/optovii-price/</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+</url>
 </urlset>
