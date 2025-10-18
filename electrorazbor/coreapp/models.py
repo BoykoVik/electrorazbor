@@ -1,5 +1,5 @@
 from django.db import models
-
+from products.models import Products
 # Create your models here.
 class Contacts(models.Model):
     title = models.CharField(blank=False, max_length=180, verbose_name='Наименование')
@@ -41,3 +41,20 @@ class Pricerequest(models.Model):
 
     def __str__(self):
         return str(self.number)
+    
+class Holdmerequest(models.Model):
+    number = models.CharField(blank=False, null=False, max_length=80, verbose_name='Номер телефона')
+    dateandtame = models.DateTimeField(blank=False, null=False, auto_now_add=True, verbose_name='Дата и время')
+    product = models.ForeignKey(Products, on_delete=models.CASCADE, verbose_name='Товар')
+    is_called = models.BooleanField(default=False, verbose_name='Запрос обработан')
+    class Meta:
+        verbose_name = 'Просьба сообщить о поступлении'
+        verbose_name_plural = 'Просьбы сообщить о поступлении'
+
+    def __str__(self):
+        return str(self.number)
+    
+    def get_first_product_image(self):
+        """Возвращает первое изображение связанного продукта"""
+        first_image = self.product.productimages.first()
+        return first_image.image if first_image else None

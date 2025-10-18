@@ -4,7 +4,7 @@ from django.core.serializers.json import DjangoJSONEncoder
 import json
 from products.models import Orders, Obtains, Products
 from coreapp.utils import tgsandmsg
-from coreapp.models import Callrequest, Pricerequest
+from coreapp.models import Callrequest, Pricerequest, Holdmerequest
 
 def createorder(request):
     if request.method == 'POST':
@@ -50,6 +50,8 @@ def mark_callrequest_called(request, callrequest_id, type):
             callrequest = Callrequest.objects.get(id=callrequest_id)
         elif type== "price":
             callrequest = Pricerequest.objects.get(id=callrequest_id)
+        elif type== "holdrequest":
+            callrequest = Holdmerequest.objects.get(id=callrequest_id)
         callrequest.is_called = True
         callrequest.save()
         return JsonResponse({'status': 'success'}, status=200)

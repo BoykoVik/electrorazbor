@@ -1,6 +1,6 @@
-from django.shortcuts import render
+from django.shortcuts import render, get_object_or_404
 from products.models import Categories, Products, Firms
-from .models import Contacts, Callrequest, Pricerequest
+from .models import Contacts, Callrequest, Pricerequest, Holdmerequest
 from django.http import JsonResponse
 from django.views.generic import TemplateView
 from django.db.models import Q
@@ -68,12 +68,19 @@ def order_price(request):
 def productrequest(request):
     if request.method == "POST":
         phone = request.POST.get('phone')
-        product = request.POST.get('product')
-        req = Callrequest()
-        req.number = phone
-        req.product = product
-        req.save()
-        tgsandmsg(f'Заявка! \nТелефон {phone}\nТовар: {product}')
+        product = get_object_or_404(Products, id=request.POST.get('product'))
+        if product.show:
+            req = Callrequest()
+            req.number = phone
+            req.product = product.name
+            req.save()
+            tgsandmsg(f'Заявка! \nТелефон {phone}\nТовар: {product}')
+        else:
+            req = Holdmerequest()
+            req.number = phone
+            req.product = product
+            req.save()
+            tgsandmsg(f'Просьба сообщить о поступлении! \nТелефон {phone}\nТовар: {product.name}')
     return JsonResponse({"OK":'200'})
 
 def cart(request):

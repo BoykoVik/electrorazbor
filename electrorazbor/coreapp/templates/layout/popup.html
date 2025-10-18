@@ -1,27 +1,30 @@
 {% load static %}
 <div id="myModal" class="modal">
-    <!-- Модальное содержание -->
     <div class="modal-content">
         <div class="modal-headerm">
             <span class="closebtn">&times;</span>
             <h4>Форма обратной связи</h4>
         </div>
         <div class="modal-body">
+            {% if product.show %}
             <p>Оставьте номер своего телефона и мы вам перезвоним</p>
+            {% else %}
+            <p>Оставьте номер своего телефона и мы сообщим когда товар появится</p>
+            {% endif %}
             <form class="newsletter__popup--subscribe__form">
                 {% csrf_token %}
                 <input class="newsletter__popup--subscribe__input" name="phone" type="text"
                     placeholder="+7-900-000-00-00">
-                <input type="hidden" name="product" value="{{ product.name }}">
+                <input type="hidden" name="product" value="{{ product.id }}">
                 <button class="sendbtn" type="submit">Отправить</button>
             </form>
-            <p style="color: #000000">Оставляя заявку, вы соглашаетесь на обработку персональных данных в соответствии с 
+            <p style="color: #000000; font-size: 14px;">Оставляя заявку, вы соглашаетесь на обработку персональных данных в соответствии с 
                 <a href='{% url 'coreapp:soglasie' %}'>условиями.</a></p>
         </div>
         <div class="modal-footerm">
             <h4>Или свяжитесь с нами</h4>
             {% for contact in contacts %}
-            <a href="{{ contact.link }}" style="color: black; padding-top: 20px;"><i class="fa {{ contact.code }}" style="color: #0d6efd; font-size: 24px; padding-right: 10px;"></i>{{ contact.text }}</a>
+            <a href="{{ contact.link }}" style="color: black; padding-top: 5px;"><i class="fa {{ contact.code }}" style="color: #0d6efd; font-size: 24px; padding-right: 10px;"></i>{{ contact.text }}</a>
             {% endfor %}
         </div>
     </div>

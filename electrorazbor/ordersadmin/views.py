@@ -1,20 +1,19 @@
 from django.shortcuts import render, get_object_or_404
 from products.models import Products, Orders, Obtains
-from coreapp.models import Callrequest, Pricerequest
+from coreapp.models import Callrequest, Pricerequest, Holdmerequest
 from django.db.models import Sum, F
 from django.http import HttpResponseForbidden
 # Create your views here.
 def orderslist(request):
     if not request.user.is_superuser:
         return HttpResponseForbidden("Доступ запрещен")
-    callreqs = Callrequest.objects.all().order_by('-id')
-    pricereqs = Pricerequest.objects.all().order_by('-id')
     orders = Orders.objects.annotate(total_price=Sum(F('order__product__price') * F('order__count'))).order_by('-id')
     return render(request, 'ordersadmin/orderslist.html', {
         'title': 'Список заказов',
         'description': 'админка',
-        'callrequests': callreqs,
-        'pricerequests': pricereqs,
+        'callrequests': Callrequest.objects.all().order_by('-id'),
+        'pricerequests': Pricerequest.objects.all().order_by('-id'),
+        'holdrequests': Holdmerequest.objects.all().order_by('-id'),
         'orders': orders,
     })
 
