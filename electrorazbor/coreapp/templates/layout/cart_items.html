@@ -71,7 +71,7 @@
                                         return;
                                     }
                                     // Отправка данных на сервер
-                                    fetch("{% url 'apiapp:createorder' %}", {
+                                    fetch("{% url 'apiapp:createordercart' %}", {
                                         method: 'POST',
                                         headers: {
                                             'Content-Type': 'application/json',

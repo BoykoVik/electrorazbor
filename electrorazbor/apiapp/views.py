@@ -26,6 +26,36 @@ def createorder(request):
         
     return JsonResponse({'success': False})
 
+def createordercart(request):
+    if request.method == 'POST':
+        try:
+            # Парсим JSON-тело запроса
+            data = json.loads(request.body)
+            phone = data.get('phone')
+            cart = data.get('cart')
+            textmessage = data.get('textmessage')
+            
+            # Проверяем, что телефон и корзина переданы
+            if not phone or not cart:
+                return JsonResponse({'error': 'Необходимо указать телефон и корзину'}, status=400)
+
+            # Логика создания заказа
+            order = create_order_in_db(phone, cart)
+            if textmessage:
+                tgsandmsg(f'НОВЫЙ ЗАКАЗ номер {order.id}\nКомментарий к заказу:\n{textmessage}')
+            else:
+                tgsandmsg(f'НОВЫЙ ЗАКАЗ номер {order.id}\n')
+            # Возвращаем успешный ответ с номером заказа
+            return JsonResponse({'order_id': order.id})
+
+        except json.JSONDecodeError:
+            return JsonResponse({'error': 'Неверный формат JSON'}, status=400)
+        except Exception as e:
+            return JsonResponse({'error': str(e)}, status=500)
+
+    # Если метод не POST, возвращаем ошибку
+    return JsonResponse({'error': 'Метод не поддерживается'}, status=405)
+
 def create_order_in_db(phone, cart):
     """
     Создает заказ в базе данных и возвращает объект заказа.
