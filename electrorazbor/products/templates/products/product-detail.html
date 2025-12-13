@@ -102,7 +102,9 @@
                             <div class="description-review-topbar nav">
                                 {% if product.product.all %}
                                 <button class="active" data-bs-toggle="tab" data-bs-target="#des-details2">Характеристики</button>
+                                {% if product.about_big %}
                                 <button data-bs-toggle="tab" data-bs-target="#des-details1">Описание</button>
+                                {% endif %}
                                 {% else %}
                                 <button class="active" data-bs-toggle="tab" data-bs-target="#des-details1">Описание</button>
                                 {% endif %}
@@ -118,11 +120,13 @@
                                         </ul>
                                     </div>
                                 </div>
+                                {% if product.about_big %}
                                 <div id="des-details1" class="tab-pane">
                                     <div class="product-description-wrapper">
                                         <p itemprop="description">{{ product.about_big }}</p>
                                     </div>
                                 </div>
+                                {% endif %}
                                 {% else %}
                                 <div id="des-details1" class="tab-pane active">
                                     <div class="product-description-wrapper">
