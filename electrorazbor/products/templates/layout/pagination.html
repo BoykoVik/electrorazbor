@@ -3,35 +3,35 @@
     <div class="pages">
         <ul>
             {% if page.has_previous %}
-            <li class="li"><a class="page-link" href="?page=1"><i class="fa fa-angle-left"></i></a></li>
+            <li class="li"><a class="page-link" href="?page=1#products"><i class="fa fa-angle-left"></i></a></li>
             {% endif %}
             {% if page.number|add:'-4' > 0 %}
             <li class="li"><a class="page-link" href="#">...</a></li>
             {% endif %}
             {% if page.number|add:'-3' > 0 %}
-            <li class="li"><a class="page-link" href="?page={{ page.number|add:'-3' }}">{{ page.number|add:'-3' }}</a></li>
+            <li class="li"><a class="page-link" href="?page={{ page.number|add:'-3' }}#products">{{ page.number|add:'-3' }}</a></li>
             {% endif %}
             {% if page.number|add:'-2' > 0 %}
-            <li class="li"><a class="page-link" href="?page={{ page.number|add:'-2' }}">{{ page.number|add:'-2' }}</a></li>
+            <li class="li"><a class="page-link" href="?page={{ page.number|add:'-2' }}#products">{{ page.number|add:'-2' }}</a></li>
             {% endif %}
             {% if page.number|add:'-1' > 0 %}
-            <li class="li"><a class="page-link" href="?page={{ page.number|add:'-1' }}">{{ page.number|add:'-1' }}</a></li>
+            <li class="li"><a class="page-link" href="?page={{ page.number|add:'-1' }}#products">{{ page.number|add:'-1' }}</a></li>
             {% endif %}
             <li class="li"><a class="page-link active" href="#">{{ page.number }}</a></li>
             {% if page.number|add:'1' <= page.paginator.num_pages %}
-            <li class="li"><a class="page-link" href="?page={{ page.number|add:'1' }}">{{ page.number|add:'1' }}</a></li>
+            <li class="li"><a class="page-link" href="?page={{ page.number|add:'1' }}#products">{{ page.number|add:'1' }}</a></li>
             {% endif %}
             {% if page.number|add:'2' <= page.paginator.num_pages %}
-            <li class="li"><a class="page-link" href="?page={{ page.number|add:'2' }}">{{ page.number|add:'2' }}</a></li>
+            <li class="li"><a class="page-link" href="?page={{ page.number|add:'2' }}#products">{{ page.number|add:'2' }}</a></li>
             {% endif %}
             {% if page.number|add:'3' <= page.paginator.num_pages %}
-            <li class="li"><a class="page-link" href="?page={{ page.number|add:'3' }}">{{ page.number|add:'3' }}</a></li>
+            <li class="li"><a class="page-link" href="?page={{ page.number|add:'3' }}#products">{{ page.number|add:'3' }}</a></li>
             {% endif %}
             {% if page.number|add:'4' <= page.paginator.num_pages %}
             <li class="li"><a class="page-link" href="#">...</a></li>
             {% endif %}
             {% if page.has_next %}
-            <li class="li"><a class="page-link" href="?page={{ page.paginator.num_pages }}"><i class="fa fa-angle-right"></i></a></li>
+            <li class="li"><a class="page-link" href="?page={{ page.paginator.num_pages }}#products"><i class="fa fa-angle-right"></i></a></li>
             {% endif %}
         </ul>
     </div>
