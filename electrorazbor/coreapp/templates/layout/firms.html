@@ -7,7 +7,7 @@
                 style="display: flex; flex-wrap: wrap;">
                 {% for firm in firms %}
                 <li class="nav-item mb-30px" >
-                    <a href="{{ firm.get_absolute_url }}#products" class="nav-link">
+                    <a href="{{ firm.get_absolute_url }}" class="nav-link">
                         <img src="{{ firm.image|thumbnail_url:'card' }}" alt="{{ firm.name }}">
                         {{ firm.name }}
                     </a>

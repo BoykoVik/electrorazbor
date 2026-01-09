@@ -7,7 +7,7 @@
                 style="display: flex; flex-wrap: wrap;">
                 {% for model in models %}
                 <li class="nav-item mb-30px">
-                    <a href="{{ model.get_absolute_url }}" class="nav-link">
+                    <a href="{{ model.get_absolute_url }}#products" class="nav-link">
                         {% if model.image %}
                         <img src="{{ model.image|thumbnail_url:'card' }}" alt="{{ model.name }}">
                         {% endif %}
