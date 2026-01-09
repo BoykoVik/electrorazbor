@@ -27,7 +27,7 @@ class ProductsAdmin(admin.ModelAdmin):
     list_display = ("id", "name", "price", "in_top", "show", "rang", "use_in_feed",)
     list_editable = ("price", "in_top", "show", "rang", "use_in_feed",)
     list_filter = ("category", "show",)
-    filter_horizontal = ("category",) #для удобного добавления
+    filter_horizontal = ("category", "like_what",) #для удобного добавления
     prepopulated_fields = {"slug": ("name", )}
     inlines =(CharacteristicsMiddleModelInline, ProductsImagesInline,)
 

@@ -50,6 +50,7 @@ class Products(models.Model):
     show = models.BooleanField(default=True, verbose_name='В наличии?')
     rang = models.IntegerField(blank=False, null=False, default=1, verbose_name='Порядок вывода')
     use_in_feed = models.BooleanField(default=False, verbose_name="Использовать в Яндекс фиде")
+    like_what = models.ManyToManyField('self', blank=True, verbose_name='Сопутствующие товары')
 
     class Meta:
         verbose_name = 'Товар'

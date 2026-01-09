@@ -140,6 +140,36 @@
                 </div>
             </div>
         </div>
+        {% if product.like_what.first %}
+        <div class="product-area related-product">
+            <div class="container">
+                <div class="row">
+                    <div class="col-12">
+                        <div class="section-title text-center m-0">
+                            <h2 class="title">Похожие товары</h2>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col">
+                        <div class="new-product-slider swiper-container slider-nav-style-1">
+                            <div class="swiper-wrapper">
+                                {% for product in product.like_what.all %}
+                                <div class="swiper-slide">
+                                    {% include "layout/productcard.html" %}
+                                </div>
+                                {% endfor %}
+                            </div>
+                            <div class="swiper-buttons">
+                                <div class="swiper-button-next"></div>
+                                <div class="swiper-button-prev"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        {% endif %}
         {% include "layout/contacts_block.html" %}
         {% include "layout/footer.html" %}
         
