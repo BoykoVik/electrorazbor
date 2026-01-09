@@ -50,60 +50,29 @@
                                 <p>В случае возникновения любых вопростов Вы всегда можете связаться с нами любым удобным способом из указанных на сайте</p>
                             </div>
                             <div id="faq" class="panel-group">
+                                {% for question in questions %}
+                                {% if forloop.first %}
                                 <div class="panel panel-default single-my-account" data-aos="fade-up" data-aos-delay="200">
                                     <div class="panel-heading my-account-title">
-                                        <h3 class="panel-title"><span>1.</span> <a data-bs-toggle="collapse" href="#my-account-1" class="collapsed" aria-expanded="true">
-                                            Я сделал заказ на сайте. Что дальше?</a></h3>
+                                        <h3 class="panel-title"><span>{{forloop.counter}}.</span> <a data-bs-toggle="collapse" href="#my-account-{{forloop.counter}}" class="collapsed" aria-expanded="true">
+                                            {{ question.question }}</a></h3>
                                     </div>
-                                    <div id="my-account-1" class="panel-collapse collapse show" data-bs-parent="#faq">
-                                        <div class="panel-body">
-                                            Если Вы оформили заказ на нашем сайте, в ближайшее время с Вами свяжется наш менеджер по телефону, указанному
-                                            Вами при оформлении заказа.<br>
-                                            В случае, если наш менеджер не перезвонил Вам - возможно Вы неверно указали свой номер телефона.
-                                        </div>
+                                    <div id="my-account-{{forloop.counter}}" class="panel-collapse collapse show" data-bs-parent="#faq">
+                                        <div class="panel-body">{{ question.answer|linebreaks }}</div>
                                     </div>
                                 </div>
+                                {% else %}
                                 <div class="panel panel-default single-my-account" data-aos="fade-up" data-aos-delay="200">
                                     <div class="panel-heading my-account-title">
-                                        <h3 class="panel-title"><span>2.</span> <a data-bs-toggle="collapse" href="#my-account-2" aria-expanded="false" class="collapsed">
-                                            Могу ли я получить консультацию по товару?</a></h3>
+                                        <h3 class="panel-title"><span>{{forloop.counter}}.</span> <a data-bs-toggle="collapse" href="#my-account-{{forloop.counter}}" aria-expanded="false" class="collapsed">
+                                            {{ question.question }}</a></h3>
                                     </div>
-                                    <div id="my-account-2" class="panel-collapse collapse" data-bs-parent="#faq">
-                                        <div class="panel-body">
-                                            Вы всегда можете получить консультацию о интересующем Вас товаре.
-                                            <br>
-                                            Для этого достаточно связаться с нами по контактам, указанным на сайте,
-                                             или зайти на страницу интересующего Вас товара, нажать "купить сейчас", оставив свой номер телефона.
-                                             Наш менеджер обязательно Вам перезвонит и проконсультирует по интересующему товару.
-                                        </div>
+                                    <div id="my-account-{{forloop.counter}}" class="panel-collapse collapse" data-bs-parent="#faq">
+                                        <div class="panel-body">{{ question.answer|linebreaks }}</div>
                                     </div>
                                 </div>
-                                <div class="panel panel-default single-my-account" data-aos="fade-up" data-aos-delay="200">
-                                    <div class="panel-heading my-account-title">
-                                        <h3 class="panel-title"><span>3 .</span> <a data-bs-toggle="collapse" href="#my-account-3">
-                                            Как долго доставляется товар?
-                                        </a></h3>
-                                    </div>
-                                    <div id="my-account-3" class="panel-collapse collapse" data-bs-parent="#faq">
-                                        <div class="panel-body">
-                                            Срок доставки зависит от времени заказа и расстояния пункта назначения от нашего склада.
-                                            В пределах Москвы и области доставка осуществляется за 1-2 дня. Срок доставки в остальные регионы 
-                                            уточняйте у менеджера.
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="panel panel-default single-my-account" data-aos="fade-up" data-aos-delay="200">
-                                    <div class="panel-heading my-account-title">
-                                        <h3 class="panel-title"><span>4 .</span> <a data-bs-toggle="collapse" href="#my-account-4">
-                                            Сколько стоит доставка?
-                                        </a></h3>
-                                    </div>
-                                    <div id="my-account-4" class="panel-collapse collapse" data-bs-parent="#faq">
-                                        <div class="panel-body">Стоимость доставки зависит от службы доставки и расстояния до пункта назначения. 
-                                            Вы оплачиваете только их услуги доставки. Дополнительных комиссий за доставку мы не начисляем.
-                                        </div>
-                                    </div>
-                                </div>
+                                {% endif %}
+                                {% endfor %}
                             </div>
                         </div>
                     </div>

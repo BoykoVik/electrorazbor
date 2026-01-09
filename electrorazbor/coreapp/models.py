@@ -58,3 +58,166 @@ class Holdmerequest(models.Model):
         """Возвращает первое изображение связанного продукта"""
         first_image = self.product.productimages.first()
         return first_image.image if first_image else None
+
+# Контакты продвинутые
+'''
+from django.db import models
+from django.utils.html import format_html
+import re
+
+class Contact(models.Model):
+    
+    CONTACT_TYPES = [
+        ('phone', 'Телефон'),
+        ('whatsapp', 'WhatsApp'),
+        ('telegram', 'Telegram'),
+        ('address', 'Адрес'),
+        ('worktime', 'Время работы'),
+        ('email', 'Email'),
+        ('vk', 'VKontakte'),
+        ('instagram', 'Instagram'),
+        ('other', 'Другое'),
+    ]
+    
+    contact_type = models.CharField(max_length=20, choices=CONTACT_TYPES, verbose_name='Тип контакта', default='phone')
+    value = models.CharField(max_length=255, verbose_name='Значение', help_text='Введите телефон, ссылку или текст')
+    display_text = models.CharField(max_length=255, verbose_name='Текст для отображения', blank=True, help_text='Если оставить пустым, будет использовано значение')
+    order = models.PositiveIntegerField(default=0, verbose_name='Порядок', help_text='Чем меньше число, тем выше в списке')
+    is_active = models.BooleanField(default=True, verbose_name='Активно')
+    
+    class Meta:
+        verbose_name = 'Контакт'
+        verbose_name_plural = 'Контакты'
+        ordering = ['order', 'id']
+    
+    def __str__(self):
+        return f"{self.get_contact_type_display()}: {self.value}"
+    
+    def clean_phone_number(self, phone):
+        """Очистка номера телефона от лишних символов"""
+        # Убираем все нецифровые символы, кроме плюса в начале
+        cleaned = re.sub(r'[^\d+]', '', phone)
+        return cleaned
+    
+    def get_icon(self):
+        """Возвращает иконку Font Awesome в зависимости от типа"""
+        icons = {
+            'phone': 'fa-phone',
+            'whatsapp': 'fa-whatsapp',
+            'telegram': 'fa-telegram',
+            'address': 'fa-home',
+            'worktime': 'fa-clock-o',
+            'email': 'fa-envelope',
+            'vk': 'fa-vk',
+            'instagram': 'fa-instagram',
+            'other': 'fa-info-circle',
+        }
+        return icons.get(self.contact_type, 'fa-info-circle')
+    
+    def get_link(self):
+        """Формирует ссылку в зависимости от типа контакта"""
+        if not self.value:
+            return ''
+        
+        display_text = self.display_text if self.display_text else self.value
+        
+        if self.contact_type == 'phone':
+            cleaned_phone = self.clean_phone_number(self.value)
+            return format_html(
+                '<a href="tel:{phone}" style="color: black; padding-top: 20px;">'
+                '<i class="fa {icon}" style="color: #0d6efd; font-size: 24px; padding-right: 10px;"></i>'
+                '{text}</a>',
+                phone=cleaned_phone,
+                icon=self.get_icon(),
+                text=display_text
+            )
+        
+        elif self.contact_type == 'whatsapp':
+            # Для WhatsApp ссылка должна быть в международном формате без плюса
+            cleaned_phone = self.clean_phone_number(self.value)
+            if cleaned_phone.startswith('+'):
+                whatsapp_number = cleaned_phone[1:]  # Убираем плюс
+            elif cleaned_phone.startswith('8') and len(cleaned_phone) == 11:
+                whatsapp_number = '7' + cleaned_phone[1:]  # Заменяем 8 на 7
+            else:
+                whatsapp_number = cleaned_phone
+            
+            return format_html(
+                '<a href="https://wa.me/{phone}" style="color: black; padding-top: 20px;" target="_blank">'
+                '<i class="fa {icon}" style="color: #0d6efd; font-size: 24px; padding-right: 10px;"></i>'
+                '{text}</a>',
+                phone=whatsapp_number,
+                icon=self.get_icon(),
+                text=display_text
+            )
+        
+        elif self.contact_type == 'telegram':
+            # Если начинается с @, убираем его для ссылки
+            if self.value.startswith('@'):
+                username = self.value[1:]
+            else:
+                username = self.value
+            
+            return format_html(
+                '<a href="https://t.me/{username}" style="color: black; padding-top: 20px;" target="_blank">'
+                '<i class="fa {icon}" style="color: #0d6efd; font-size: 24px; padding-right: 10px;"></i>'
+                '{text}</a>',
+                username=username,
+                icon=self.get_icon(),
+                text=display_text
+            )
+        
+        elif self.contact_type == 'email':
+            return format_html(
+                '<a href="mailto:{email}" style="color: black; padding-top: 20px;">'
+                '<i class="fa {icon}" style="color: #0d6efd; font-size: 24px; padding-right: 10px;"></i>'
+                '{text}</a>',
+                email=self.value,
+                icon=self.get_icon(),
+                text=display_text
+            )
+        
+        elif self.contact_type in ['vk', 'instagram']:
+            # Для социальных сетей проверяем, есть ли https://
+            link = self.value
+            if not link.startswith(('http://', 'https://')):
+                link = f'https://{link}'
+            
+            return format_html(
+                '<a href="{link}" style="color: black; padding-top: 20px;" target="_blank">'
+                '<i class="fa {icon}" style="color: #0d6efd; font-size: 24px; padding-right: 10px;"></i>'
+                '{text}</a>',
+                link=link,
+                icon=self.get_icon(),
+                text=display_text
+            )
+        
+        else:  # address, worktime, other
+            return format_html(
+                '<div style="color: black; padding-top: 20px;">'
+                '<i class="fa {icon}" style="color: #0d6efd; font-size: 24px; padding-right: 10px;"></i>'
+                '{text}</div>',
+                icon=self.get_icon(),
+                text=display_text
+            )
+    
+    def get_link_html(self):
+        """Безопасный вывод HTML"""
+        return self.get_link()
+    get_link_html.allow_tags = True
+    get_link_html.short_description = 'Предпросмотр'
+'''
+
+class Fquestions(models.Model):
+    question = models.TextField(blank=False, null=False, max_length=80, verbose_name='Вопрос')
+    answer = models.TextField(blank=False, null=False, max_length=500, verbose_name='Ответ')
+    ranc = models.IntegerField(blank=False, default=1, verbose_name='Порядок вывода')
+    show = models.BooleanField(default=True, verbose_name='Выводить на странице')
+    
+    class Meta:
+        verbose_name = 'Частый вопрос'
+        verbose_name_plural = 'Частые вопросы'
+        ordering = ['ranc']
+
+    def __str__(self):
+        return str(self.question)

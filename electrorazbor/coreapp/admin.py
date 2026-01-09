@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import Contacts, Callrequest, Pricerequest
+from .models import Contacts, Callrequest, Pricerequest, Fquestions
 # Register your models here.
 
 @admin.register(Contacts)
@@ -14,3 +14,8 @@ class CallrequestAdmin(admin.ModelAdmin):
 @admin.register(Pricerequest)
 class PricerequestAdmin(admin.ModelAdmin):
     list_display = ("number", "qwestion",)
+
+@admin.register(Fquestions)
+class FquestionsAdmin(admin.ModelAdmin):
+    list_display = ("question", "ranc", "show",)
+    list_editable = ("ranc", "show",)

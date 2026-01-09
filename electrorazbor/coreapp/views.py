@@ -1,6 +1,6 @@
 from django.shortcuts import render, get_object_or_404
 from products.models import Categories, Products, Firms
-from .models import Contacts, Callrequest, Pricerequest, Holdmerequest
+from .models import Contacts, Callrequest, Pricerequest, Holdmerequest, Fquestions
 from django.http import JsonResponse
 from django.views.generic import TemplateView
 from django.db.models import Q
@@ -30,6 +30,7 @@ def delivery(request):
         'title': 'Доставка и самовывоз. Запчасти для электросамокатов Ninebot и Xiaomi. Недорого.',
         'description': 'Доставка и самовывоз запчастей и комплектующих для электросамокатов Ninebot и Xiaomi',
         'contacts': Contacts.objects.all(),
+        'questions': Fquestions.objects.filter(show=True),
     })
 
 def uslovija_vozvrata(request):
