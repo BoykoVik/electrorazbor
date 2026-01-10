@@ -33,9 +33,11 @@
                                     </span>
                                 </div>
                                 <div class="actions">
+                                    {% if product.show %}
                                     <button title="Add To Cart" class="action add-to-cart">
                                         <i class="pe-7s-shopbag"></i>
                                     </button>
+                                    {% endif %}
                                     <a href="{{ product.get_absolute_url }}" class="nav-link active">
                                     <button class="action" style="width: auto; font-size: 16px;">ОТКРЫТЬ</button>
                                     </a>
