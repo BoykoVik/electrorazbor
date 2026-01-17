@@ -221,3 +221,18 @@ class Fquestions(models.Model):
 
     def __str__(self):
         return str(self.question)
+    
+class Slider(models.Model):
+    text_min = models.TextField(blank=True, null=False, max_length=80, verbose_name='Мелкий текст')
+    text_big = models.TextField(blank=True, null=False, max_length=500, verbose_name='Большой текст')
+    text_button = models.TextField(blank=True, null=False, max_length=80, verbose_name='Текст кнопки')
+    image = models.ImageField(blank=True, upload_to='productsimages', verbose_name='Изображение')
+    show = models.BooleanField(default=True, verbose_name='Выводить на баннер?')
+    
+    class Meta:
+        verbose_name = 'Слайд баннера на главной'
+        verbose_name_plural = 'Слайды баннера на главной'
+        ordering = ['ranc']
+
+    def __str__(self):
+        return str(self.question)
