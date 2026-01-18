@@ -225,8 +225,11 @@ class Fquestions(models.Model):
 class Slider(models.Model):
     text_min = models.TextField(blank=True, null=False, max_length=80, verbose_name='Мелкий текст')
     text_big = models.TextField(blank=True, null=False, max_length=500, verbose_name='Большой текст')
-    text_button = models.TextField(blank=True, null=False, max_length=80, verbose_name='Текст кнопки')
-    image = models.ImageField(blank=True, upload_to='productsimages', verbose_name='Изображение')
+    text_button = models.CharField(blank=True, null=False, max_length=80, verbose_name='Текст кнопки')
+    text_link = models.CharField(blank=True, null=False, max_length=500, verbose_name='Ссылка кнопки')
+    image = models.ImageField(blank=False, upload_to='slider_images', verbose_name='Изображение фоновое', help_text='1980 на 748 пикселей')
+    image_min = models.ImageField(blank=True, upload_to='slider_images', verbose_name='Изображение маленькое', help_text='406 на 404 пикселей')
+    ranc = models.IntegerField(blank=False, default=1, verbose_name='Порядок вывода')
     show = models.BooleanField(default=True, verbose_name='Выводить на баннер?')
     
     class Meta:
@@ -235,4 +238,4 @@ class Slider(models.Model):
         ordering = ['ranc']
 
     def __str__(self):
-        return str(self.question)
+        return str(self.text_big)

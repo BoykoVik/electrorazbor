@@ -1730,7 +1730,7 @@ body.offcanvas-open {
 .hero-slide-content {
   position: relative;
   z-index: 9;
-  text-transform: capitalize;
+  /*text-transform: capitalize;*/
   text-align: left;
   margin-top: -15px;
 }

@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import Contacts, Callrequest, Pricerequest, Fquestions
+from .models import Contacts, Callrequest, Pricerequest, Fquestions, Slider
 # Register your models here.
 
 @admin.register(Contacts)
@@ -18,4 +18,9 @@ class PricerequestAdmin(admin.ModelAdmin):
 @admin.register(Fquestions)
 class FquestionsAdmin(admin.ModelAdmin):
     list_display = ("question", "ranc", "show",)
+    list_editable = ("ranc", "show",)
+
+@admin.register(Slider)
+class SliderAdmin(admin.ModelAdmin):
+    list_display = ("text_min", "id", "ranc", "show",)
     list_editable = ("ranc", "show",)

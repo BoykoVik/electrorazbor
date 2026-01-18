@@ -1,6 +1,6 @@
 from django.shortcuts import render, get_object_or_404
 from products.models import Categories, Products, Firms
-from .models import Contacts, Callrequest, Pricerequest, Holdmerequest, Fquestions
+from .models import Contacts, Callrequest, Pricerequest, Holdmerequest, Fquestions, Slider
 from django.http import JsonResponse
 from django.views.generic import TemplateView
 from django.db.models import Q
@@ -15,6 +15,7 @@ def home(request):
         'title': 'Комплектующие и запчасти для электросамокатов Ninebot и Xiaomi. Недорого.',
         'description': 'Купить запчасти и комплектующие для электросамокатов от компании Electrorazbor - тормозные диски и колодки, колеса, поворотники, фары, ручки, амортизаторы купить в Москве, цена и фото каждого товара. Заказ онлайн. Быстрая доставка.',
         'contacts': Contacts.objects.all(),
+        'slides': Slider.objects.filter(show=True),
     })
 
 def contacts(request):
