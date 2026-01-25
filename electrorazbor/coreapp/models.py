@@ -102,63 +102,74 @@ class Slider(models.Model):
 
 
 PAGES_TYPES = [
-        ('delivery', 'доставка'),
-        ('uslovija_vozvrata', 'условия возврата'),
-        ('home', 'главная'),
-    ]
+    ('delivery', 'доставка'),
+    ('uslovija_vozvrata', 'условия возврата'),
+    ('home', 'главная'),
+]
 
 class Pages(models.Model):
     page = models.CharField(max_length=20, choices=PAGES_TYPES, verbose_name='Страница')
     title = models.CharField(blank=False, max_length=180, verbose_name='title')
-    desctiption = models.TextField(blank=False, null=False, max_length=500, verbose_name='description (описание страницы)') 
+    description = models.TextField(blank=False, null=False, max_length=500, verbose_name='description (описание страницы)') 
     span = models.TextField(blank=True, null=False, max_length=500, verbose_name='Заголовок верхний')
     h1 = models.TextField(blank=True, null=False, max_length=500, verbose_name='Заголовок главный')
 
     class Meta:
         verbose_name = 'Настройка страницы'
         verbose_name_plural = 'Настройки страниц'
+    
+    def __str__(self):
+        return f"{self.get_page_display()} - {self.title}"
 
-class ImageBlock(models.Model):
-    page = models.ForeignKey(Pages, on_delete=models.CASCADE, verbose_name='Страница', related_name="imageblocks")
-    image = models.ImageField(blank=True, upload_to='pagesimages', verbose_name='Изображение', help_text='750px X 495px')
+class BaseBlock(models.Model):
+    page = models.ForeignKey(Pages, on_delete=models.CASCADE, verbose_name='Страница', related_name="%(class)s_blocks")
     ranc = models.IntegerField(blank=False, null=False, default=1, verbose_name='Порядок вывода')
+    
+    class Meta:
+        abstract = True
+        ordering = ['ranc']
 
+class ImageBlock(BaseBlock):
+    image = models.ImageField(blank=True, upload_to='pagesimages', verbose_name='Изображение', help_text='750px X 495px')
+    
     class Meta:
         verbose_name = 'Блок с изображением'
         verbose_name_plural = 'Блоки с изображением'
-        ordering = ['ranc']
+    
+    def __str__(self):
+        return f"Изображение {self.ranc}"
 
-class TextBlock(models.Model):
-    page = models.ForeignKey(Pages, on_delete=models.CASCADE, verbose_name='Страница', related_name="textblocks")
+class TextBlock(BaseBlock):
     h2 = models.TextField(blank=True, null=True, max_length=2500, verbose_name='Заголовок')
     text = models.TextField(blank=True, null=True, max_length=2500, verbose_name='Текст')
-    ranc = models.IntegerField(blank=False, null=False, default=1, verbose_name='Порядок вывода')
-
+    
     class Meta:
         verbose_name = 'Блок с текстом'
         verbose_name_plural = 'Блоки с текстом'
-        ordering = ['ranc']
+    
+    def __str__(self):
+        return f"Текст {self.ranc}"
 
-class ImageTextBlock(models.Model):
-    page = models.ForeignKey(Pages, on_delete=models.CASCADE, verbose_name='Страница', related_name="imagetextblocks")
+class ImageTextBlock(BaseBlock):
     text = models.TextField(blank=False, null=False, max_length=2500, verbose_name='Текст')
-    image = models.ImageField(blank=False, upload_to='pagesimages', verbose_name='Изображение', help_text='750px X 495px')
-    ranc = models.IntegerField(blank=False, null=False, default=1, verbose_name='Порядок вывода')
-
+    image = models.ImageField(blank=False, upload_to='pagesimages', verbose_name='Изображение', help_text='370px X 400px')
+    
     class Meta:
         verbose_name = 'Блок с текстом и изображением'
         verbose_name_plural = 'Блоки с текстом и изображением'
-        ordering = ['ranc']
+    
+    def __str__(self):
+        return f"Текст+Изображение {self.ranc}"
 
-class VideoBlock(models.Model):
-    page = models.ForeignKey(Pages, on_delete=models.CASCADE, verbose_name='Страница', related_name="videoblocks")
+class VideoBlock(BaseBlock):
     frame = models.TextField(blank=True, null=True, max_length=2500, verbose_name='Код видео', help_text='Обязательно заменить на значения width="100%" height="400"')
-    ranc = models.IntegerField(blank=False, null=False, default=1, verbose_name='Порядок вывода')
-
+    
     class Meta:
         verbose_name = 'Блок с видео'
         verbose_name_plural = 'Блоки с видео'
-        ordering = ['ranc']
+    
+    def __str__(self):
+        return f"Видео {self.ranc}"
 # Контакты продвинутые
 '''
 from django.db import models

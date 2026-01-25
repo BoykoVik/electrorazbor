@@ -25,15 +25,56 @@ class SliderAdmin(admin.ModelAdmin):
     list_display = ("text_min", "id", "ranc", "show",)
     list_editable = ("ranc", "show",)
 
-class TextBlockInline(admin.StackedInline):
-    extra = 1
-    model = TextBlock
-
-class ImageBlockInline(admin.StackedInline):
-    extra = 1
+class ImageBlockInline(admin.TabularInline):
     model = ImageBlock
+    extra = 1
+    verbose_name = "Блок с изображением"
+    verbose_name_plural = "Блоки с изображениями"
+
+class TextBlockInline(admin.TabularInline):
+    model = TextBlock
+    extra = 1
+    verbose_name = "Текстовый блок"
+    verbose_name_plural = "Текстовые блоки"
+
+class ImageTextBlockInline(admin.TabularInline):
+    model = ImageTextBlock
+    extra = 1
+    verbose_name = "Блок с текстом и изображением"
+    verbose_name_plural = "Блоки с текстом и изображением"
+
+class VideoBlockInline(admin.TabularInline):
+    model = VideoBlock
+    extra = 1
+    verbose_name = "Видео блок"
+    verbose_name_plural = "Видео блоки"
 
 @admin.register(Pages)
 class PagesAdmin(admin.ModelAdmin):
-    list_display = ("title", "page",)
-    inlines =(TextBlockInline, ImageBlockInline,)
+    list_display = ("title", "page", "blocks_count")
+    list_filter = ("page",)
+    search_fields = ("title", "description", "h1")
+    
+    # Группируем инлайны
+    inlines = [TextBlockInline, ImageBlockInline, ImageTextBlockInline, VideoBlockInline]
+    
+    def blocks_count(self, obj):
+        """Показывает общее количество блоков на странице"""
+        total = 0
+        total += obj.imageblock_set.count() if hasattr(obj, 'imageblock_set') else 0
+        total += obj.textblock_set.count() if hasattr(obj, 'textblock_set') else 0
+        total += obj.imagetextblock_set.count() if hasattr(obj, 'imagetextblock_set') else 0
+        total += obj.videoblock_set.count() if hasattr(obj, 'videoblock_set') else 0
+        return total
+    
+    blocks_count.short_description = "Всего блоков"
+    
+    fieldsets = (
+        ('Мета-информация', {
+            'fields': ('page', 'title', 'description')
+        }),
+        ('Заголовки страницы', {
+            'fields': ('span', 'h1'),
+            'classes': ('wide',)
+        }),
+    )
