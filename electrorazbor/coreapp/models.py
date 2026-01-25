@@ -59,6 +59,106 @@ class Holdmerequest(models.Model):
         first_image = self.product.productimages.first()
         return first_image.image if first_image else None
 
+class Fquestions(models.Model):
+    question = models.TextField(blank=False, null=False, max_length=80, verbose_name='Вопрос')
+    answer = models.TextField(blank=False, null=False, max_length=500, verbose_name='Ответ')
+    ranc = models.IntegerField(blank=False, default=1, verbose_name='Порядок вывода')
+    show = models.BooleanField(default=True, verbose_name='Выводить на странице')
+    
+    class Meta:
+        verbose_name = 'Частый вопрос'
+        verbose_name_plural = 'Частые вопросы'
+        ordering = ['ranc']
+
+    def __str__(self):
+        return str(self.question)
+    
+class Slider(models.Model):
+    text_min = models.TextField(blank=True, null=False, max_length=80, verbose_name='Мелкий текст')
+    text_big = models.TextField(blank=True, null=False, max_length=500, verbose_name='Большой текст')
+    text_button = models.CharField(blank=True, null=False, max_length=80, verbose_name='Текст кнопки')
+    text_link = models.CharField(blank=True, null=False, max_length=500, verbose_name='Ссылка кнопки')
+    image = models.ImageField(blank=False, upload_to='slider_images', verbose_name='Изображение фоновое', help_text='1980 на 748 пикселей')
+    image_min = models.ImageField(blank=True, upload_to='slider_images', verbose_name='Изображение маленькое', help_text='406 на 404 пикселей')
+    ranc = models.IntegerField(blank=False, default=1, verbose_name='Порядок вывода')
+    show = models.BooleanField(default=True, verbose_name='Выводить на баннер?')
+    
+    class Meta:
+        verbose_name = 'Слайд баннера на главной'
+        verbose_name_plural = 'Слайды баннера на главной'
+        ordering = ['ranc']
+
+    def __str__(self):
+        return str(self.text_big)
+    
+
+
+
+
+
+
+
+
+
+
+PAGES_TYPES = [
+        ('delivery', 'доставка'),
+        ('uslovija_vozvrata', 'условия возврата'),
+        ('home', 'главная'),
+    ]
+
+class Pages(models.Model):
+    page = models.CharField(max_length=20, choices=PAGES_TYPES, verbose_name='Страница')
+    title = models.CharField(blank=False, max_length=180, verbose_name='title')
+    desctiption = models.TextField(blank=False, null=False, max_length=500, verbose_name='description (описание страницы)') 
+    span = models.TextField(blank=True, null=False, max_length=500, verbose_name='Заголовок верхний')
+    h1 = models.TextField(blank=True, null=False, max_length=500, verbose_name='Заголовок главный')
+
+    class Meta:
+        verbose_name = 'Настройка страницы'
+        verbose_name_plural = 'Настройки страниц'
+
+class ImageBlock(models.Model):
+    page = models.ForeignKey(Pages, on_delete=models.CASCADE, verbose_name='Страница', related_name="imageblocks")
+    image = models.ImageField(blank=True, upload_to='pagesimages', verbose_name='Изображение', help_text='750px X 495px')
+    ranc = models.IntegerField(blank=False, null=False, default=1, verbose_name='Порядок вывода')
+
+    class Meta:
+        verbose_name = 'Блок с изображением'
+        verbose_name_plural = 'Блоки с изображением'
+        ordering = ['ranc']
+
+class TextBlock(models.Model):
+    page = models.ForeignKey(Pages, on_delete=models.CASCADE, verbose_name='Страница', related_name="textblocks")
+    h2 = models.TextField(blank=True, null=True, max_length=2500, verbose_name='Заголовок')
+    text = models.TextField(blank=True, null=True, max_length=2500, verbose_name='Текст')
+    ranc = models.IntegerField(blank=False, null=False, default=1, verbose_name='Порядок вывода')
+
+    class Meta:
+        verbose_name = 'Блок с текстом'
+        verbose_name_plural = 'Блоки с текстом'
+        ordering = ['ranc']
+
+class ImageTextBlock(models.Model):
+    page = models.ForeignKey(Pages, on_delete=models.CASCADE, verbose_name='Страница', related_name="imagetextblocks")
+    text = models.TextField(blank=False, null=False, max_length=2500, verbose_name='Текст')
+    image = models.ImageField(blank=False, upload_to='pagesimages', verbose_name='Изображение', help_text='750px X 495px')
+    ranc = models.IntegerField(blank=False, null=False, default=1, verbose_name='Порядок вывода')
+
+    class Meta:
+        verbose_name = 'Блок с текстом и изображением'
+        verbose_name_plural = 'Блоки с текстом и изображением'
+        ordering = ['ranc']
+
+class VideoBlock(models.Model):
+    page = models.ForeignKey(Pages, on_delete=models.CASCADE, verbose_name='Страница', related_name="videoblocks")
+    frame = models.TextField(blank=True, null=True, max_length=2500, verbose_name='Код видео', help_text='Обязательно заменить на значения width="100%" height="400"')
+    ranc = models.IntegerField(blank=False, null=False, default=1, verbose_name='Порядок вывода')
+
+    class Meta:
+        verbose_name = 'Блок с видео'
+        verbose_name_plural = 'Блоки с видео'
+        ordering = ['ranc']
 # Контакты продвинутые
 '''
 from django.db import models
@@ -208,93 +308,3 @@ class Contact(models.Model):
     get_link_html.short_description = 'Предпросмотр'
 '''
 
-class Fquestions(models.Model):
-    question = models.TextField(blank=False, null=False, max_length=80, verbose_name='Вопрос')
-    answer = models.TextField(blank=False, null=False, max_length=500, verbose_name='Ответ')
-    ranc = models.IntegerField(blank=False, default=1, verbose_name='Порядок вывода')
-    show = models.BooleanField(default=True, verbose_name='Выводить на странице')
-    
-    class Meta:
-        verbose_name = 'Частый вопрос'
-        verbose_name_plural = 'Частые вопросы'
-        ordering = ['ranc']
-
-    def __str__(self):
-        return str(self.question)
-    
-class Slider(models.Model):
-    text_min = models.TextField(blank=True, null=False, max_length=80, verbose_name='Мелкий текст')
-    text_big = models.TextField(blank=True, null=False, max_length=500, verbose_name='Большой текст')
-    text_button = models.CharField(blank=True, null=False, max_length=80, verbose_name='Текст кнопки')
-    text_link = models.CharField(blank=True, null=False, max_length=500, verbose_name='Ссылка кнопки')
-    image = models.ImageField(blank=False, upload_to='slider_images', verbose_name='Изображение фоновое', help_text='1980 на 748 пикселей')
-    image_min = models.ImageField(blank=True, upload_to='slider_images', verbose_name='Изображение маленькое', help_text='406 на 404 пикселей')
-    ranc = models.IntegerField(blank=False, default=1, verbose_name='Порядок вывода')
-    show = models.BooleanField(default=True, verbose_name='Выводить на баннер?')
-    
-    class Meta:
-        verbose_name = 'Слайд баннера на главной'
-        verbose_name_plural = 'Слайды баннера на главной'
-        ordering = ['ranc']
-
-    def __str__(self):
-        return str(self.text_big)
-    
-PAGES_TYPES = [
-        ('delivery', 'доставка'),
-        ('uslovija_vozvrata', 'условия возврата'),
-        ('home', 'главная'),
-    ]
-
-class Pages(models.Model):
-    contact_type = models.CharField(max_length=20, choices=PAGES_TYPES, verbose_name='Страница')
-    title = models.CharField(blank=False, max_length=180, verbose_name='title')
-    desctiption = models.TextField(blank=False, null=False, max_length=500, verbose_name='description (описание страницы)') 
-    span = models.TextField(blank=True, null=False, max_length=500, verbose_name='Заголовок верхний')
-    h1 = models.TextField(blank=True, null=False, max_length=500, verbose_name='Заголовок главный')
-
-    class Meta:
-        verbose_name = 'Настройка страницы'
-        verbose_name_plural = 'Настройки страниц'
-
-class ImageBlock(models.Model):
-    page = models.ForeignKey(Pages, on_delete=models.CASCADE, verbose_name='Страница', related_name="imageblocks")
-    image = models.ImageField(blank=True, upload_to='pagesimages', verbose_name='Изображение', help_text='750px X 495px')
-    rang = models.IntegerField(blank=False, null=False, default=1, verbose_name='Порядок вывода')
-
-    class Meta:
-        verbose_name = 'Блок с изображением'
-        verbose_name_plural = 'Блоки с изображением'
-        ordering = ['ranc']
-
-class TextBlock(models.Model):
-    page = models.ForeignKey(Pages, on_delete=models.CASCADE, verbose_name='Страница', related_name="textblocks")
-    h2 = models.TextField(blank=True, null=True, max_length=2500, verbose_name='Заголовок')
-    text = models.TextField(blank=True, null=True, max_length=2500, verbose_name='Текст')
-    rang = models.IntegerField(blank=False, null=False, default=1, verbose_name='Порядок вывода')
-
-    class Meta:
-        verbose_name = 'Блок с текстом'
-        verbose_name_plural = 'Блоки с текстом'
-        ordering = ['ranc']
-
-class ImageTextBlock(models.Model):
-    page = models.ForeignKey(Pages, on_delete=models.CASCADE, verbose_name='Страница', related_name="imagetextblocks")
-    text = models.TextField(blank=False, null=False, max_length=2500, verbose_name='Текст')
-    image = models.ImageField(blank=False, upload_to='pagesimages', verbose_name='Изображение', help_text='750px X 495px')
-    rang = models.IntegerField(blank=False, null=False, default=1, verbose_name='Порядок вывода')
-
-    class Meta:
-        verbose_name = 'Блок с текстом и изображением'
-        verbose_name_plural = 'Блоки с текстом и изображением'
-        ordering = ['ranc']
-
-class VideoBlock(models.Model):
-    page = models.ForeignKey(Pages, on_delete=models.CASCADE, verbose_name='Страница', related_name="videoblocks")
-    frame = models.TextField(blank=True, null=True, max_length=2500, verbose_name='Код видео', help_text='Обязательно заменить на значения width="100%" height="400"')
-    rang = models.IntegerField(blank=False, null=False, default=1, verbose_name='Порядок вывода')
-
-    class Meta:
-        verbose_name = 'Блок с видео'
-        verbose_name_plural = 'Блоки с видео'
-        ordering = ['ranc']

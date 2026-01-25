@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import Contacts, Callrequest, Pricerequest, Fquestions, Slider
+from .models import Contacts, Callrequest, Pricerequest, Fquestions, Slider, Pages, TextBlock, ImageBlock, ImageTextBlock, VideoBlock
 # Register your models here.
 
 @admin.register(Contacts)
@@ -24,3 +24,16 @@ class FquestionsAdmin(admin.ModelAdmin):
 class SliderAdmin(admin.ModelAdmin):
     list_display = ("text_min", "id", "ranc", "show",)
     list_editable = ("ranc", "show",)
+
+class TextBlockInline(admin.StackedInline):
+    extra = 1
+    model = TextBlock
+
+class ImageBlockInline(admin.StackedInline):
+    extra = 1
+    model = ImageBlock
+
+@admin.register(Pages)
+class PagesAdmin(admin.ModelAdmin):
+    list_display = ("title", "page",)
+    inlines =(TextBlockInline, ImageBlockInline,)
