@@ -1,0 +1,39 @@
+{% load static %}
+{% load thumbnail %}
+{% include "layout/head.html" %}
+<body>
+    <div class="main-wrapper">
+        {% include "layout/header.html" %}
+        <div class="offcanvas-overlay"></div>
+        <div id="offcanvas-mobile-menu" class="offcanvas offcanvas-mobile-menu">
+            <button class="offcanvas-close"></button>
+            <div class="user-panel">
+                <ul>
+                    {% include "layout/contactsblock.html" %}
+                </ul>
+            </div>
+            <div class="inner customScroll">
+                <div class="offcanvas-menu mb-4">
+                    <ul>
+                        {% include "layout/menu.html" %}
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <div class="product-details-area pt-100px pb-100px">
+            <div class="container">
+
+
+                
+            </div>
+        </div>
+
+        {% include "layout/contacts_block.html" %}
+        {% include "layout/footer.html" %}
+        
+    </div>
+    {% include "layout/scripts.html" %}
+    {% include "layout/popup.html" %}
+    <script src="{% static 'js/cartdetail.js'%}"></script>
+</body>
+</html>
