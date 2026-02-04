@@ -107,6 +107,11 @@ PAGES_TYPES = [
     ('home', 'главная'),
 ]
 
+IMAGE_SIDES = [
+    ('left', 'слева'),
+    ('right', 'справа'),
+]
+
 class Pages(models.Model):
     page = models.CharField(max_length=20, choices=PAGES_TYPES, verbose_name='Страница')
     title = models.CharField(blank=False, max_length=180, verbose_name='title')
@@ -151,8 +156,10 @@ class TextBlock(BaseBlock):
         return f"Текст {self.ranc}"
 
 class ImageTextBlock(BaseBlock):
+    h2 = models.TextField(blank=True, null=True, max_length=2500, verbose_name='Заголовок')
     text = models.TextField(blank=False, null=False, max_length=2500, verbose_name='Текст')
     image = models.ImageField(blank=False, upload_to='pagesimages', verbose_name='Изображение', help_text='370px X 400px')
+    side = models.CharField(max_length=20, blank=False, null=False, default='right', choices=IMAGE_SIDES, verbose_name='Положение изображения')
     
     class Meta:
         verbose_name = 'Блок с текстом и изображением'
@@ -162,8 +169,8 @@ class ImageTextBlock(BaseBlock):
         return f"Текст+Изображение {self.ranc}"
 
 class VideoBlock(BaseBlock):
+    h2 = models.TextField(blank=True, null=True, max_length=2500, verbose_name='Заголовок')
     frame = models.TextField(blank=True, null=True, max_length=2500, verbose_name='Код видео', help_text='Обязательно заменить на значения width="100%" height="400"')
-    
     class Meta:
         verbose_name = 'Блок с видео'
         verbose_name_plural = 'Блоки с видео'
