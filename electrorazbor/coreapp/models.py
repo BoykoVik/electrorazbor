@@ -125,6 +125,27 @@ class Pages(models.Model):
     
     def __str__(self):
         return f"{self.get_page_display()} - {self.title}"
+    
+    def get_all_blocks_sorted(self):
+        """Получить ВСЕ блоки страницы, отсортированные по ranc"""
+        # Собираем все блоки в один список
+        blocks = []
+        blocks.extend(list(self.imageblock_blocks.all()))
+        blocks.extend(list(self.textblock_blocks.all()))
+        blocks.extend(list(self.imagetextblock_blocks.all()))
+        blocks.extend(list(self.videoblock_blocks.all()))
+        
+        # Сортируем по полю ranc
+        return sorted(blocks, key=lambda x: x.ranc)
+    
+    def get_blocks_grouped_sorted(self):
+        """Получить блоки сгруппированные по типу и отсортированные внутри групп"""
+        return {
+            'image_blocks': self.imageblock_blocks.all(),
+            'text_blocks': self.textblock_blocks.all(),
+            'image_text_blocks': self.imagetextblock_blocks.all(),
+            'video_blocks': self.videoblock_blocks.all(),
+        }
 
 class BaseBlock(models.Model):
     page = models.ForeignKey(Pages, on_delete=models.CASCADE, verbose_name='Страница', related_name="%(class)s_blocks")
@@ -133,6 +154,18 @@ class BaseBlock(models.Model):
     class Meta:
         abstract = True
         ordering = ['ranc']
+
+    def get_block_type(self):
+        """Определяет тип блока для шаблона"""
+        if hasattr(self, 'image') and hasattr(self, 'text') and hasattr(self, 'side'):
+            return 'ImageTextBlock'
+        elif hasattr(self, 'frame'):
+            return 'VideoBlock'
+        elif hasattr(self, 'image'):
+            return 'ImageBlock'
+        elif hasattr(self, 'text'):
+            return 'TextBlock'
+        return 'Unknown'
 
 class ImageBlock(BaseBlock):
     image = models.ImageField(blank=True, upload_to='pagesimages', verbose_name='Изображение', help_text='750px X 495px')

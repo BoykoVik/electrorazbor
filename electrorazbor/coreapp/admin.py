@@ -1,4 +1,5 @@
 from django.contrib import admin
+from django import forms
 from .models import Contacts, Callrequest, Pricerequest, Fquestions, Slider, Pages, TextBlock, ImageBlock, ImageTextBlock, VideoBlock
 # Register your models here.
 
@@ -43,11 +44,13 @@ class ImageTextBlockInline(admin.TabularInline):
     verbose_name = "Блок с текстом и изображением"
     verbose_name_plural = "Блоки с текстом и изображением"
 
-class VideoBlockInline(admin.TabularInline):
+class VideoBlockInline(admin.StackedInline):
     model = VideoBlock
     extra = 1
     verbose_name = "Видео блок"
     verbose_name_plural = "Видео блоки"
+
+
 
 @admin.register(Pages)
 class PagesAdmin(admin.ModelAdmin):

@@ -73,6 +73,20 @@
                 </div>
             </div>
         </div>
+
+        {% for block in all_blocks %}
+    {% if block.get_block_type == 'ImageBlock' %}
+        ImageBlock <br>
+    {% elif block.get_block_type == 'TextBlock' %}
+        TextBlock <br>
+    {% elif block.get_block_type == 'ImageTextBlock' %}
+    ImageTextBlock <br>
+    {% elif block.get_block_type == 'VideoBlock' %}
+        VideoBlock <br>
+    {% endif %}
+        {% endfor %}
+
+
         {% include "layout/footer.html" %}
     </div>
     {% include "layout/scripts.html" %}

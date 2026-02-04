@@ -1,6 +1,6 @@
 from django.shortcuts import render, get_object_or_404
 from products.models import Categories, Products, Firms
-from .models import Contacts, Callrequest, Pricerequest, Holdmerequest, Fquestions, Slider
+from .models import Contacts, Callrequest, Pricerequest, Holdmerequest, Fquestions, Slider, Pages
 from django.http import JsonResponse
 from django.views.generic import TemplateView
 from django.db.models import Q
@@ -9,6 +9,7 @@ import datetime
 from django.views.decorators.csrf import ensure_csrf_cookie
 # Create your views here.
 def home(request):
+    home_page = Pages.objects.filter(page='home').first()
     return render(request, 'coreapp/home.html', {
         'firms': Firms.objects.all(),
         'products': Products.objects.filter(in_top=True),
@@ -16,6 +17,8 @@ def home(request):
         'description': 'Купить запчасти и комплектующие для электросамокатов от компании Electrorazbor - тормозные диски и колодки, колеса, поворотники, фары, ручки, амортизаторы купить в Москве, цена и фото каждого товара. Заказ онлайн. Быстрая доставка.',
         'contacts': Contacts.objects.all(),
         'slides': Slider.objects.filter(show=True),
+        'home_page': home_page,
+        'all_blocks': home_page.get_all_blocks_sorted() if home_page else [],
     })
 
 def contacts(request):
