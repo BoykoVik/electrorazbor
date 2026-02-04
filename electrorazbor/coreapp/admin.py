@@ -60,11 +60,16 @@ class PagesAdmin(admin.ModelAdmin):
     
     def blocks_count(self, obj):
         """Показывает общее количество блоков на странице"""
+        # Используйте правильные related_name
         total = 0
-        total += obj.imageblock_set.count() if hasattr(obj, 'imageblock_set') else 0
-        total += obj.textblock_set.count() if hasattr(obj, 'textblock_set') else 0
-        total += obj.imagetextblock_set.count() if hasattr(obj, 'imagetextblock_set') else 0
-        total += obj.videoblock_set.count() if hasattr(obj, 'videoblock_set') else 0
+        # imageblock_blocks вместо imageblock_set
+        total += obj.imageblock_blocks.count() if hasattr(obj, 'imageblock_blocks') else 0
+        # textblock_blocks вместо textblock_set
+        total += obj.textblock_blocks.count() if hasattr(obj, 'textblock_blocks') else 0
+        # imagetextblock_blocks вместо imagetextblock_set
+        total += obj.imagetextblock_blocks.count() if hasattr(obj, 'imagetextblock_blocks') else 0
+        # videoblock_blocks вместо videoblock_set
+        total += obj.videoblock_blocks.count() if hasattr(obj, 'videoblock_blocks') else 0
         return total
     
     blocks_count.short_description = "Всего блоков"
