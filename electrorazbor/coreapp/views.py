@@ -13,11 +13,10 @@ def home(request):
     return render(request, 'coreapp/home.html', {
         'firms': Firms.objects.all(),
         'products': Products.objects.filter(in_top=True),
-        'title': 'Комплектующие и запчасти для электросамокатов Ninebot и Xiaomi. Недорого.',
-        'description': 'Купить запчасти и комплектующие для электросамокатов от компании Electrorazbor - тормозные диски и колодки, колеса, поворотники, фары, ручки, амортизаторы купить в Москве, цена и фото каждого товара. Заказ онлайн. Быстрая доставка.',
+        'title': home_page.title,
+        'description': home_page.description,
         'contacts': Contacts.objects.all(),
         'slides': Slider.objects.filter(show=True),
-        'home_page': home_page,
         'all_blocks': home_page.get_all_blocks_sorted() if home_page else [],
     })
 

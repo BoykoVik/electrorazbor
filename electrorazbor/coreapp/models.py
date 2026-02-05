@@ -169,7 +169,7 @@ class BaseBlock(models.Model):
 
 class ImageBlock(BaseBlock):
     image = models.ImageField(blank=True, upload_to='pagesimages', verbose_name='Изображение', help_text='750px X 495px')
-    
+    alt = models.TextField(blank=True, null=True, max_length=2500, verbose_name='Небольшое описание изображения для СЕО')
     class Meta:
         verbose_name = 'Блок с изображением'
         verbose_name_plural = 'Блоки с изображением'
@@ -192,6 +192,7 @@ class ImageTextBlock(BaseBlock):
     h2 = models.TextField(blank=True, null=True, max_length=2500, verbose_name='Заголовок')
     text = models.TextField(blank=False, null=False, max_length=2500, verbose_name='Текст')
     image = models.ImageField(blank=False, upload_to='pagesimages', verbose_name='Изображение', help_text='370px X 400px')
+    alt = models.TextField(blank=True, null=True, max_length=2500, verbose_name='Небольшое описание изображения для СЕО')
     side = models.CharField(max_length=20, blank=False, null=False, default='right', choices=IMAGE_SIDES, verbose_name='Положение изображения')
     
     class Meta:
