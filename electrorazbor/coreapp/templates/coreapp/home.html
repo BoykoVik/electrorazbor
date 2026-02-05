@@ -80,18 +80,7 @@
                 </div>
             </div>
         </div>
-
-        {% for block in all_blocks %}
-        {% if block.get_block_type == 'ImageBlock' %}
-        {% include "layout/image_block.html" %}
-        {% elif block.get_block_type == 'TextBlock' %}
-        {% include "layout/text_block.html" %}
-        {% elif block.get_block_type == 'ImageTextBlock' %}
-        {% include "layout/text_image_block.html" %}
-        {% elif block.get_block_type == 'VideoBlock' %}
-        {% include "layout/video_block.html" %}
-        {% endif %}
-        {% endfor %}
+        {% include "layout/blocks.html" %}
         {% include "layout/footer.html" %}
     </div>
     {% include "layout/scripts.html" %}
