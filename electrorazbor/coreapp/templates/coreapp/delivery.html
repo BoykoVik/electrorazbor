@@ -20,29 +20,39 @@
             </div>
         </div>
 
-        <div class="about-area pt-100px">
+        <div class="about-area pt-100px mb-30px">
             <div class="container">
                 <div class="row">
                     <div class="col-12">
                         <div class="about-wrapper text-center">
                             <div class="about-contant">
                                 <h1 class="title">
+                                    {% if page.span %}
+                                    <span>{{ page.span }}</span>
+                                    {% else %}
                                     <span>Запчасти и комплектующее для электросамокатов</span>
+                                    {% endif %}
+                                    {% if page.h1 %}
+                                    {{ page.h1 }}
+                                    {% else %}
                                     Доставка
+                                    {% endif %}
                                 </h1>
+                                {% comment %}
                                 <p>Забрать товар самовывозом можно в Москве, по адресу указанному в контактах (<span style="text-decoration-line: underline;">предварительно предупредить</span>), а так же осуществляем доставку по всей территории РФ.</p>
                                 <p>Для получения информации о точной стоимости и сроках доставки наш менеджер свяжется с вами после оформления заказа.</p>
+                                {% endcomment %}
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
-
+        {% include "layout/blocks.html" %}
         <div class="login-register-area pt-100px faq-area">
             <div class="container">
                 <div class="row">
-                    <div class="ml-auto mr-auto col-lg-10">
+                    <div class="ml-auto mr-auto col-lg-12">
                         <div class="checkout-wrapper">
                             <div class="inner-descripe" data-aos="fade-up" data-aos-delay="200">
                                 <h2 class="title">Частые вопросы наших клиентов

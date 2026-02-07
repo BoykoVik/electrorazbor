@@ -157,7 +157,7 @@ class BaseBlock(models.Model):
 
     def get_block_type(self):
         """Определяет тип блока для шаблона"""
-        if hasattr(self, 'image') and hasattr(self, 'text') and hasattr(self, 'side'):
+        if hasattr(self, 'image') and hasattr(self, 'text'):
             return 'ImageTextBlock'
         elif hasattr(self, 'frame'):
             return 'VideoBlock'
@@ -193,7 +193,6 @@ class ImageTextBlock(BaseBlock):
     text = models.TextField(blank=False, null=False, max_length=2500, verbose_name='Текст')
     image = models.ImageField(blank=False, upload_to='pagesimages', verbose_name='Изображение', help_text='370px X 400px')
     alt = models.TextField(blank=True, null=True, max_length=2500, verbose_name='Небольшое описание изображения для СЕО')
-    side = models.CharField(max_length=20, blank=False, null=False, default='right', choices=IMAGE_SIDES, verbose_name='Положение изображения')
     
     class Meta:
         verbose_name = 'Блок с текстом и изображением'

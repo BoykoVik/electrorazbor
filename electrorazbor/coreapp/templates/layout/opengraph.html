@@ -40,4 +40,6 @@
 <meta name="twitter:description" content="{% if product %}{{ product.about|striptags|truncatechars:200 }}{% else %}{{ description|striptags|truncatechars:200 }}{% endif %}">
 <meta name="twitter:image" content="https://{{ request.get_host }}{% if product and product.productimages.first %}{{ product.productimages.first.image.url }}{% else %}{% static 'electrorazbor.png' %}{% endif %}">
 <meta name="twitter:image:alt" content="{% if product %}{{ product.name|truncatechars:100 }}{% else %}{{ title|default:"Electrorazbor.ru" }}{% endif %}">
+{% comment %}
 <meta name="description" content="{% if product %}{{ product.about|striptags|truncatechars:160 }}{% else %}{{ description|striptags|truncatechars:160 }}{% endif %}">
+{% endcomment %}

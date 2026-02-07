@@ -9,15 +9,15 @@ import datetime
 from django.views.decorators.csrf import ensure_csrf_cookie
 # Create your views here.
 def home(request):
-    home_page = Pages.objects.filter(page='home').first()
+    page = Pages.objects.filter(page='home').first()
     return render(request, 'coreapp/home.html', {
         'firms': Firms.objects.all(),
         'products': Products.objects.filter(in_top=True),
-        'title': home_page.title,
-        'description': home_page.description,
+        'title': page.title,
+        'description': page.description,
         'contacts': Contacts.objects.all(),
         'slides': Slider.objects.filter(show=True),
-        'all_blocks': home_page.get_all_blocks_sorted() if home_page else [],
+        'all_blocks': page.get_all_blocks_sorted() if page else [],
     })
 
 def contacts(request):
@@ -29,18 +29,24 @@ def contacts(request):
     })
 
 def delivery(request):
+    page = Pages.objects.filter(page='delivery').first()
     return render(request, 'coreapp/delivery.html', {
-        'title': 'Доставка и самовывоз. Запчасти для электросамокатов Ninebot и Xiaomi. Недорого.',
-        'description': 'Доставка и самовывоз запчастей и комплектующих для электросамокатов Ninebot и Xiaomi',
+        'title': page.title if page else 'Доставка и самовывоз запчастей и комплектующих для электросамокатов Ninebot и Xiaomi',
+        'description': page.description if page else 'Доставка и самовывоз запчастей и комплектующих для электросамокатов Ninebot и Xiaomi',
         'contacts': Contacts.objects.all(),
         'questions': Fquestions.objects.filter(show=True),
+        'all_blocks': page.get_all_blocks_sorted() if page else [],
+        'page': page,
     })
 
 def uslovija_vozvrata(request):
+    page = Pages.objects.filter(page='uslovija_vozvrata').first()
     return render(request, 'coreapp/uslovija_vozvrata.html', {
-        'title': 'Условия возврата и обмена. Запчасти для электросамокатов Ninebot и Xiaomi. Недорого.',
-        'description': 'Условия возврата и обмена запчастей и комплектующих для электросамокатов Ninebot и Xiaomi',
+        'title': page.title if page else 'Условия возврата и обмена. Запчасти для электросамокатов Ninebot и Xiaomi. Недорого.',
+        'description': page.description if page else 'Условия возврата и обмена запчастей и комплектующих для электросамокатов Ninebot и Xiaomi',
         'contacts': Contacts.objects.all(),
+        'all_blocks': page.get_all_blocks_sorted() if page else [],
+        'page': page,
     })
 
 def price_opt(request):

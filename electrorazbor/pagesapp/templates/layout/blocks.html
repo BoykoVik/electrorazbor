@@ -1,11 +1,23 @@
-{% for block in all_blocks %}
-    {% if block.get_block_type == 'ImageBlock' %}
-        {% include "layout/image_block.html" %}
-    {% elif block.get_block_type == 'TextBlock' %}
-        {% include "layout/text_block.html" %}
-    {% elif block.get_block_type == 'ImageTextBlock' %}
-        {% include "layout/text_image_block.html" %}
-    {% elif block.get_block_type == 'VideoBlock' %}
-        {% include "layout/video_block.html" %}
-    {% endif %}
-{% endfor %}
+<div class="blog-grid main-blog-page single-blog-page">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-12 col-md-12">
+                <div class="blog-posts">
+                    <div class="single-blog-post blog-grid-post">
+                        {% for block in all_blocks %}
+                            {% if block.get_block_type == 'ImageBlock' %}
+                                {% include "layout/image_block.html" %}
+                            {% elif block.get_block_type == 'TextBlock' %}
+                                {% include "layout/text_block.html" %}
+                            {% elif block.get_block_type == 'ImageTextBlock' %}
+                                {% include "layout/text_image_block.html" %}
+                            {% elif block.get_block_type == 'VideoBlock' %}
+                                {% include "layout/video_block.html" %}
+                            {% endif %}
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

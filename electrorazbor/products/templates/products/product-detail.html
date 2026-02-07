@@ -154,7 +154,7 @@
                     <div class="col">
                         <div class="new-product-slider swiper-container slider-nav-style-1">
                             <div class="swiper-wrapper">
-                                {% for product in product.like_what.all %}
+                                {% for product in product.like_what.all|slice:":7" %}
                                 <div class="swiper-slide">
                                     {% include "layout/productcard.html" %}
                                 </div>

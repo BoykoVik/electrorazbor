@@ -165,4 +165,33 @@ THUMBNAIL_ALIASES = {
             'quality': 100,
         },
     },
+    # слайдер еа главной
+    'coreapp.Slider.image': {
+        'slide': {
+            'size': (1980, 748),
+            'crop': 'smart',
+            'quality': 100,
+        },
+    },
+    'coreapp.Slider.image_min': {
+        'slide_min': {
+            'size': (406, 404),
+            'crop': 'smart',
+            'quality': 100,
+        },
+    },
+    'coreapp.ImageBlock.image': {
+        'image': {
+            'size': (1170, 0),
+            'crop': 'smart',
+            'quality': 100,
+        },
+    },
+        'coreapp.ImageTextBlock.image': {
+        'image': {
+            'size': (570, 0),
+            'crop': 'smart',
+            'quality': 100,
+        },
+    },
 }
