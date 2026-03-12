@@ -26,6 +26,8 @@ class SliderAdmin(admin.ModelAdmin):
     list_display = ("text_min", "id", "ranc", "show",)
     list_editable = ("ranc", "show",)
 
+
+
 class ImageBlockInline(admin.TabularInline):
     model = ImageBlock
     extra = 1

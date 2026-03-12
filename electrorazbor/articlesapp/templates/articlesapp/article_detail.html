@@ -1,0 +1,49 @@
+{% load static %}
+{% include "layout/head.html" %}
+<body>
+    <div class="main-wrapper">
+        {% include "layout/header.html" %}
+
+        <div id="offcanvas-mobile-menu" class="offcanvas offcanvas-mobile-menu">
+            <button class="offcanvas-close"></button>
+            <div class="user-panel">
+                <ul>
+                    {% include "layout/contactsblock.html" %}
+                </ul>
+            </div>
+            <div class="inner customScroll">
+                <div class="offcanvas-menu mb-4">
+                    <ul>
+                        {% include "layout/menu.html" %}
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <div class="about-area pt-100px mb-30px">
+            <div class="container">
+                <div class="row">
+                    <div class="col-12">
+                        <div class="about-wrapper text-center">
+                            <div class="about-contant">
+                                <h1 class="title">
+                                    {% if article.span %}
+                                    <span>{{ article.span }}</span>
+                                    {% endif %}
+                                    {% if article.h1 %}
+                                    {{ article.h1 }}
+                                    {% endif %}
+                                </h1>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        {% include "layout/blocks.html" %}
+        {% include "layout/contacts_block.html" %}
+        {% include "layout/footer.html" %}
+    </div>
+    {% include "layout/scripts.html" %}
+</body>
+</html>

@@ -1,5 +1,6 @@
 from django.shortcuts import render, get_object_or_404
 from products.models import Categories, Products, Firms
+from articlesapp.models import Article
 from .models import Contacts, Callrequest, Pricerequest, Holdmerequest, Fquestions, Slider, Pages
 from django.http import JsonResponse
 from django.views.generic import TemplateView
@@ -18,6 +19,7 @@ def home(request):
         'contacts': Contacts.objects.all(),
         'slides': Slider.objects.filter(show=True),
         'all_blocks': page.get_all_blocks_sorted() if page else [],
+        'articles': Article.objects.all()[:2],
     })
 
 def contacts(request):

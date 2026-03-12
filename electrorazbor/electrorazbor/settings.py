@@ -166,7 +166,7 @@ THUMBNAIL_ALIASES = {
             'quality': 100,
         },
     },
-    # слайдер еа главной
+    # слайдер на главной
     'coreapp.Slider.image': {
         'slide': {
             'size': (1980, 748),
@@ -189,6 +189,28 @@ THUMBNAIL_ALIASES = {
         },
     },
         'coreapp.ImageTextBlock.image': {
+        'image': {
+            'size': (570, 0),
+            'crop': 'smart',
+            'quality': 100,
+        },
+    },
+    # блог
+    'articlesapp.Article.image': {
+        'card': {
+            'size': (270, 368),
+            'crop': 'smart',
+            'quality': 100,
+        },
+    },
+        'articlesapp.ImageBlock.image': {
+        'image': {
+            'size': (1170, 0),
+            'crop': 'smart',
+            'quality': 100,
+        },
+    },
+        'articlesapp.ImageTextBlock.image': {
         'image': {
             'size': (570, 0),
             'crop': 'smart',

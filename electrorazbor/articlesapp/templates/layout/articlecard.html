@@ -1,0 +1,20 @@
+{% load thumbnail %}
+<div class="col-lg-6 col-md-6 col-xl-4 mb-50px">
+    <div class="single-blog">
+        <div class="blog-image">
+            <a href="{{ article.get_absolute_url }}">
+                <img src="{{ article.image|thumbnail_url:'card' }}" class="img-responsive w-100" alt="{{ article.title }}">
+            </a>
+        </div>
+        <div class="blog-text">
+            <div class="blog-athor-date line-height-1">
+                <span class="blog-date">
+                    <i class="fa fa-calendar" aria-hidden="true"></i>
+                    {{ article.date }}</span>
+            </div>
+            <h5 class="blog-heading"><a class="blog-heading-link" href="{{ article.get_absolute_url }}">{{ article.title }}</a></h5>
+            <p style="min-height: 64px;">{{ article.about|truncatechars:70 }}</p>
+            <a href="{{ article.get_absolute_url }}" class="btn btn-primary blog-btn">Подробнее</a>
+        </div>
+    </div>
+</div>

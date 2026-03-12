@@ -1,18 +1,26 @@
 from django.db import models
-
+from django.urls import reverse
 # Create your models here.
 class Article(models.Model):
+    slug = models.SlugField(blank=False, null=False, max_length=200, unique=True, verbose_name='slug для url')
     title = models.CharField(blank=False, max_length=180, verbose_name='title')
+    image = models.ImageField(blank=False, upload_to='articles', verbose_name='Изображение карточки')
+    about = models.TextField(blank=True, null=True, max_length=1500, verbose_name='Краткое описание')
     description = models.TextField(blank=False, null=False, max_length=500, verbose_name='description (описание страницы)') 
     span = models.TextField(blank=True, null=False, max_length=500, verbose_name='Заголовок верхний')
     h1 = models.TextField(blank=True, null=False, max_length=500, verbose_name='Заголовок главный')
+    date = models.DateField(auto_now_add=True, verbose_name='Дата')
 
     class Meta:
+        ordering = ['-id']
         verbose_name = 'Статья'
         verbose_name_plural = 'Статьи'
     
     def __str__(self):
-        return f"{self.get_page_display()} - {self.title}"
+        return f"{self.title}"
+    
+    def get_absolute_url(self):
+        return reverse("articlesapp:articledetail", kwargs={"slug": self.slug})
     
     def get_all_blocks_sorted(self):
         """Получить ВСЕ блоки страницы, отсортированные по ranc"""
@@ -90,7 +98,7 @@ class ImageTextBlock(BaseBlock):
         return f"Текст+Изображение {self.ranc}"
 
 class VideoBlock(BaseBlock):
-    h2 = models.TextField(blank=True, null=True, max_length=2500, verbose_name='Заголовок')
+    h2 = models.CharField(blank=True, null=True, max_length=2500, verbose_name='Заголовок')
     frame = models.TextField(blank=True, null=True, max_length=2500, verbose_name='Код видео', help_text='Обязательно заменить на значения width="100%" height="400"')
     class Meta:
         verbose_name = 'Блок с видео'
