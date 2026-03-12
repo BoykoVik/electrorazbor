@@ -125,10 +125,12 @@ class SitemapXmlView(TemplateView):
         products = Products.objects.all()
         categories = Categories.objects.all()
         firms = Firms.objects.all()
+        articles = Article.objects.all()
         return {
             'products': products,
             'categories': categories,
             'firms': firms,
+            'articles': articles,
         }
     
 def page_not_found_view(request, exception):

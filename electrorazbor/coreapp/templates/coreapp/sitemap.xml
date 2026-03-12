@@ -28,6 +28,13 @@
     <priority>0.8</priority>
 </url>
 {% endfor %}
+{% for article in articles %}
+<url>
+    <loc>https://{{ request.get_host }}/blog/{{ article.slug }}/</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+</url>
+{% endfor %}
 <url>
     <loc>https://{{ request.get_host }}/optovii-price/</loc>
     <changefreq>weekly</changefreq>
