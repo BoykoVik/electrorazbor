@@ -107,6 +107,8 @@ class Orders(models.Model):
     phone = models.CharField(blank=False, max_length=20, verbose_name='Номер телефона')
     date = models.DateField(auto_now_add=True, verbose_name='Дата заказа')
     is_called = models.BooleanField(default=False, verbose_name='Запрос обработан')
+    comment = models.TextField(blank=True, null=True, max_length=1000, verbose_name='Комментарий к заказу')
+    comment_date = models.DateTimeField(auto_now=True, verbose_name='Дата комментария')
 
     def __str__(self):
         return str(self.id)

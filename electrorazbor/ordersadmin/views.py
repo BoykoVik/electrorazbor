@@ -2,7 +2,9 @@ from django.shortcuts import render, get_object_or_404
 from products.models import Products, Orders, Obtains
 from coreapp.models import Callrequest, Pricerequest, Holdmerequest
 from django.db.models import Sum, F
-from django.http import HttpResponseForbidden
+from django.http import HttpResponseForbidden, JsonResponse
+from django.views.decorators.http import require_POST
+import json
 # Create your views here.
 def orderslist(request):
     if not request.user.is_superuser:
@@ -30,3 +32,45 @@ def orderdetail(request, id):
     'title': f'Заказ #{order.id}',
     'description': 'админка',
     })
+
+@require_POST
+def update_order_comment(request):
+    if not request.user.is_superuser:
+        return JsonResponse({'error': 'Доступ запрещен'}, status=403)
+    
+    try:
+        data = json.loads(request.body)
+        order_id = data.get('order_id')
+        comment = data.get('comment', '').strip()
+        
+        order = get_object_or_404(Orders, id=order_id)
+        order.comment = comment
+        order.save()
+        
+        return JsonResponse({
+            'success': True,
+            'comment': order.comment,
+            'comment_date': order.comment_date.strftime('%d.%m.%Y %H:%M')
+        })
+    except Exception as e:
+        return JsonResponse({'error': str(e)}, status=400)
+
+@require_POST
+def toggle_order_status(request):
+    if not request.user.is_superuser:
+        return JsonResponse({'error': 'Доступ запрещен'}, status=403)
+    
+    try:
+        data = json.loads(request.body)
+        order_id = data.get('order_id')
+        
+        order = get_object_or_404(Orders, id=order_id)
+        order.is_called = not order.is_called
+        order.save()
+        
+        return JsonResponse({
+            'success': True,
+            'is_called': order.is_called
+        })
+    except Exception as e:
+        return JsonResponse({'error': str(e)}, status=400)
