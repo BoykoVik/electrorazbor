@@ -67,6 +67,12 @@
                         data-image="{{ product.productimages.first.image|thumbnail_url:'swipermin' }}"
                         data-url="{{ product.get_absolute_url }}">
                             <h2 itemprop="name">{{ product.name }}</h2>
+                            <div class="pro-details-rating-wrap">
+                                <div class="rating-product">
+                                    <i class="fa fa-star"></i>
+                                </div>
+                                <span class="read-review">{{ product.rating }}</span>
+                            </div>
                             <div class="pricing-meta">
                                 <ul class="d-flex">
                                     <li class="new-price">{{ product.price }} ₽</li>

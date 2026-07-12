@@ -51,6 +51,7 @@ class Products(models.Model):
     rang = models.IntegerField(blank=False, null=False, default=1, verbose_name='Порядок вывода')
     use_in_feed = models.BooleanField(default=False, verbose_name="Использовать в Яндекс фиде")
     like_what = models.ManyToManyField('self', blank=True, verbose_name='Сопутствующие товары')
+    rating = models.DecimalField(max_digits=2, decimal_places=1, blank=False, null=False, default=4.7, verbose_name='Рейтинг', help_text='Рейтинг товара')
 
     class Meta:
         verbose_name = 'Товар'
