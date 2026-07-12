@@ -23,88 +23,343 @@
   <link rel="stylesheet" href="{% static 'css/style.css' %}">
   <link rel="canonical" href="https://{{ request.get_host }}{{ request.path }}"/>
   <style>
-    .order-card {
-      transition: all 0.3s ease;
-      border-left: 4px solid #dc3545;
+    /* Компактная строка-блок заказа */
+    .order-row {
+      display: flex;
+      align-items: center;
+      padding: 10px 16px;
+      margin-bottom: 6px;
+      background: #ffffff;
+      border-radius: 8px;
+      border-left: 6px solid #dc3545;
+      box-shadow: 0 1px 4px rgba(0,0,0,0.06);
+      transition: all 0.2s ease;
+      gap: 16px;
+      flex-wrap: wrap;
     }
     
-    .order-card.processed {
+    .order-row.processed {
       border-left-color: #198754;
     }
     
-    .order-card:hover {
-      transform: translateY(-2px);
-      box-shadow: 0 8px 25px rgba(0,0,0,0.1) !important;
+    .order-row:hover {
+      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
     }
     
-    .order-info-grid {
-      background: #f8f9fa;
-      border-radius: 8px;
-      padding: 16px;
-    }
-    
-    .order-info-item .label {
-      font-size: 11px;
+    .order-row .order-id {
       font-weight: 600;
-      color: #6c757d;
-      text-transform: uppercase;
-      letter-spacing: 0.5px;
-    }
-    
-    .order-info-item .value {
-      font-size: 15px;
-      font-weight: 500;
-      color: #212529;
-    }
-    
-    .order-info-item .value.phone {
-      color: #0d6efd;
-      font-weight: 600;
-    }
-    
-    .order-info-item .value.price {
-      color: #198754;
-      font-weight: 700;
-    }
-    
-    .comment-display {
-      background: #f8f9fa;
-      border-radius: 8px;
-      padding: 12px 16px;
-      margin-bottom: 12px;
-      display: none;
-      border-left: 3px solid #dee2e6;
-    }
-    
-    .comment-display.has-comment {
-      display: block;
-      border-left-color: #0d6efd;
-    }
-    
-    .comment-display .comment-text {
-      color: #212529;
       font-size: 14px;
-      margin-bottom: 4px;
+      min-width: 80px;
+      color: #212529;
     }
     
-    .comment-display .comment-meta {
+    .order-row .order-date {
+      font-size: 13px;
       color: #6c757d;
+      min-width: 80px;
+    }
+    
+    .order-row .order-phone {
+      font-size: 14px;
+      font-weight: 500;
+      color: #0d6efd;
+      min-width: 120px;
+    }
+    
+    .order-row .order-price {
+      font-size: 14px;
+      font-weight: 600;
+      color: #198754;
+      min-width: 80px;
+    }
+    
+    .order-row .order-status {
       font-size: 12px;
+      min-width: 70px;
+    }
+    
+    .order-row .order-comment {
+      flex: 1;
+      min-width: 150px;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+    
+    .order-row .order-comment .comment-text {
+      font-size: 13px;
+      color: #6c757d;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      max-width: 200px;
+    }
+    
+    .order-row .order-comment .comment-text.has-comment {
+      color: #212529;
+    }
+    
+    .order-row .order-actions {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      margin-left: auto;
+    }
+    
+    .order-row .order-actions .btn {
+      border-radius: 6px;
+      padding: 4px 12px;
+      font-size: 13px;
+      font-weight: 500;
+    }
+    
+    .btn-comment {
+      background: transparent;
+      border: none;
+      color: #6c757d;
+      padding: 4px 6px;
+      font-size: 16px;
+      transition: all 0.2s ease;
+      cursor: pointer;
+    }
+    
+    .btn-comment:hover {
+      color: #0d6efd;
+      transform: scale(1.1);
+    }
+    
+    .btn-comment.has-comment {
+      color: #0d6efd;
+    }
+    
+    .btn-open {
+      background: #0d6efd;
+      color: white;
+      border: none;
+      padding: 4px 14px;
+      border-radius: 6px;
+      font-size: 13px;
+      font-weight: 500;
+      transition: all 0.2s ease;
+      text-decoration: none;
+    }
+    
+    .btn-open:hover {
+      background: #0b5ed7;
+      color: white;
+      transform: translateY(-1px);
+      box-shadow: 0 2px 8px rgba(13, 110, 253, 0.3);
+    }
+    
+    /* Кнопки фильтрации */
+    .filter-buttons {
+      display: flex;
+      gap: 8px;
+      margin-bottom: 16px;
+      flex-wrap: wrap;
+    }
+    
+    .filter-btn {
+      padding: 6px 18px;
+      border-radius: 20px;
+      border: 1.5px solid #dee2e6;
+      background: #ffffff;
+      color: #6c757d;
+      font-size: 13px;
+      font-weight: 500;
+      transition: all 0.2s ease;
+      cursor: pointer;
+      text-decoration: none;
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+    }
+    
+    .filter-btn:hover {
+      border-color: #0d6efd;
+      color: #0d6efd;
+    }
+    
+    .filter-btn.active {
+      background: #0d6efd;
+      border-color: #0d6efd;
+      color: #ffffff;
+    }
+    
+    .filter-btn.active-all {
+      background: #6c757d;
+      border-color: #6c757d;
+      color: #ffffff;
+    }
+    
+    .filter-btn.active-all:hover {
+      background: #5a6268;
+      border-color: #5a6268;
+    }
+    
+    .filter-btn .badge-count {
+      background: rgba(255,255,255,0.2);
+      color: inherit;
+      padding: 0 6px;
+      border-radius: 10px;
+      font-size: 11px;
+      margin-left: 4px;
+    }
+    
+    .filter-btn.active .badge-count {
+      background: rgba(255,255,255,0.25);
+    }
+    
+    .filter-btn:not(.active) .badge-count {
+      background: #e9ecef;
+      color: #6c757d;
+    }
+    
+    /* Модальное окно */
+    .comment-modal-overlay {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0,0,0,0.5);
+      z-index: 9999;
+      justify-content: center;
+      align-items: center;
+    }
+    
+    .comment-modal-overlay.active {
+      display: flex;
+    }
+    
+    .comment-modal {
+      background: #ffffff;
+      border-radius: 12px;
+      padding: 24px;
+      max-width: 500px;
+      width: 90%;
+      box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+      animation: modalFadeIn 0.3s ease;
+    }
+    
+    @keyframes modalFadeIn {
+      from {
+        opacity: 0;
+        transform: scale(0.95) translateY(-20px);
+      }
+      to {
+        opacity: 1;
+        transform: scale(1) translateY(0);
+      }
+    }
+    
+    .comment-modal-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 16px;
+    }
+    
+    .comment-modal-header h5 {
+      margin: 0;
+      font-weight: 600;
+      font-size: 18px;
+    }
+    
+    .comment-modal-close {
+      background: none;
+      border: none;
+      font-size: 24px;
+      color: #6c757d;
+      cursor: pointer;
+      padding: 0;
+      line-height: 1;
+      transition: all 0.2s ease;
+    }
+    
+    .comment-modal-close:hover {
+      color: #dc3545;
+      transform: rotate(90deg);
+    }
+    
+    .comment-modal-body textarea {
+      width: 100%;
+      min-height: 100px;
+      border-radius: 8px;
+      border: 1.5px solid #dee2e6;
+      padding: 10px 14px;
+      font-size: 14px;
+      resize: vertical;
+      transition: border-color 0.2s ease;
+    }
+    
+    .comment-modal-body textarea:focus {
+      border-color: #0d6efd;
+      outline: none;
+      box-shadow: 0 0 0 4px rgba(13, 110, 253, 0.1);
+    }
+    
+    .comment-modal-footer {
+      display: flex;
+      justify-content: flex-end;
+      gap: 10px;
+      margin-top: 16px;
+    }
+    
+    .comment-modal-footer .btn {
+      border-radius: 8px;
+      padding: 8px 24px;
+      font-weight: 500;
+      font-size: 14px;
+    }
+    
+    .btn-modal-save {
+      background: #0d6efd;
+      color: white;
+      border: none;
+      transition: all 0.2s ease;
+    }
+    
+    .btn-modal-save:hover {
+      background: #0b5ed7;
+      transform: translateY(-1px);
+      box-shadow: 0 4px 12px rgba(13, 110, 253, 0.3);
+    }
+    
+    .btn-modal-cancel {
+      background: #f8f9fa;
+      color: #6c757d;
+      border: 1px solid #dee2e6;
+      transition: all 0.2s ease;
+    }
+    
+    .btn-modal-cancel:hover {
+      background: #e9ecef;
     }
     
     .empty-state {
       text-align: center;
-      padding: 80px 20px;
+      padding: 60px 20px;
       background: #f8f9fa;
       border-radius: 12px;
       border: 2px dashed #dee2e6;
     }
     
     .empty-state i {
-      font-size: 64px;
+      font-size: 48px;
       color: #adb5bd;
-      margin-bottom: 16px;
+      margin-bottom: 12px;
       display: block;
+    }
+    
+    .empty-state h5 {
+      color: #374151;
+      font-weight: 600;
+    }
+    
+    .empty-state p {
+      color: #6b7280;
     }
     
     .toast-container {
@@ -115,7 +370,7 @@
     }
     
     .toast-custom {
-      padding: 14px 24px;
+      padding: 12px 20px;
       border-radius: 8px;
       background: #ffffff;
       box-shadow: 0 4px 20px rgba(0,0,0,0.15);
@@ -124,9 +379,9 @@
       display: flex;
       align-items: center;
       gap: 10px;
-      min-width: 280px;
+      min-width: 250px;
       font-weight: 500;
-      margin-bottom: 10px;
+      margin-bottom: 8px;
     }
     
     .toast-custom.error {
@@ -144,15 +399,59 @@
       }
     }
     
-    @media (max-width: 768px) {
-      .order-info-grid {
-        grid-template-columns: 1fr 1fr !important;
+    .order-row.hidden {
+      display: none;
+    }
+    
+    /* Адаптив */
+    @media (max-width: 992px) {
+      .order-row {
+        padding: 12px 14px;
+        gap: 10px;
+      }
+      .order-row .order-comment {
+        min-width: 120px;
+        flex: 0 1 auto;
+      }
+      .order-row .order-comment .comment-text {
+        max-width: 120px;
       }
     }
     
-    @media (max-width: 480px) {
-      .order-info-grid {
-        grid-template-columns: 1fr !important;
+    @media (max-width: 768px) {
+      .order-row {
+        flex-direction: column;
+        align-items: stretch;
+        gap: 8px;
+        padding: 14px;
+      }
+      .order-row .order-id,
+      .order-row .order-date,
+      .order-row .order-phone,
+      .order-row .order-price,
+      .order-row .order-status {
+        min-width: auto;
+      }
+      .order-row .order-comment {
+        min-width: auto;
+      }
+      .order-row .order-comment .comment-text {
+        max-width: none;
+      }
+      .order-row .order-actions {
+        margin-left: 0;
+        justify-content: flex-end;
+      }
+      .comment-modal {
+        max-width: 95%;
+        padding: 20px;
+      }
+      .filter-buttons {
+        gap: 6px;
+      }
+      .filter-btn {
+        padding: 4px 14px;
+        font-size: 12px;
       }
     }
   </style>
@@ -195,118 +494,95 @@
 
                             <!-- Вкладка ЗАКАЗЫ -->
                             <div class="tab-pane fade show active" id="orders">
-                                <h4 class="mb-4">Заказы</h4>
+                                <h4 class="mb-3">Заказы</h4>
+                                
+                                <!-- Кнопки фильтрации -->
+                                <div class="filter-buttons">
+                                    <a href="?status=all{% if request.GET.page %}&page={{ request.GET.page }}{% endif %}" 
+                                       class="filter-btn {% if current_status == 'all' or not current_status %}active active-all{% endif %}">
+                                        <i class="fa fa-list"></i> Все
+                                        <span class="badge-count">{{ total_count }}</span>
+                                    </a>
+                                    <a href="?status=new{% if request.GET.page %}&page={{ request.GET.page }}{% endif %}" 
+                                       class="filter-btn {% if current_status == 'new' %}active{% endif %}">
+                                        <i class="fa fa-circle" style="color: #dc3545; font-size: 10px;"></i> Новые
+                                        <span class="badge-count">{{ new_count }}</span>
+                                    </a>
+                                    <a href="?status=processed{% if request.GET.page %}&page={{ request.GET.page }}{% endif %}" 
+                                       class="filter-btn {% if current_status == 'processed' %}active{% endif %}">
+                                        <i class="fa fa-circle" style="color: #198754; font-size: 10px;"></i> Обработанные
+                                        <span class="badge-count">{{ processed_count }}</span>
+                                    </a>
+                                </div>
                                 
                                 <div id="orders-container">
                                     {% if orders %}
                                         {% for order in orders %}
-                                        <div class="order-card card shadow-sm mb-3 {% if order.is_called %}processed{% endif %}" data-order-id="{{ order.id }}">
-                                            <div class="card-body p-4">
-                                                <div class="d-flex flex-wrap justify-content-between align-items-start gap-2 mb-3">
-                                                    <div>
-                                                        <div class="d-flex flex-wrap align-items-center gap-2">
-                                                            <h5 class="mb-0 fw-bold">Заказ #{{ order.id }}</h5>
-                                                            <span class="badge status-badge-main {% if order.is_called %}bg-success{% else %}bg-danger{% endif %}">
-                                                                {% if order.is_called %}✅ Обработан{% else %}🆕 Новый{% endif %}
-                                                            </span>
-                                                        </div>
-                                                        <div class="text-muted small mt-1">
-                                                            <i class="fa fa-calendar-o"></i> {{ order.date|date:"d.m.Y" }}
-                                                            {% if order.comment_date %}
-                                                                <span class="ms-2">
-                                                                    <i class="fa fa-comment-o"></i> {{ order.comment_date|date:"d.m.Y H:i" }}
-                                                                </span>
-                                                            {% endif %}
-                                                        </div>
-                                                    </div>
-                                                    <div class="d-flex gap-2">
-                                                        <button class="btn btn-sm toggle-status" 
-                                                            style="background-color: {% if order.is_called %}#dc3545{% else %}#198754{% endif %}; color: white; border: none; border-radius: 8px; padding: 6px 18px; font-weight: 500;" 
-                                                            data-order-id="{{ order.id }}">
-                                                            {% if order.is_called %}
-                                                                <i class="fa fa-undo"></i> Отметить как новый
-                                                            {% else %}
-                                                                <i class="fa fa-check"></i> Отметить как обработанный
-                                                            {% endif %}
-                                                        </button>
-                                                        <a href="{% url 'ordersadmin:orderdetail' order.id %}" 
-                                                            class="btn btn-sm" 
-                                                            style="background-color: #0d6efd; color: white; border: none; border-radius: 8px; padding: 6px 18px; font-weight: 500; text-decoration: none;">
-                                                            <i class="fa fa-arrow-right"></i> Подробнее
-                                                        </a>
-                                                    </div>
-                                                </div>
-                            
-                                                <div class="order-info-grid row g-3 mb-3">
-                                                    <div class="col-6 col-md-3">
-                                                        <div class="order-info-item">
-                                                            <span class="label">📞 Телефон</span>
-                                                            <span class="value phone">{{ order.phone }}</span>
-                                                        </div>
-                                                    </div>
-                                                    <div class="col-6 col-md-3">
-                                                        <div class="order-info-item">
-                                                            <span class="label">💰 Сумма</span>
-                                                            <span class="value price">
-                                                                {% if order.total_price %}
-                                                                    {{ order.total_price|floatformat:0 }} ₽
-                                                                {% else %}
-                                                                    0 ₽
-                                                                {% endif %}
-                                                            </span>
-                                                        </div>
-                                                    </div>
-                                                    <div class="col-6 col-md-3">
-                                                        <div class="order-info-item">
-                                                            <span class="label">📦 Товаров</span>
-                                                            <span class="value">{{ order.order.all|length }}</span>
-                                                        </div>
-                                                    </div>
-                                                    <div class="col-6 col-md-3">
-                                                        <div class="order-info-item">
-                                                            <span class="label">🔄 Статус</span>
-                                                            <span class="value">
-                                                                <span class="badge status-badge-secondary {% if order.is_called %}bg-success{% else %}bg-warning{% endif %}">
-                                                                    {% if order.is_called %}Обработан{% else %}Требует обработки{% endif %}
-                                                                </span>
-                                                            </span>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                            
-                                                <div class="comment-section">
-                                                    <div class="comment-display {% if order.comment %}has-comment{% endif %}" id="comment-display-{{ order.id }}">
-                                                        {% if order.comment %}
-                                                            <div class="comment-text">{{ order.comment }}</div>
-                                                            <div class="comment-meta">
-                                                                <i class="fa fa-clock-o"></i> {{ order.comment_date|date:"d.m.Y H:i" }}
-                                                            </div>
-                                                        {% endif %}
-                                                    </div>
-                                                    <div class="d-flex gap-2">
-                                                        <input type="text" 
-                                                            class="form-control form-control-sm comment-input" 
-                                                            id="comment-input-{{ order.id }}"
-                                                            placeholder="Добавить комментарий..."
-                                                            value="{{ order.comment|default:'' }}">
-                                                        <button class="btn btn-sm save-comment" 
-                                                            style="background-color: #0d6efd; color: white; border: none; border-radius: 8px; padding: 6px 18px; font-weight: 500;" 
-                                                            data-order-id="{{ order.id }}">
-                                                            <i class="fa fa-save"></i> Сохранить
-                                                        </button>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
+                                        <div class="order-row {% if order.is_called %}processed{% endif %}" 
+                                        data-order-id="{{ order.id }}"
+                                        data-status="{% if order.is_called %}processed{% else %}new{% endif %}">
+                                       <span class="order-id">#{{ order.id }}</span>
+                                       <span class="order-date">{{ order.date|date:"d.m.y" }}</span>
+                                       <span class="order-phone">
+                                           <a href="tel:{{ order.phone }}" 
+                                              style="color: #0d6efd; text-decoration: none; font-weight: 500;"
+                                              title="Позвонить">
+                                               {{ order.phone }}
+                                           </a>
+                                       </span>
+                                       <span class="order-price">
+                                           {% if order.total_price %}
+                                               {{ order.total_price|floatformat:0 }} ₽
+                                           {% else %}
+                                               0 ₽
+                                           {% endif %}
+                                       </span>
+                                       <span class="order-status">
+                                           <span class="badge {% if order.is_called %}bg-success{% else %}bg-danger{% endif %}" style="font-size: 11px;">
+                                               {% if order.is_called %}Обработан{% else %}Новый{% endif %}
+                                           </span>
+                                       </span>
+                                       <div class="order-comment">
+                                           <span class="comment-text {% if order.comment %}has-comment{% endif %}" id="comment-text-{{ order.id }}">
+                                               {% if order.comment %}
+                                                   {{ order.comment|truncatechars:30 }}
+                                               {% else %}
+                                                   <span style="color: #adb5bd;">Нет комментария</span>
+                                               {% endif %}
+                                           </span>
+                                           <button class="btn-comment {% if order.comment %}has-comment{% endif %}" 
+                                                   data-order-id="{{ order.id }}"
+                                                   data-comment="{{ order.comment|default:'' }}"
+                                                   title="Редактировать комментарий">
+                                               <i class="fa fa-pencil-square-o"></i>
+                                           </button>
+                                       </div>
+                                       <div class="order-actions">
+                                           <a href="{% url 'ordersadmin:orderdetail' order.id %}" class="btn-open">
+                                               <i class="fa fa-arrow-right"></i> Открыть
+                                           </a>
+                                       </div>
+                                   </div>
                                         {% endfor %}
                                     {% else %}
                                         <div class="empty-state">
                                             <i class="fa fa-shopping-cart"></i>
                                             <h5>Нет заказов</h5>
-                                            <p class="text-muted">Пока ни одного заказа не оформлено</p>
+                                            <p class="text-muted">
+                                                {% if current_status == 'new' %}
+                                                    Нет новых заказов
+                                                {% elif current_status == 'processed' %}
+                                                    Нет обработанных заказов
+                                                {% else %}
+                                                    Пока ни одного заказа не оформлено
+                                                {% endif %}
+                                            </p>
                                         </div>
                                     {% endif %}
                                 </div>
+                                
+                                <!-- Пагинация -->
+                                {% include "layout/pagination_orders.html" %}
                             </div>
 
                             <div class="tab-pane fade" id="callrequest">
@@ -393,7 +669,7 @@
                                                 <td>{{ holdrequest.number }}</td>
                                                 <td>{{ holdrequest.dateandtame }}</td>
                                                 <td>{{ holdrequest.product.name }}</td>
-                                                <td><img src="{{ holdrequest.get_first_product_image.url }}" style="width: 100px;" alt="Изображение товара" /></td>
+                                                <td><img src="{{ holdrequest.get_first_product_image.url }}" style="width: 80px;" alt="Изображение товара" /></td>
                                                 {% if holdrequest.show %}
                                                 <td style="background-color: rgba(73, 128, 19, 0.533);">В наличии</td>
                                                 {% else %}
@@ -410,10 +686,30 @@
                                     </table>
                                 </div>
                             </div>
-
                         </div>
                     </div>
                 </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Модальное окно для комментария -->
+    <div class="comment-modal-overlay" id="commentModal">
+        <div class="comment-modal">
+            <div class="comment-modal-header">
+                <h5><i class="fa fa-comment-o"></i> Редактирование комментария</h5>
+                <button class="comment-modal-close" id="modalCloseBtn">
+                    <i class="fa fa-times"></i>
+                </button>
+            </div>
+            <div class="comment-modal-body">
+                <textarea id="modalCommentText" placeholder="Введите комментарий к заказу..."></textarea>
+            </div>
+            <div class="comment-modal-footer">
+                <button class="btn btn-modal-cancel" id="modalCancelBtn">Отмена</button>
+                <button class="btn btn-modal-save" id="modalSaveBtn">
+                    <i class="fa fa-save"></i> Сохранить
+                </button>
             </div>
         </div>
     </div>
@@ -425,153 +721,110 @@
     document.addEventListener('DOMContentLoaded', function() {
         const csrfToken = '{{ csrf_token }}';
         const updateCommentUrl = "{% url 'ordersadmin:update_comment' %}";
-        const toggleStatusUrl = "{% url 'ordersadmin:toggle_status' %}";
-
-        // Сохранение комментария
-        document.querySelectorAll('.save-comment').forEach(button => {
+        
+        // Модальное окно
+        const modal = document.getElementById('commentModal');
+        const modalText = document.getElementById('modalCommentText');
+        const modalClose = document.getElementById('modalCloseBtn');
+        const modalCancel = document.getElementById('modalCancelBtn');
+        const modalSave = document.getElementById('modalSaveBtn');
+        let currentOrderId = null;
+        
+        // Открытие модального окна
+        document.querySelectorAll('.btn-comment').forEach(button => {
             button.addEventListener('click', function() {
-                const orderId = this.dataset.orderId;
-                const input = document.getElementById(`comment-input-${orderId}`);
-                const comment = input.value.trim();
-                const display = document.getElementById(`comment-display-${orderId}`);
-
-                this.disabled = true;
-                this.innerHTML = '<i class="fa fa-spinner fa-spin"></i> Сохранение...';
-
-                fetch(updateCommentUrl, {
-                    method: 'POST',
-                    headers: {
-                        'X-CSRFToken': csrfToken,
-                        'Content-Type': 'application/json'
-                    },
-                    credentials: 'same-origin',
-                    body: JSON.stringify({
-                        order_id: orderId,
-                        comment: comment
-                    })
-                })
-                .then(response => response.json())
-                .then(data => {
-                    if (data.success) {
-                        if (comment) {
-                            display.innerHTML = `
-                                <div class="comment-text">${comment}</div>
-                                <div class="comment-meta">
-                                    <i class="fa fa-clock-o"></i> ${data.comment_date}
-                                </div>
-                            `;
-                            display.classList.add('has-comment');
-                        } else {
-                            display.innerHTML = '';
-                            display.classList.remove('has-comment');
-                        }
-                        showToast('Комментарий сохранен', 'success');
-                    } else {
-                        showToast('Ошибка: ' + data.error, 'error');
-                    }
-                })
-                .catch(error => {
-                    showToast('Произошла ошибка при сохранении', 'error');
-                    console.error('Error:', error);
-                })
-                .finally(() => {
-                    this.disabled = false;
-                    this.innerHTML = '<i class="fa fa-save"></i> Сохранить';
-                });
+                currentOrderId = this.dataset.orderId;
+                const comment = this.dataset.comment;
+                modalText.value = comment;
+                modal.classList.add('active');
+                modalText.focus();
             });
         });
-
-        // Сохранение по Enter
-        document.querySelectorAll('.comment-input').forEach(input => {
-            input.addEventListener('keypress', function(e) {
-                if (e.key === 'Enter') {
-                    const button = this.closest('.d-flex').querySelector('.save-comment');
-                    if (button) button.click();
-                }
-            });
-        });
-
-        // Переключение статуса
-document.querySelectorAll('.toggle-status').forEach(button => {
-    button.addEventListener('click', function() {
-        const orderId = this.dataset.orderId;
-        const card = document.querySelector(`.order-card[data-order-id="${orderId}"]`);
-
-        this.disabled = true;
-        this.innerHTML = '<i class="fa fa-spinner fa-spin"></i>';
-
-        fetch(toggleStatusUrl, {
-            method: 'POST',
-            headers: {
-                'X-CSRFToken': csrfToken,
-                'Content-Type': 'application/json'
-            },
-            credentials: 'same-origin',
-            body: JSON.stringify({
-                order_id: orderId
-            })
-        })
-        .then(response => response.json())
-        .then(data => {
-            if (data.success) {
-                if (data.is_called) {
-                    // Меняем класс карточки
-                    card.classList.add('processed');
-                    
-                    // Меняем стиль кнопки
-                    this.style.backgroundColor = '#dc3545';
-                    this.innerHTML = '<i class="fa fa-undo"></i> Отметить как новый';
-                    
-                    // Обновляем главный бейдж
-                    const mainBadge = card.querySelector('.status-badge-main');
-                    if (mainBadge) {
-                        mainBadge.className = 'badge status-badge-main bg-success';
-                        mainBadge.textContent = '✅ Обработан';
-                    }
-                    
-                    // Обновляем второстепенный бейдж
-                    const secondaryBadge = card.querySelector('.status-badge-secondary');
-                    if (secondaryBadge) {
-                        secondaryBadge.className = 'badge status-badge-secondary bg-success';
-                        secondaryBadge.textContent = 'Обработан';
-                    }
-                    
-                } else {
-                    // Меняем класс карточки
-                    card.classList.remove('processed');
-                    
-                    // Меняем стиль кнопки
-                    this.style.backgroundColor = '#198754';
-                    this.innerHTML = '<i class="fa fa-check"></i> Отметить как обработанный';
-                    
-                    // Обновляем главный бейдж
-                    const mainBadge = card.querySelector('.status-badge-main');
-                    if (mainBadge) {
-                        mainBadge.className = 'badge status-badge-main bg-danger';
-                        mainBadge.textContent = '🆕 Новый';
-                    }
-                    
-                    // Обновляем второстепенный бейдж
-                    const secondaryBadge = card.querySelector('.status-badge-secondary');
-                    if (secondaryBadge) {
-                        secondaryBadge.className = 'badge status-badge-secondary bg-warning';
-                        secondaryBadge.textContent = 'Требует обработки';
-                    }
-                }
-                showToast('Статус обновлен', 'success');
-            } else {
-                showToast('Ошибка: ' + data.error, 'error');
+        
+        // Закрытие модального окна
+        function closeModal() {
+            modal.classList.remove('active');
+            currentOrderId = null;
+        }
+        
+        modalClose.addEventListener('click', closeModal);
+        modalCancel.addEventListener('click', closeModal);
+        
+        modal.addEventListener('click', function(e) {
+            if (e.target === this) {
+                closeModal();
             }
-        })
-        .catch(error => {
-            showToast('Произошла ошибка', 'error');
-            console.error('Error:', error);
-        })
-        .finally(() => {
-            this.disabled = false;
         });
-    });
-});
+        
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape' && modal.classList.contains('active')) {
+                closeModal();
+            }
+        });
+        
+        // Сохранение комментария из модального окна
+        modalSave.addEventListener('click', function() {
+            if (!currentOrderId) return;
+            
+            const comment = modalText.value.trim();
+            const saveBtn = this;
+            
+            saveBtn.disabled = true;
+            saveBtn.innerHTML = '<i class="fa fa-spinner fa-spin"></i> Сохранение...';
+            
+            fetch(updateCommentUrl, {
+                method: 'POST',
+                headers: {
+                    'X-CSRFToken': csrfToken,
+                    'Content-Type': 'application/json'
+                },
+                credentials: 'same-origin',
+                body: JSON.stringify({
+                    order_id: currentOrderId,
+                    comment: comment
+                })
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    const row = document.querySelector(`.order-row[data-order-id="${currentOrderId}"]`);
+                    const commentText = row.querySelector('.comment-text');
+                    const commentBtn = row.querySelector('.btn-comment');
+                    
+                    if (comment) {
+                        commentText.textContent = comment.length > 30 ? comment.substring(0, 30) + '...' : comment;
+                        commentText.classList.add('has-comment');
+                        commentBtn.classList.add('has-comment');
+                        commentBtn.dataset.comment = comment;
+                    } else {
+                        commentText.textContent = 'Нет комментария';
+                        commentText.classList.remove('has-comment');
+                        commentBtn.classList.remove('has-comment');
+                        commentBtn.dataset.comment = '';
+                    }
+                    
+                    showToast('Комментарий сохранен', 'success');
+                    closeModal();
+                } else {
+                    showToast('Ошибка: ' + data.error, 'error');
+                }
+            })
+            .catch(error => {
+                showToast('Произошла ошибка при сохранении', 'error');
+                console.error('Error:', error);
+            })
+            .finally(() => {
+                saveBtn.disabled = false;
+                saveBtn.innerHTML = '<i class="fa fa-save"></i> Сохранить';
+            });
+        });
+        
+        modalText.addEventListener('keydown', function(e) {
+            if ((e.ctrlKey || e.metaKey) && e.key === 'Enter') {
+                e.preventDefault();
+                modalSave.click();
+            }
+        });
 
         // Обработчик для mark-called
         document.querySelectorAll('.mark-called').forEach(link => {
