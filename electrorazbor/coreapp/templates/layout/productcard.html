@@ -1,5 +1,6 @@
 {% load thumbnail %}
 <div class="product" data-id="{{ product.id }}" itemscope itemtype="https://schema.org/Product">
+    <meta itemprop="description" content="{{ product.desctiption|escape }}">
     <div class="thumb">
         <a href="{{ product.get_absolute_url }}" class="image" itemprop="url">
             <img src="{{ product.productimages.all.0.image|thumbnail_url:'card' }}" alt="{{ product.name }}1" itemprop="image" />

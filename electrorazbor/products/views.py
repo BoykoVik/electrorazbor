@@ -12,6 +12,7 @@ def productdetail(request, slug):
         'product': product,
         'models': Categories.objects.all(),
         'contacts': Contacts.objects.all(),
+        'category': product.category.first(),  # Добавляем для хлебных крошек
     })
 
 def products_category(request, firm, slug):
@@ -31,6 +32,7 @@ def products_category(request, firm, slug):
         'models': Categories.objects.filter(firm=current_firm),
         'contacts': Contacts.objects.all(),
         'page': page,
+        'category': category,
     })
 
 def firms_category(request, slug):
@@ -43,4 +45,5 @@ def firms_category(request, slug):
         'products': products,
         'models': categories,
         'contacts': Contacts.objects.all(),
+        'firm': firm,
     })

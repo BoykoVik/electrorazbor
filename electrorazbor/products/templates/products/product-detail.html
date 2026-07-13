@@ -4,6 +4,7 @@
 <body>
     <div class="main-wrapper">
         {% include "layout/header.html" %}
+        {% include "layout/breadcrumbs.html" %}
         <div class="offcanvas-overlay"></div>
         <div id="offcanvas-mobile-menu" class="offcanvas offcanvas-mobile-menu">
             <button class="offcanvas-close"></button>
@@ -22,21 +23,21 @@
         </div>
         <div class="product-details-area pt-100px pb-100px">
             <div class="container">
-                <div itemscope itemtype="https://electrorazbor.ru{{ product.get_absolute_url }}" class="row">
+                <div class="row">
                     <div class="col-lg-6 col-sm-12 col-xs-12 mb-lm-30px mb-md-30px mb-sm-30px">
                         <div class="swiper-container zoom-top">
                             <div class="swiper-wrapper">
                                 {% for image in product.productimages.all %}
                                 {% if forloop.first %}
                                 <div class="swiper-slide">
-                                    <img itemprop="contentUrl" class="img-responsive m-auto" src="{{ image.image|thumbnail_url:'swiper' }}" alt="">
+                                    <img class="img-responsive m-auto" src="{{ image.image|thumbnail_url:'swiper' }}" alt="{{ product.name }} - фото 1">
                                     <a class="venobox full-preview" data-gall="myGallery" href="{{ image.image.url }}">
                                         <i class="fa fa-arrows-alt" aria-hidden="true"></i>
                                     </a>
                                 </div>
                                 {% else %}
                                 <div class="swiper-slide">
-                                    <img class="img-responsive m-auto" src="{{ image.image|thumbnail_url:'swiper' }}" alt="">
+                                    <img class="img-responsive m-auto" src="{{ image.image|thumbnail_url:'swiper' }}" alt="{{ product.name }} - фото {{ forloop.counter }}">
                                     <a class="venobox full-preview" data-gall="myGallery" href="{{ image.image.url }}">
                                         <i class="fa fa-arrows-alt" aria-hidden="true"></i>
                                     </a>
@@ -49,7 +50,7 @@
                             <div class="swiper-wrapper">
                                 {% for image in product.productimages.all %}
                                 <div class="swiper-slide">
-                                    <img class="img-responsive m-auto" src="{{ image.image|thumbnail_url:'swipermin' }}" alt="">
+                                    <img class="img-responsive m-auto" src="{{ image.image|thumbnail_url:'swipermin' }}" alt="{{ product.name }} - миниатюра {{ forloop.counter }}">
                                 </div>
                                 {% endfor %}
                             </div>
@@ -66,7 +67,7 @@
                         data-price="{{ product.price }} ₽"
                         data-image="{{ product.productimages.first.image|thumbnail_url:'swipermin' }}"
                         data-url="{{ product.get_absolute_url }}">
-                            <h2 itemprop="name">{{ product.name }}</h2>
+                        <h2>{{ product.name }}</h2>
                             <div class="pro-details-rating-wrap">
                                 <div class="rating-product">
                                     <i class="fa fa-star"></i>
@@ -78,7 +79,7 @@
                                     <li class="new-price">{{ product.price }} ₽</li>
                                 </ul>
                                 {% if user.is_superuser %}
-                                <a href="{{ request.scheme }}://{{ request.get_host }}/admin/products/products/{{ product.id }}/change/">РЕДАКТИРОВАТЬ</a>
+                                <a href="https://electrorazbor.ru/admin/products/products/{{ product.id }}/change/">РЕДАКТИРОВАТЬ</a>
                                 {% endif %}
                             </div>
                             <p class="mt-30px">{{ product.about }}</p>
@@ -121,7 +122,7 @@
                                     <div class="product-anotherinfo-wrapper text-start">
                                         <ul>
                                             {% for charact in product.product.all %}
-                                            <li><span>{{ charact.characteristic.name }}:</strong></span> {{ charact.count }}</li>
+                                            <li><span>{{ charact.characteristic.name }}:</span> {{ charact.count }}</li>
                                             {% endfor %}
                                         </ul>
                                     </div>
@@ -129,14 +130,14 @@
                                 {% if product.about_big %}
                                 <div id="des-details1" class="tab-pane">
                                     <div class="product-description-wrapper">
-                                        <p itemprop="description">{{ product.about_big }}</p>
+                                        <p>{{ product.about_big|linebreaks }}</p>
                                     </div>
                                 </div>
                                 {% endif %}
                                 {% else %}
                                 <div id="des-details1" class="tab-pane active">
                                     <div class="product-description-wrapper">
-                                        <p itemprop="description">{{ product.about_big }}</p>
+                                        <p>{{ product.about_big|linebreaks }}</p>
                                     </div>
                                 </div>
                                 {% endif %}

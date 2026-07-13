@@ -6994,9 +6994,9 @@ body.offcanvas-open {
   display: -ms-flexbox;
   display: flex;
   line-height: 1;
-  padding-bottom: 40px;
+  padding-bottom: 20px;
   margin-top: 30px;
-  border-bottom: 1px solid #e1e1e1;
+  /*border-bottom: 1px solid #e1e1e1;*/
 }
 .product-details-content .pro-details-rating-wrap .rating-product {
   margin-right: 5px;

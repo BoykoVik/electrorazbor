@@ -6,21 +6,18 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  {# ===== ОСНОВНЫЕ SEO ТЕГИ ===== #}
-  <title>{% block title %}{{ title|default:'Запчасти для электросамокатов Ninebot и Xiaomi' }}{% endblock %}</title>
-  <meta name="description" content="{% block description %}{{ description|default:'Купить запчасти для электросамокатов Ninebot, Xiaomi, Segway. Оригинальные комплектующие, быстрая доставка по Москве и России.' }}{% endblock %}">
-  <meta name="keywords" content="{% block keywords %}запчасти для электросамокатов, ninebot, xiaomi, segway, ремонт электросамокатов, комплектующие{% endblock %}">
-  <meta name="robots" content="{% block robots %}index, follow{% endblock %}">
+  <title>{% block title %}{{ title|default:'Комплектующие и запчасти для электросамокатов Ninebot и Xiaomi. Недорого.' }}{% endblock %}</title>
+  <meta name="description" content="{% block description %}{{ description|default:'Купить запчасти и комплектующие для электросамокатов от компании Electrorazbor - тормозные диски и колодки, колеса, поворотники, фары, ручки, амортизаторы купить в Москве, цена и фото каждого товара. Заказ онлайн. Быстрая доставка.' }}{% endblock %}">
+  <meta name="keywords" content="запчасти для электросамокатов, ninebot, xiaomi, segway, ремонт электросамокатов, комплектующие">
+  <meta name="robots" content="index, follow">
   <link rel="canonical" href="{% block canonical %}{{ request.build_absolute_uri }}{% endblock %}">
   
-  {# ===== FAVICONS ===== #}
   <link rel="icon" type="image/png" href="{% static 'favicon-48x48.png' %}" sizes="48x48">
   <link rel="icon" type="image/svg+xml" href="{% static 'favicon.svg' %}">
   <link rel="shortcut icon" href="{% static 'favicon.ico' %}">
   <link rel="apple-touch-icon" sizes="180x180" href="{% static 'apple-touch-icon.png' %}">
   <link rel="manifest" href="{% static 'site.webmanifest' %}">
 
-  {# ===== OPEN GRAPH ===== #}
   <meta property="og:locale" content="ru_RU">
   <meta property="og:type" content="{% if product %}product{% else %}website{% endif %}">
   <meta property="og:site_name" content="Electrorazbor.ru">
@@ -40,12 +37,11 @@
   {% endif %}
 
   {% if product %}
-    <meta property="product:price:amount" content="{{ product.price }}">
-    <meta property="product:price:currency" content="RUB">
-    <meta property="product:availability" content="{% if product.show %}in stock{% else %}out of stock{% endif %}">
+    <meta property="og:price:amount" content="{{ product.price }}">
+    <meta property="og:price:currency" content="RUB">
+    <meta property="og:availability" content="{% if product.show %}in stock{% else %}out of stock{% endif %}">
   {% endif %}
 
-  {# ===== TWITTER CARD ===== #}
   <meta name="twitter:card" content="summary_large_image">
   <meta name="twitter:title" content="{% block twitter_title %}{{ title|default:'Electrorazbor.ru' }}{% endblock %}">
   <meta name="twitter:description" content="{% block twitter_description %}{{ description|default:'Запчасти для электросамокатов' }}{% endblock %}">
@@ -53,10 +49,8 @@
   <meta name="twitter:image" content="{{ request.scheme }}://{{ request.get_host }}{{ product.productimages.first.image.url }}">
   {% endif %}
 
-  {# ===== ВЕРИФИКАЦИЯ ===== #}
   <meta name="yandex-verification" content="9bc1e8ab819a9b91">
   
-  {# ===== CSS (ОПТИМИЗИРОВАННЫЙ ПОРЯДОК) ===== #}
   <link rel="preload" as="style" href="{% static 'css/bootstrap.min.css' %}">
   <link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %}">
   <link rel="stylesheet" href="{% static 'css/font.awesome.css' %}">
@@ -65,10 +59,8 @@
   <link rel="stylesheet" href="{% static 'css/style.css' %}">
   <link rel="stylesheet" href="{% static 'css/popup.css' %}">
 
-  {# ===== SEO МИКРОДАННЫЕ (JSON-LD) ===== #}
   {% include "layout/seo_schema.html" %}
 
-  {# ===== YANDEX METRIKA ===== #}
   <script type="text/javascript">
     (function(m,e,t,r,i,k,a){m[i]=m[i]||function(){(m[i].a=m[i].a||[]).push(arguments)};
     m[i].l=1*new Date();

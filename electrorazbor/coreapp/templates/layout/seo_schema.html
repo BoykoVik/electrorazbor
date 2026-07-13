@@ -14,14 +14,18 @@
     "addressCountry": "RU"
   },
   "contactPoint": [
-    {% for contact in contacts %}
     {
       "@type": "ContactPoint",
-      "telephone": "{{ contact.text|cut:' ' }}",
-      "contactType": "{% if 'phone' in contact.code %}sales{% else %}customer service{% endif %}",
+      "telephone": "+7-915-244-92-29",
+      "contactType": "sales",
       "availableLanguage": "Russian"
-    }{% if not forloop.last %},{% endif %}
-    {% endfor %}
+    },
+    {
+      "@type": "ContactPoint",
+      "telephone": "+7-925-939-88-08",
+      "contactType": "customer service",
+      "availableLanguage": "Russian"
+    }
   ],
   "sameAs": [
     "https://t.me/DR_official_77",
@@ -157,8 +161,7 @@
   "url": "{{ request.scheme }}://{{ request.get_host }}",
   "potentialAction": {
     "@type": "SearchAction",
-    "target": "{{ request.scheme }}://{{ request.get_host }}/search/?query={search_term_string}",
-    "query-input": "required name=search_term_string"
+    "target": "{{ request.scheme }}://{{ request.get_host }}/search/?query={search_term_string}"
   }
 }
 </script>

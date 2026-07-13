@@ -20,6 +20,7 @@ def home(request):
         'slides': Slider.objects.filter(show=True),
         'all_blocks': page.get_all_blocks_sorted() if page else [],
         'articles': Article.objects.all()[:2],
+        'home': True, # для хлебных крошек
     })
 
 def contacts(request):

@@ -1,0 +1,84 @@
+{% load static %}
+{% if product %}
+{# Хлебные крошки для товара — ТОЛЬКО ПЕРВАЯ КАТЕГОРИЯ #}
+<nav class="breadcrumb-area" aria-label="Хлебные крошки">
+    <div class="container">
+        <ol class="breadcrumb" itemscope itemtype="https://schema.org/BreadcrumbList">
+            <li class="breadcrumb-item" itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem">
+                <a href="/" itemprop="item">
+                    <span itemprop="name">Главная</span>
+                </a>
+                <meta itemprop="position" content="1">
+            </li>
+            {% with first_category=product.category.first %}
+                {% if first_category %}
+                <li class="breadcrumb-item" itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem">
+                    <a href="{{ first_category.get_absolute_url }}" itemprop="item">
+                        <span itemprop="name">{{ first_category.name }}</span>
+                    </a>
+                    <meta itemprop="position" content="2">
+                </li>
+                {% endif %}
+            {% endwith %}
+            <li class="breadcrumb-item active" itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem">
+                <span itemprop="name">{{ product.name|truncatechars:50 }}</span>
+                <meta itemprop="position" content="3">
+            </li>
+        </ol>
+    </div>
+</nav>
+{% elif category %}
+{# Хлебные крошки для категории #}
+<nav class="breadcrumb-area" aria-label="Хлебные крошки">
+    <div class="container">
+        <ol class="breadcrumb" itemscope itemtype="https://schema.org/BreadcrumbList">
+            <li class="breadcrumb-item" itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem">
+                <a href="/" itemprop="item">
+                    <span itemprop="name">Главная</span>
+                </a>
+                <meta itemprop="position" content="1">
+            </li>
+            <li class="breadcrumb-item" itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem">
+                <a href="{{ category.firm.get_absolute_url }}" itemprop="item">
+                    <span itemprop="name">{{ category.firm.name }}</span>
+                </a>
+                <meta itemprop="position" content="2">
+            </li>
+            <li class="breadcrumb-item active" itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem">
+                <span itemprop="name">{{ category.name }}</span>
+                <meta itemprop="position" content="3">
+            </li>
+        </ol>
+    </div>
+</nav>
+{% elif firm %}
+{# Хлебные крошки для производителя #}
+<nav class="breadcrumb-area" aria-label="Хлебные крошки">
+    <div class="container">
+        <ol class="breadcrumb" itemscope itemtype="https://schema.org/BreadcrumbList">
+            <li class="breadcrumb-item" itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem">
+                <a href="/" itemprop="item">
+                    <span itemprop="name">Главная</span>
+                </a>
+                <meta itemprop="position" content="1">
+            </li>
+            <li class="breadcrumb-item active" itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem">
+                <span itemprop="name">{{ firm.name }}</span>
+                <meta itemprop="position" content="2">
+            </li>
+        </ol>
+    </div>
+</nav>
+{% else %}
+{# Хлебные крошки для главной #}
+<nav class="breadcrumb-area" aria-label="Хлебные крошки">
+    <div class="container">
+        <ol class="breadcrumb" itemscope itemtype="https://schema.org/BreadcrumbList">
+            <li class="breadcrumb-item active" itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem">
+                <span itemprop="name">Главная</span>
+                <meta itemprop="position" content="1">
+            </li>
+        </ol>
+    </div>
+</nav>
+{% endif %}
