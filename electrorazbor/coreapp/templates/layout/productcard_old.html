@@ -1,0 +1,32 @@
+{% load thumbnail %}
+
+    <div class="product" data-id="{{ product.id }}">
+        <div class="thumb">
+            <a href="{{ product.get_absolute_url }}" class="image">
+                <img src="{{ product.productimages.all.0.image|thumbnail_url:'card' }}" alt="{{ product.name }}1" />
+                {% if not product.productimages.all.1.image %}
+                <img class="hover-image" src="{{ product.productimages.all.0.image|thumbnail_url:'card' }}" alt="{{ product.name }}3" />
+                {% else %}
+                <img class="hover-image" src="{{ product.productimages.all.1.image|thumbnail_url:'card' }}" alt="{{ product.name }}2" />
+                {% endif %}
+            </a>
+        </div>
+        <div class="content">
+            <h5 class="title">
+                <a href="{{ product.get_absolute_url }}">{{ product.name }}</a>
+            </h5>
+            <span class="price">
+                <span class="new">{{ product.price }} ₽</span>
+            </span>
+        </div>
+        <div class="actions">
+            {% if product.show %}
+            <button title="Add To Cart" class="action add-to-cart">
+                <i class="pe-7s-shopbag"></i>
+            </button>
+            {% endif %}
+            <a href="{{ product.get_absolute_url }}" class="nav-link active">
+            <button class="action" style="width: auto; font-size: 16px;">ОТКРЫТЬ</button>
+            </a>
+        </div>
+    </div>

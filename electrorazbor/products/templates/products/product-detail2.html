@@ -1,0 +1,191 @@
+{% load static %}
+{% load thumbnail %}
+{% include "layout/head.html" %}
+<body>
+    <div class="main-wrapper">
+        {% include "layout/header.html" %}
+        <div class="offcanvas-overlay"></div>
+        <div id="offcanvas-mobile-menu" class="offcanvas offcanvas-mobile-menu">
+            <button class="offcanvas-close"></button>
+            <div class="user-panel">
+                <ul>
+                    {% include "layout/contactsblock.html" %}
+                </ul>
+            </div>
+            <div class="inner customScroll">
+                <div class="offcanvas-menu mb-4">
+                    <ul>
+                        {% include "layout/menu.html" %}
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <div class="product-details-area pt-100px pb-100px">
+            <div class="container">
+                <div itemscope itemtype="https://schema.org/Product" class="row">
+                    <div class="col-lg-6 col-sm-12 col-xs-12 mb-lm-30px mb-md-30px mb-sm-30px">
+                        <div class="swiper-container zoom-top">
+                            <div class="swiper-wrapper">
+                                {% for image in product.productimages.all %}
+                                {% if forloop.first %}
+                                <div class="swiper-slide">
+                                    <img itemprop="image" class="img-responsive m-auto" src="{{ image.image|thumbnail_url:'swiper' }}" alt="{{ product.name }}">
+                                    <a class="venobox full-preview" data-gall="myGallery" href="{{ image.image.url }}">
+                                        <i class="fa fa-arrows-alt" aria-hidden="true"></i>
+                                    </a>
+                                </div>
+                                {% else %}
+                                <div class="swiper-slide">
+                                    <img class="img-responsive m-auto" src="{{ image.image|thumbnail_url:'swiper' }}" alt="{{ product.name }}">
+                                    <a class="venobox full-preview" data-gall="myGallery" href="{{ image.image.url }}">
+                                        <i class="fa fa-arrows-alt" aria-hidden="true"></i>
+                                    </a>
+                                </div>
+                                {% endif %}
+                                {% endfor %}
+                            </div>
+                        </div>
+                        <div class="swiper-container mt-20px zoom-thumbs slider-nav-style-1 small-nav">
+                            <div class="swiper-wrapper">
+                                {% for image in product.productimages.all %}
+                                <div class="swiper-slide">
+                                    <img class="img-responsive m-auto" src="{{ image.image|thumbnail_url:'swipermin' }}" alt="{{ product.name }}">
+                                </div>
+                                {% endfor %}
+                            </div>
+                            <div class="swiper-buttons">
+                                <div class="swiper-button-next"></div>
+                                <div class="swiper-button-prev"></div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-6 col-sm-12 col-xs-12" data-aos="fade-up" data-aos-delay="200">
+                        <div class="product-details-content quickview-content ml-25px"
+                        data-id="{{ product.id }}"
+                        data-name="{{ product.name }}"
+                        data-price="{{ product.price }} ₽"
+                        data-image="{{ product.productimages.first.image|thumbnail_url:'swipermin' }}"
+                        data-url="{{ product.get_absolute_url }}">
+                            <h2 itemprop="name">{{ product.name }}</h2>
+                            <div class="pro-details-rating-wrap">
+                                <div class="rating-product">
+                                    <i class="fa fa-star"></i>
+                                </div>
+                                <span class="read-review">{{ product.rating }}</span>
+                            </div>
+                            <div class="pricing-meta">
+                                <ul class="d-flex">
+                                    <li class="new-price" itemprop="offers" itemscope itemtype="https://schema.org/Offer">
+                                        <span itemprop="price">{{ product.price }}</span>
+                                        <span itemprop="priceCurrency" content="RUB">₽</span>
+                                        <meta itemprop="availability" content="{% if product.show %}InStock{% else %}OutOfStock{% endif %}">
+                                    </li>
+                                </ul>
+                                {% if user.is_superuser %}
+                                <a href="{{ request.scheme }}://{{ request.get_host }}/admin/products/products/{{ product.id }}/change/">РЕДАКТИРОВАТЬ</a>
+                                {% endif %}
+                            </div>
+                            <p class="mt-30px" itemprop="description">{{ product.about }}</p>
+                            <div class="pro-details-quality">
+                                {% if product.show %}
+                                <div class="cart-plus-minus">
+                                    <input class="cart-plus-minus-box" type="text" name="qtybutton" value="1" />
+                                </div>
+                                <div class="pro-details-cart">
+                                    <button class="add-cart add-prod-to-cart">В Корзину</button>
+                                </div>
+                                <div class="pro-details-cart">
+                                    <button id="btnmodal" class="buy-btn">Купить сейчас</button>
+                                </div>
+                                {% else %}
+                                <div class="pro-details-cart">
+                                    <button class="buy-btn">Нет в наличии</button>
+                                </div>
+                                <div class="pro-details-cart">
+                                    <button id="btnmodal" class="buy-btn">Сообщить о поступлении</button>
+                                </div>
+                                {% endif %}
+                            </div>
+                        </div>
+
+                        <div class="description-review-wrapper">
+                            <div class="description-review-topbar nav">
+                                {% if product.product.all %}
+                                <button class="active" data-bs-toggle="tab" data-bs-target="#des-details2">Характеристики</button>
+                                {% if product.about_big %}
+                                <button data-bs-toggle="tab" data-bs-target="#des-details1">Описание</button>
+                                {% endif %}
+                                {% else %}
+                                <button class="active" data-bs-toggle="tab" data-bs-target="#des-details1">Описание</button>
+                                {% endif %}
+                            </div>
+                            <div class="tab-content description-review-bottom">
+                                {% if product.product.all %}
+                                <div id="des-details2" class="tab-pane active">
+                                    <div class="product-anotherinfo-wrapper text-start">
+                                        <ul>
+                                            {% for charact in product.product.all %}
+                                            <li><span>{{ charact.characteristic.name }}:</span> {{ charact.count }}</li>
+                                            {% endfor %}
+                                        </ul>
+                                    </div>
+                                </div>
+                                {% if product.about_big %}
+                                <div id="des-details1" class="tab-pane">
+                                    <div class="product-description-wrapper">
+                                        <p itemprop="description">{{ product.about_big }}</p>
+                                    </div>
+                                </div>
+                                {% endif %}
+                                {% else %}
+                                <div id="des-details1" class="tab-pane active">
+                                    <div class="product-description-wrapper">
+                                        <p itemprop="description">{{ product.about_big }}</p>
+                                    </div>
+                                </div>
+                                {% endif %}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        {% if product.like_what.count > 3 %}
+        <div class="product-area related-product">
+            <div class="container">
+                <div class="row">
+                    <div class="col-12">
+                        <div class="section-title text-center m-0">
+                            <h2 class="title">Похожие товары</h2>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col">
+                        <div class="new-product-slider swiper-container slider-nav-style-1">
+                            <div class="swiper-wrapper">
+                                {% for product in product.like_what.all|slice:":7" %}
+                                <div class="swiper-slide">
+                                    {% include "layout/productcard.html" %}
+                                </div>
+                                {% endfor %}
+                            </div>
+                            <div class="swiper-buttons">
+                                <div class="swiper-button-next"></div>
+                                <div class="swiper-button-prev"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        {% endif %}
+        {% include "layout/contacts_block.html" %}
+        {% include "layout/footer.html" %}
+        
+    </div>
+    {% include "layout/scripts.html" %}
+    {% include "layout/popup.html" %}
+    <script src="{% static 'js/cartdetail.js'%}"></script>
+</body>
+</html>

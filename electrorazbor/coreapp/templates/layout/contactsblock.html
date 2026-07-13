@@ -1,3 +1,10 @@
 {% for contact in contacts %}{% if contact.show_in_top %}
-<li><a href="{{ contact.link }}"><i class="fa {{ contact.code }}"></i>{{ contact.text }}</a></li>
+<li>
+    <a href="{{ contact.link }}" 
+       {% if 'wa' in contact.code or 'telegram' in contact.code %}rel="nofollow noopener" target="_blank"{% endif %}
+       aria-label="{{ contact.title }}">
+        <i class="fa {{ contact.code }}" aria-hidden="true"></i>
+        {{ contact.text }}
+    </a>
+</li>
 {% endif %}{% endfor %}

@@ -3,25 +3,86 @@
 <html lang="ru">
 <head>
   <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    {% include "layout/opengraph.html" %}
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>{{ title }}</title>
-    <meta name="robots" content="index, follow" />
-    <meta name="description" content="{{ description }}">
-    <link rel="icon" type="image/png" href="{% static '/favicon-48x48.png' %}" sizes="48x48" />
-    <link rel="icon" type="image/svg+xml" href="{% static '/favicon.svg' %}" />
-    <link rel="shortcut icon" href="{% static '/favicon.ico' %}" />
-    <link rel="apple-touch-icon" sizes="180x180" href="{% static '/apple-touch-icon.png' %}" />
-    <link rel="manifest" href="{% static '/site.webmanifest' %}" />
-    <link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %}" />
-    <link rel="stylesheet" href="{% static 'css/font.awesome.css' %}" />
-    <link rel="stylesheet" href="{% static 'css/pe-icon-7-stroke.css' %}" />
-    <link rel="stylesheet" href="{% static 'css/animate.min.css' %}">
-    <link rel="stylesheet" href="{% static 'css/swiper-bundle.min.css' %}">
-    <link rel="stylesheet" href="{% static 'css/venobox.css' %}">
-    <link rel="stylesheet" href="{% static 'css/jquery-ui.min.css' %}">
-    <link rel="stylesheet" href="{% static 'css/style.css' %}">
-    <link rel="canonical" href="https://{{ request.get_host }}{{ request.path }}"/>
-    {% include "layout/yandex.html" %}
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  {# ===== ОСНОВНЫЕ SEO ТЕГИ ===== #}
+  <title>{% block title %}{{ title|default:'Запчасти для электросамокатов Ninebot и Xiaomi' }}{% endblock %}</title>
+  <meta name="description" content="{% block description %}{{ description|default:'Купить запчасти для электросамокатов Ninebot, Xiaomi, Segway. Оригинальные комплектующие, быстрая доставка по Москве и России.' }}{% endblock %}">
+  <meta name="keywords" content="{% block keywords %}запчасти для электросамокатов, ninebot, xiaomi, segway, ремонт электросамокатов, комплектующие{% endblock %}">
+  <meta name="robots" content="{% block robots %}index, follow{% endblock %}">
+  <link rel="canonical" href="{% block canonical %}{{ request.build_absolute_uri }}{% endblock %}">
+  
+  {# ===== FAVICONS ===== #}
+  <link rel="icon" type="image/png" href="{% static 'favicon-48x48.png' %}" sizes="48x48">
+  <link rel="icon" type="image/svg+xml" href="{% static 'favicon.svg' %}">
+  <link rel="shortcut icon" href="{% static 'favicon.ico' %}">
+  <link rel="apple-touch-icon" sizes="180x180" href="{% static 'apple-touch-icon.png' %}">
+  <link rel="manifest" href="{% static 'site.webmanifest' %}">
+
+  {# ===== OPEN GRAPH ===== #}
+  <meta property="og:locale" content="ru_RU">
+  <meta property="og:type" content="{% if product %}product{% else %}website{% endif %}">
+  <meta property="og:site_name" content="Electrorazbor.ru">
+  <meta property="og:title" content="{% block og_title %}{{ title|default:'Electrorazbor.ru' }}{% endblock %}">
+  <meta property="og:description" content="{% block og_description %}{{ description|default:'Запчасти и комплектующие для электросамокатов' }}{% endblock %}">
+  <meta property="og:url" content="{{ request.build_absolute_uri }}">
+  
+  {% if product and product.productimages.first %}
+    <meta property="og:image" content="{{ request.scheme }}://{{ request.get_host }}{{ product.productimages.first.image.url }}">
+    <meta property="og:image:width" content="1200">
+    <meta property="og:image:height" content="630">
+    <meta property="og:image:alt" content="{{ product.name }}">
+  {% else %}
+    <meta property="og:image" content="{{ request.scheme }}://{{ request.get_host }}{% static 'ELR1.png' %}">
+    <meta property="og:image:width" content="1200">
+    <meta property="og:image:height" content="630">
+  {% endif %}
+
+  {% if product %}
+    <meta property="product:price:amount" content="{{ product.price }}">
+    <meta property="product:price:currency" content="RUB">
+    <meta property="product:availability" content="{% if product.show %}in stock{% else %}out of stock{% endif %}">
+  {% endif %}
+
+  {# ===== TWITTER CARD ===== #}
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="{% block twitter_title %}{{ title|default:'Electrorazbor.ru' }}{% endblock %}">
+  <meta name="twitter:description" content="{% block twitter_description %}{{ description|default:'Запчасти для электросамокатов' }}{% endblock %}">
+  {% if product and product.productimages.first %}
+  <meta name="twitter:image" content="{{ request.scheme }}://{{ request.get_host }}{{ product.productimages.first.image.url }}">
+  {% endif %}
+
+  {# ===== ВЕРИФИКАЦИЯ ===== #}
+  <meta name="yandex-verification" content="9bc1e8ab819a9b91">
+  
+  {# ===== CSS (ОПТИМИЗИРОВАННЫЙ ПОРЯДОК) ===== #}
+  <link rel="preload" as="style" href="{% static 'css/bootstrap.min.css' %}">
+  <link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %}">
+  <link rel="stylesheet" href="{% static 'css/font.awesome.css' %}">
+  <link rel="stylesheet" href="{% static 'css/pe-icon-7-stroke.css' %}">
+  <link rel="stylesheet" href="{% static 'css/swiper-bundle.min.css' %}">
+  <link rel="stylesheet" href="{% static 'css/style.css' %}">
+  <link rel="stylesheet" href="{% static 'css/popup.css' %}">
+
+  {# ===== SEO МИКРОДАННЫЕ (JSON-LD) ===== #}
+  {% include "layout/seo_schema.html" %}
+
+  {# ===== YANDEX METRIKA ===== #}
+  <script type="text/javascript">
+    (function(m,e,t,r,i,k,a){m[i]=m[i]||function(){(m[i].a=m[i].a||[]).push(arguments)};
+    m[i].l=1*new Date();
+    for (var j = 0; j < document.scripts.length; j++) {if (document.scripts[j].src === r) { return; }}
+    k=e.createElement(t),a=e.getElementsByTagName(t)[0],k.async=1,k.src=r,a.parentNode.insertBefore(k,a)})
+    (window, document, "script", "https://mc.yandex.ru/metrika/tag.js", "ym");
+    ym(98956862, "init", {
+      clickmap:true,
+      trackLinks:true,
+      accurateTrackBounce:true,
+      webvisor:true
+    });
+  </script>
+  <noscript>
+    <div><img src="https://mc.yandex.ru/watch/98956862" style="position:absolute; left:-9999px;" alt=""></div>
+  </noscript>
 </head>

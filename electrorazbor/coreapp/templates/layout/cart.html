@@ -3,19 +3,18 @@
     <div class="inner">
         <div class="head">
             <span class="title">Корзина</span>
-            <button class="offcanvas-close">×</button>
+            <button class="offcanvas-close" aria-label="Закрыть корзину">×</button>
         </div>
         <div class="body customScroll">
-            <ul class="minicart-product-list">
-                
+            <ul class="minicart-product-list" aria-label="Список товаров в корзине">
             </ul>
         </div>
         <div class="foot">
             <div class="buttons mt-30px">
                 <a href="{% url 'coreapp:cart' %}" class="btn btn-dark btn-hover-primary mb-30px">В корзину</a>
-                <button id="clear-cart" class="btn btn-dark btn-hover-primary mb-30px">Очистить корзину</button>
+                <button id="clear-cart" class="btn btn-dark btn-hover-primary mb-30px" aria-label="Очистить корзину">Очистить корзину</button>
             </div>
         </div>
     </div>
 </div>
-<script src="{% static 'js/cart.js'%}"></script>
+<script src="{% static 'js/cart.js' %}" defer></script>

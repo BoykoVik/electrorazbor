@@ -1,0 +1,27 @@
+<div class="header-top">
+    <div class="container">
+      <div class="row justify-content-between align-items-center">
+        <div class="col">
+          <div class="welcome-text">
+            <p>Запчасти для электросамокатов по лучшим ценам с 2017 года</p>
+          </div>
+        </div>
+        <div class="col d-none d-lg-block">
+          <div class="top-nav">
+            <ul>
+              {% for contact in contacts %}
+                <li>
+                  <a href="{{ contact.link }}" 
+                     {% if 'wa' in contact.code or 'telegram' in contact.code %}rel="nofollow noopener" target="_blank"{% endif %}
+                     aria-label="{{ contact.title }}">
+                    <i class="fa {{ contact.code }}" aria-hidden="true"></i>
+                    <span>{{ contact.text }}</span>
+                  </a>
+                </li>
+              {% endfor %}
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>

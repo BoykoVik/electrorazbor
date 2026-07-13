@@ -1,0 +1,165 @@
+{% load static %}
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Organization",
+  "name": "Electrorazbor.ru",
+  "description": "Запчасти и комплектующие для электросамокатов Ninebot, Xiaomi, Segway. Ремонт и сервис с 2017 года.",
+  "url": "{{ request.scheme }}://{{ request.get_host }}",
+  "logo": "{{ request.scheme }}://{{ request.get_host }}{% static 'ELR1.png' %}",
+  "foundingDate": "2017",
+  "address": {
+    "@type": "PostalAddress",
+    "addressLocality": "Москва",
+    "addressCountry": "RU"
+  },
+  "contactPoint": [
+    {% for contact in contacts %}
+    {
+      "@type": "ContactPoint",
+      "telephone": "{{ contact.text|cut:' ' }}",
+      "contactType": "{% if 'phone' in contact.code %}sales{% else %}customer service{% endif %}",
+      "availableLanguage": "Russian"
+    }{% if not forloop.last %},{% endif %}
+    {% endfor %}
+  ],
+  "sameAs": [
+    "https://t.me/DR_official_77",
+    "https://wa.me/79259398808"
+  ]
+}
+</script>
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    {
+      "@type": "ListItem",
+      "position": 1,
+      "name": "Главная",
+      "item": "{{ request.scheme }}://{{ request.get_host }}/"
+    }
+    {% if product %}
+    {% for category in product.category.all %}
+    ,{
+      "@type": "ListItem",
+      "position": {{ forloop.counter|add:1 }},
+      "name": "{{ category.name }}",
+      "item": "{{ request.scheme }}://{{ request.get_host }}{{ category.get_absolute_url }}"
+    }
+    {% endfor %}
+    ,{
+      "@type": "ListItem",
+      "position": {{ product.category.all|length|add:2 }},
+      "name": "{{ product.name }}"
+    }
+    {% elif models %}
+    ,{
+      "@type": "ListItem",
+      "position": 2,
+      "name": "{{ models.0.firm.name }}",
+      "item": "{{ request.scheme }}://{{ request.get_host }}{{ models.0.firm.get_absolute_url }}"
+    }
+    ,{
+      "@type": "ListItem",
+      "position": 3,
+      "name": "{{ title|cut:' Купить. Запчасти для электросамокатов' }}"
+    }
+    {% endif %}
+  ]
+}
+</script>
+
+{% if product %}
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Product",
+  "name": "{{ product.name }}",
+  "description": "{{ product.desctiption|escapejs }}",
+  "sku": "{{ product.id }}",
+  "mpn": "{{ product.id }}",
+  "brand": {
+    "@type": "Brand",
+    "name": "{% for category in product.category.all %}{% if forloop.first %}{{ category.firm.name }}{% endif %}{% endfor %}"
+  },
+  "category": "{% for category in product.category.all %}{{ category.name }}{% if not forloop.last %}, {% endif %}{% endfor %}",
+  "image": [
+    {% for image in product.productimages.all|slice:":5" %}
+    "{{ request.scheme }}://{{ request.get_host }}{{ image.image.url }}"{% if not forloop.last %},{% endif %}
+    {% endfor %}
+  ],
+  "offers": {
+    "@type": "Offer",
+    "priceCurrency": "RUB",
+    "price": "{{ product.price }}",
+    "availability": "{% if product.show %}https://schema.org/InStock{% else %}https://schema.org/OutOfStock{% endif %}",
+    "url": "{{ request.scheme }}://{{ request.get_host }}{{ product.get_absolute_url }}",
+    "seller": {
+      "@type": "Organization",
+      "name": "Electrorazbor.ru"
+    }
+  },
+  "aggregateRating": {
+    "@type": "AggregateRating",
+    "ratingValue": "{{ product.rating }}",
+    "reviewCount": "{{ product.product.all.count|add:1|default:1 }}"
+  }
+  {% if product.product.all %}
+  ,"review": [
+    {
+      "@type": "Review",
+      "reviewRating": {
+        "@type": "Rating",
+        "ratingValue": "{{ product.rating }}"
+      },
+      "author": {
+        "@type": "Person",
+        "name": "Покупатель"
+      }
+    }
+  ]
+  {% endif %}
+}
+</script>
+{% endif %}
+
+{% if page_obj %}
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "ItemList",
+  "name": "{{ title }}",
+  "description": "{{ description }}",
+  "numberOfItems": "{{ page_obj.paginator.count }}",
+  "itemListElement": [
+    {% for product in page_obj|slice:":10" %}
+    {
+      "@type": "ListItem",
+      "position": {{ forloop.counter }},
+      "url": "{{ request.scheme }}://{{ request.get_host }}{{ product.get_absolute_url }}",
+      "name": "{{ product.name }}"
+    }{% if not forloop.last %},{% endif %}
+    {% endfor %}
+  ]
+}
+</script>
+{% endif %}
+
+{% if request.path == '/' %}
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "WebSite",
+  "name": "Electrorazbor.ru",
+  "url": "{{ request.scheme }}://{{ request.get_host }}",
+  "potentialAction": {
+    "@type": "SearchAction",
+    "target": "{{ request.scheme }}://{{ request.get_host }}/search/?query={search_term_string}",
+    "query-input": "required name=search_term_string"
+  }
+}
+</script>
+{% endif %}

@@ -1,0 +1,65 @@
+{% load static %}
+<div class="footer-area">
+    <div class="footer-container">
+        <div class="footer-top">
+            <div class="container">
+                <div class="row">
+                    <div class="col-md-6 col-lg-3 mb-md-30px mb-lm-30px">
+                        <div class="single-wedge">
+                            <div class="footer-logo">
+                                <a href="{% url 'coreapp:home' %}"><img src="{% static 'electrorazbor.png' %}" alt="" style="width: 100px;"></a>
+                            </div>
+                            <p class="about-text">Ваш надежный помощник в ремонте электросамоката.</p>
+                            <ul class="link-follow">
+                                {% for contact in contacts %}
+                                {% if contact.show_in_bottom %}
+                                <li><a href="{{ contact.link }}"><i class="fa {{ contact.code }}"></i></a></li>
+                                {% endif %}
+                                {% endfor %}
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="col-md-6 col-lg-3 col-sm-6 mb-lm-30px pl-lg-60px">
+                        <div class="single-wedge">
+                            <div class="footer-links">
+                                <div class="footer-row">
+                                    <ul class="align-items-center">
+                                        <li class="li"><a class="single-link" href="{% url 'coreapp:delivery' %}">Доставка</a></li>
+                                        <li class="li"><a class="single-link" href="{% url 'coreapp:uslovija_vozvrata' %}">Условия возврата</a></li>
+                                        <li class="li"><a class="single-link" href="{% url 'coreapp:soglasie' %}">Персональные данные</a></li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6 col-lg-3 col-sm-6 mb-lm-30px pl-lg-40px">
+                        <div class="single-wedge">
+                            <h4 class="footer-herading">Меню</h4>
+                            <div class="footer-links">
+                                <div class="footer-row">
+                                    <ul class="align-items-center">
+                                        <li class="li"><a class="single-link" href="{% url 'coreapp:home' %}">Главная</a></li>
+                                        <li class="li"><a class="single-link" href="{% url 'coreapp:contacts' %}">Контакты</a></li>
+                                        <li class="li"><a class="single-link" href="{% url 'coreapp:home' %}#partners">Партнерам</a></li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6 col-lg-3 col-sm-12">
+                        <div class="single-wedge">
+                            <h4 class="footer-herading">Контакты</h4>
+                            <div class="footer-links">
+                                {% for contact in contacts %}
+                                <p>{{ contact.title }}:<a href="{{ contact.link }}"> {{ contact.text }}</a></p>
+                                {% endfor %}
+                                <p>Романов Дмитрий Юрьевич</p>
+                                <p>ИНН: 570401185967</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,22 +1,21 @@
 {% if models %}
 {% load thumbnail %}
 <div class="row">
-    <div style="width: 100%; display: flex; justify-content: center;">
-        <div class="tab-slider d-md-flex justify-content-md-between align-items-md-center">
-            <ul class="product-tab-nav justify-content-center align-items-center"
-                style="display: flex; flex-wrap: wrap;">
-                {% for model in models %}
-                <li class="nav-item mb-30px">
-                    <a href="{{ model.get_absolute_url }}#products" class="nav-link">
-                        {% if model.image %}
-                        <img src="{{ model.image|thumbnail_url:'card' }}" alt="{{ model.name }}">
-                        {% endif %}
-                        {{ model.name }}
-                    </a>
-                </li>
-                {% endfor %}
-            </ul>
-        </div>
-    </div>
+  <div style="width: 100%; display: flex; justify-content: center;">
+    <nav class="tab-slider d-md-flex justify-content-md-between align-items-md-center" aria-label="Категории товаров">
+      <ul class="product-tab-nav justify-content-center align-items-center" style="display: flex; flex-wrap: wrap;">
+        {% for model in models %}
+        <li class="nav-item mb-30px">
+          <a href="{{ model.get_absolute_url }}#products" class="nav-link" itemprop="category">
+            {% if model.image %}
+              <img src="{{ model.image|thumbnail_url:'card' }}" alt="{{ model.name }}" loading="lazy" width="50" height="50">
+            {% endif %}
+            <span>{{ model.name }}</span>
+          </a>
+        </li>
+        {% endfor %}
+      </ul>
+    </nav>
+  </div>
 </div>
 {% endif %}

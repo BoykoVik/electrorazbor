@@ -1,56 +1,76 @@
 {% load static %}
-<div id="myModal" class="modal">
-    <div class="modal-content">
-        <div class="modal-headerm">
-            <span class="closebtn">&times;</span>
-            <h4>Форма обратной связи</h4>
-        </div>
-        <div class="modal-body">
-            {% if product.show %}
-            <p>Оставьте номер своего телефона и мы вам перезвоним</p>
-            {% else %}
-            <p>Оставьте номер своего телефона и мы сообщим когда товар появится</p>
-            {% endif %}
-            <form class="newsletter__popup--subscribe__form">
-                {% csrf_token %}
-                <input class="newsletter__popup--subscribe__input" name="phone" type="text"
-                    placeholder="+7-900-000-00-00">
-                <input type="hidden" name="product" value="{{ product.id }}">
-                <button class="sendbtn" type="submit">Отправить</button>
-            </form>
-            <p style="color: #000000; font-size: 14px;">Оставляя заявку, вы соглашаетесь на обработку персональных данных в соответствии с 
-                <a href='{% url 'coreapp:soglasie' %}'>условиями.</a></p>
-        </div>
-        <div class="modal-footerm">
-            <h4>Или свяжитесь с нами</h4>
-            {% for contact in contacts %}
-            <a href="{{ contact.link }}" style="color: black; padding-top: 5px;"><i class="fa {{ contact.code }}" style="color: #0d6efd; font-size: 24px; padding-right: 10px;"></i>{{ contact.text }}</a>
-            {% endfor %}
-        </div>
+<div id="myModal" class="modal" role="dialog" aria-labelledby="modalTitle" aria-hidden="true">
+  <div class="modal-content">
+    <div class="modal-headerm">
+      <button class="closebtn" aria-label="Закрыть">&times;</button>
+      <h4 id="modalTitle">Форма обратной связи</h4>
     </div>
+    <div class="modal-body">
+      {% if product.show %}
+        <p>Оставьте номер своего телефона и мы вам перезвоним</p>
+      {% else %}
+        <p>Оставьте номер своего телефона и мы сообщим когда товар появится</p>
+      {% endif %}
+      
+      <form class="newsletter__popup--subscribe__form" method="post" action="{% url 'coreapp:productrequest' %}">
+        {% csrf_token %}
+        <input class="newsletter__popup--subscribe__input" 
+               name="phone" 
+               type="tel" 
+               placeholder="+7-900-000-00-00"
+               pattern="\+7-[0-9]{3}-[0-9]{3}-[0-9]{2}-[0-9]{2}"
+               aria-label="Номер телефона"
+               required>
+        <input type="hidden" name="product" value="{{ product.id }}">
+        <button class="sendbtn" type="submit" aria-label="Отправить заявку">Отправить</button>
+      </form>
+      
+      <p style="color: #000000; font-size: 14px;">
+        Оставляя заявку, вы соглашаетесь на 
+        <a href="{% url 'coreapp:soglasie' %}">обработку персональных данных</a>.
+      </p>
+    </div>
+    <div class="modal-footerm">
+      <h4>Или свяжитесь с нами</h4>
+      {% for contact in contacts %}
+        <a href="{{ contact.link }}" style="color: black; padding-top: 5px;" 
+           {% if 'wa' in contact.code or 'telegram' in contact.code %}rel="nofollow noopener" target="_blank"{% endif %}>
+          <i class="fa {{ contact.code }}" style="color: #0d6efd; font-size: 24px; padding-right: 10px;" aria-hidden="true"></i>
+          <span>{{ contact.text }}</span>
+        </a>
+      {% endfor %}
+    </div>
+  </div>
 </div>
+
 <link rel="stylesheet" href="{% static 'css/popup.css' %}">
 <script src="{% static 'js/popup.js' %}"></script>
 <script>
-    $(document).ready(function () {
-        document.querySelector(".newsletter__popup--subscribe__form").addEventListener('submit', function (event) {
-            event.preventDefault();
-        })
-        $(".sendbtn").click(function () {
-            if ($(".sendbtn").text() == "Отправить") {
-                if ($(".newsletter__popup--subscribe__input").val()) {
-                    $.ajax({
-                        url: '{% url "coreapp:productrequest" %}',
-                        type: 'post',
-                        data: $(".newsletter__popup--subscribe__form").serialize(),
-                        success: function (response) {
-                            modal.style.display = "none"
-                        }
-                    });
-                } else {
-                    $(".newsletter__popup--subscribe__input").css('background', 'red');
-                }
-            }
+  $(document).ready(function() {
+    // Маска для телефона (если есть библиотека inputmask)
+    // $('.newsletter__popup--subscribe__input').inputmask('+7-999-999-99-99');
+    
+    $('.newsletter__popup--subscribe__form').on('submit', function(e) {
+      e.preventDefault();
+      var $input = $(this).find('input[name="phone"]');
+      if ($input.val().trim().length > 5) {
+        $.ajax({
+          url: '{% url "coreapp:productrequest" %}',
+          type: 'post',
+          data: $(this).serialize(),
+          success: function(response) {
+            $('#myModal').hide();
+            // Показать сообщение об успехе
+            alert('Спасибо! Мы свяжемся с вами в ближайшее время.');
+          },
+          error: function() {
+            alert('Произошла ошибка. Попробуйте позже.');
+          }
         });
+      } else {
+        $input.css('background', '#ffcccc');
+        setTimeout(function() { $input.css('background', ''); }, 2000);
+      }
     });
+  });
 </script>
