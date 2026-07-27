@@ -5,12 +5,27 @@ import json
 from products.models import Orders, Obtains, Products
 from coreapp.utils import tgsandmsg
 from coreapp.models import Callrequest, Pricerequest, Holdmerequest
-
+from django.utils import timezone
+from datetime import timedelta
+'''
 def createorder(request):
     if request.method == 'POST':
             try:
                 phone = request.POST.get('phone', '')
                 textmessage = request.POST.get('textmessage', '')
+                
+                # Проверяем, не было ли заявки за последние 5 минут
+                time_threshold = timezone.now() - timedelta(minutes=5)
+                existing_request = Pricerequest.objects.filter(
+                    number=phone,
+                    dateandtame__gte=time_threshold
+                ).exists()
+                
+                if existing_request:
+                    return JsonResponse({
+                        'success': True, 
+                        'message': 'Заявка уже была отправлена недавно'
+                    })
                 
                 # Выводим данные в консоль сервера
                 print(f"Получена заявка на прайс:")
@@ -25,7 +40,7 @@ def createorder(request):
                 return JsonResponse({'success': False})
         
     return JsonResponse({'success': False})
-
+'''
 def createordercart(request):
     if request.method == 'POST':
         try:
@@ -39,6 +54,43 @@ def createordercart(request):
             if not phone or not cart:
                 return JsonResponse({'error': 'Необходимо указать телефон и корзину'}, status=400)
 
+            # Проверяем, не было ли заказов с этим номером за последние 5 минут
+            time_threshold = timezone.now() - timedelta(minutes=5)
+            
+            # Проверяем, есть ли недавние заказы с этим номером
+            recent_orders = Orders.objects.filter(
+                phone=phone,
+                date__gte=time_threshold
+            ).exists()
+            
+            if recent_orders:
+                # Проверяем, совпадает ли состав корзины с последним заказом
+                last_order = Orders.objects.filter(
+                    phone=phone,
+                    date__gte=time_threshold
+                ).order_by('-date').first()
+                
+                if last_order:
+                    # Получаем товары из последнего заказа
+                    last_order_items = Obtains.objects.filter(order=last_order)
+                    last_order_cart = []
+                    for item in last_order_items:
+                        last_order_cart.append({
+                            'id': str(item.product.id),
+                            'quantity': item.count
+                        })
+                    
+                    # Сортируем для сравнения
+                    cart_sorted = sorted(cart, key=lambda x: x['id'])
+                    last_order_cart_sorted = sorted(last_order_cart, key=lambda x: x['id'])
+                    
+                    # Если состав корзины совпадает, считаем это дубликатом
+                    if cart_sorted == last_order_cart_sorted:
+                        return JsonResponse({
+                            'order_id': last_order.id,
+                            'message': 'Заказ с таким составом уже был отправлен недавно'
+                        })
+
             # Логика создания заказа
             order = create_order_in_db(phone, cart)
             if textmessage:
@@ -46,7 +98,7 @@ def createordercart(request):
             else:
                 tgsandmsg(f'НОВЫЙ ЗАКАЗ номер {order.id}\n')
             # Возвращаем успешный ответ с номером заказа
-            return JsonResponse({'order_id': order.id})
+            return JsonResponse({'order_id': order.id, 'message': 'Заказ успешно создан'})
 
         except json.JSONDecodeError:
             return JsonResponse({'error': 'Неверный формат JSON'}, status=400)

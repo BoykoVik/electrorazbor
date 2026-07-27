@@ -4571,7 +4571,7 @@ body.offcanvas-open {
 /*===================================
     - Breadvrumb  
 =================================*/
-.breadcrumb-area {
+/*.breadcrumb-area {
   background-image: url(../images/about/breadcrunb-bg.webp);
   background-color: #cad5e1;
   background-repeat: no-repeat;
@@ -4621,7 +4621,7 @@ body.offcanvas-open {
     font-size: 36px;
   }
 }
-
+*/
 .breadcrumb-list li {
   display: inline-block;
   font-size: 18px;
@@ -9777,4 +9777,47 @@ textarea {
     border-radius: 0px;
     font-family: "Poppins", sans-serif;
     padding-bottom: 20px;
+}
+
+
+/* Хлебные крошки */
+.breadcrumb-area {
+  background: #f8f9fa;
+  padding: 15px 0;
+  margin-bottom: 30px;
+  border-bottom: 1px solid #e9ecef;
+}
+
+.breadcrumb {
+  background: transparent;
+  padding: 0;
+  margin: 0;
+  font-size: 14px;
+}
+
+.breadcrumb-item + .breadcrumb-item::before {
+  content: "›";
+  color: #6c757d;
+  font-size: 18px;
+  padding: 0 10px;
+}
+
+.breadcrumb-item a {
+  color: #0d6efd;
+  text-decoration: none;
+  transition: color 0.3s;
+}
+
+.breadcrumb-item a:hover {
+  color: #0a58ca;
+  text-decoration: underline;
+}
+
+.breadcrumb-item.active {
+  color: #6c757d;
+  font-weight: 500;
+}
+
+.breadcrumb-item.active span {
+  color: #6c757d;
 }

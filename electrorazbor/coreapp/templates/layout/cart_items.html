@@ -54,8 +54,19 @@
                             <script>
                                 const csrfToken = "{{ csrf_token }}";
                                 $(".phone").mask("+7(999)999-99-99");
+                                
+                                // Переменная для блокировки повторных нажатий
+                                let isSubmitting = false;
+                                let submitCooldown = 5000; // 5 секунд блокировки
+                                
                                 // Обработчик нажатия на кнопку "Заказать"
                                 document.getElementById('orderButton').addEventListener('click', function () {
+                                    // Проверяем, не выполняется ли уже отправка
+                                    if (isSubmitting) {
+                                        alert('Заказ уже оформляется. Пожалуйста, подождите.');
+                                        return;
+                                    }
+                                    
                                     const phone = document.getElementById('phone').value;
                                     const textmessage = document.getElementById('textmessage').value;
                                     const cart = JSON.parse(localStorage.getItem('cart') || '[]');
@@ -65,11 +76,20 @@
                                         alert('Пожалуйста, введите корректный номер телефона.');
                                         return;
                                     }
+                                    
                                     // Проверка, что корзина не пуста
                                     if (cart.length === 0) {
                                         alert('Ваша корзина пуста.');
                                         return;
                                     }
+                                    
+                                    // Блокируем кнопку
+                                    isSubmitting = true;
+                                    const button = document.getElementById('orderButton');
+                                    const originalText = button.textContent;
+                                    button.textContent = 'Обработка';
+                                    button.disabled = true;
+                                    
                                     // Отправка данных на сервер
                                     fetch("{% url 'apiapp:createordercart' %}", {
                                         method: 'POST',
@@ -86,24 +106,41 @@
                                         .then(response => response.json())
                                         .then(data => {
                                             if (data.order_id) {
-                                                // Обновление интерфейса
-                                                document.querySelector('.grand-totall').innerHTML = `
-                        <div class="title-wrap">
-                            <h4 class="cart-bottom-title section-bg-gary-cart">Заказ № ${data.order_id} в работе</h4></div>`;
-                            localStorage.removeItem('cart');
-                            let tableHtml = '';
-                            $('.cart-table-content tbody').html(tableHtml);
-                            $('.minicart-product-list').html(tableHtml);
-                            let cartCountElement = $('.header-action-num');
-                            cartCountElement.hide();
-                            
+                                                // Проверяем, не было ли сообщение о дубликате
+                                                if (data.message && data.message.includes('недавно')) {
+                                                    alert(data.message);
+                                                    // Не очищаем корзину, если заказ уже был
+                                                } else {
+                                                    // Обновление интерфейса
+                                                    document.querySelector('.grand-totall').innerHTML = `
+                                                        <div class="title-wrap">
+                                                            <h4 class="cart-bottom-title section-bg-gary-cart">Заказ № ${data.order_id} в работе</h4>
+                                                        </div>`;
+                                                    localStorage.removeItem('cart');
+                                                    let tableHtml = '';
+                                                    $('.cart-table-content tbody').html(tableHtml);
+                                                    $('.minicart-product-list').html(tableHtml);
+                                                    let cartCountElement = $('.header-action-num');
+                                                    cartCountElement.hide();
+                                                    alert('Заказ успешно оформлен! Номер заказа: ' + data.order_id);
+                                                }
+                                            } else if (data.message) {
+                                                alert(data.message);
                                             } else {
                                                 alert('Ошибка при оформлении заказа.');
                                             }
                                         })
                                         .catch(error => {
                                             console.error('Error:', error);
-                                            alert('Произошла ошибка при отправке данных.');
+                                            alert('Произошла ошибка при отправке данных. Пожалуйста, попробуйте позже.');
+                                        })
+                                        .finally(() => {
+                                            // Разблокируем кнопку через указанное время
+                                            setTimeout(() => {
+                                                isSubmitting = false;
+                                                button.textContent = originalText;
+                                                button.disabled = false;
+                                            }, submitCooldown);
                                         });
                                 });
 

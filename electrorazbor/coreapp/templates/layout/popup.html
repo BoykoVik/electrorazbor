@@ -22,7 +22,7 @@
                aria-label="Номер телефона"
                required>
         <input type="hidden" name="product" value="{{ product.id }}">
-        <button class="sendbtn" type="submit" aria-label="Отправить заявку">Отправить</button>
+        <button class="sendbtn" type="submit" aria-label="Отправить заявку" id="submitBtn">Отправить</button>
       </form>
       
       <p style="color: #000000; font-size: 14px;">
@@ -47,29 +47,62 @@
 <script src="{% static 'js/popup.js' %}"></script>
 <script>
   $(document).ready(function() {
-    // Маска для телефона (если есть библиотека inputmask)
-    // $('.newsletter__popup--subscribe__input').inputmask('+7-999-999-99-99');
+    var isSubmitting = false;
+    var submitCooldown = 5000; // 5 секунд блокировки после отправки
     
     $('.newsletter__popup--subscribe__form').on('submit', function(e) {
       e.preventDefault();
+      
+      // Проверяем, не отправляется ли уже форма
+      if (isSubmitting) {
+        alert('Заявка уже отправляется. Пожалуйста, подождите.');
+        return false;
+      }
+      
       var $input = $(this).find('input[name="phone"]');
-      if ($input.val().trim().length > 5) {
+      var phone = $input.val().trim();
+      
+      if (phone.length > 5) {
+        // Блокируем кнопку
+        isSubmitting = true;
+        var $submitBtn = $(this).find('#submitBtn');
+        var originalText = $submitBtn.text();
+        $submitBtn.prop('disabled', true).text('Отправка...');
+        
         $.ajax({
           url: '{% url "coreapp:productrequest" %}',
           type: 'post',
           data: $(this).serialize(),
+          dataType: 'json',
           success: function(response) {
             $('#myModal').hide();
-            // Показать сообщение об успехе
-            alert('Спасибо! Мы свяжемся с вами в ближайшее время.');
+            
+            // Проверяем сообщение от сервера
+            if (response.message) {
+              alert(response.message);
+            } else {
+              alert('Спасибо! Мы свяжемся с вами в ближайшее время.');
+            }
+            
+            // Сбрасываем форму после успешной отправки
+            $('.newsletter__popup--subscribe__form')[0].reset();
           },
-          error: function() {
+          error: function(xhr, status, error) {
             alert('Произошла ошибка. Попробуйте позже.');
+            console.error('Error:', error);
+          },
+          complete: function() {
+            // Разблокируем кнопку через указанное время
+            setTimeout(function() {
+              isSubmitting = false;
+              $submitBtn.prop('disabled', false).text(originalText);
+            }, submitCooldown);
           }
         });
       } else {
         $input.css('background', '#ffcccc');
         setTimeout(function() { $input.css('background', ''); }, 2000);
+        alert('Пожалуйста, введите корректный номер телефона');
       }
     });
   });

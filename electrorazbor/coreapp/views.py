@@ -8,6 +8,8 @@ from django.db.models import Q
 from .utils import tgsandmsg
 import datetime
 from django.views.decorators.csrf import ensure_csrf_cookie
+from django.utils import timezone
+from datetime import timedelta
 # Create your views here.
 def home(request):
     page = Pages.objects.filter(page='home').first()
@@ -81,20 +83,56 @@ def order_price(request):
 def productrequest(request):
     if request.method == "POST":
         phone = request.POST.get('phone')
-        product = get_object_or_404(Products, id=request.POST.get('product'))
+        product_id = request.POST.get('product')
+        
+        if not phone or not product_id:
+            return JsonResponse({"error": "Не все поля заполнены"}, status=400)
+            
+        product = get_object_or_404(Products, id=product_id)
+        
+        # Проверяем, не было ли заявки от этого номера за последние 5 минут
+        time_threshold = timezone.now() - timedelta(minutes=5)
+        
         if product.show:
+            # Проверка для Callrequest (есть в наличии - заказ звонка)
+            existing_request = Callrequest.objects.filter(
+                number=phone,
+                product=product.name,
+                dateandtame__gte=time_threshold
+            ).exists()
+            
+            if existing_request:
+                return JsonResponse({
+                    "OK": '200', 
+                    "message": "Заявка уже была отправлена недавно"
+                })
+            
             req = Callrequest()
             req.number = phone
             req.product = product.name
             req.save()
             tgsandmsg(f'Заявка! \nТелефон {phone}\nТовар: {product}')
         else:
+            # Проверка для Holdmerequest (нет в наличии - сообщить о поступлении)
+            existing_request = Holdmerequest.objects.filter(
+                number=phone,
+                product=product,
+                dateandtame__gte=time_threshold
+            ).exists()
+            
+            if existing_request:
+                return JsonResponse({
+                    "OK": '200', 
+                    "message": "Заявка уже была отправлена недавно"
+                })
+            
             req = Holdmerequest()
             req.number = phone
             req.product = product
             req.save()
             tgsandmsg(f'Просьба сообщить о поступлении! \nТелефон {phone}\nТовар: {product.name}')
-    return JsonResponse({"OK":'200'})
+            
+    return JsonResponse({"OK": '200'})
 
 def cart(request):
     return render(request, 'coreapp/cart.html', {
